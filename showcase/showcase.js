@@ -197,8 +197,7 @@ function makeSphere(){
     glBegin(GL_TRIANGLES, "Sphere", true);
 
 
-    for (let i = 0; i < numFacets; i += 1) {
-        console.log(i);
+    for (let i = 0; i < numFacets / 2; i += 1) {
         for (let j = 0; j < numFacets; j += 1) {
             const aMid = dAngle * j;
             const xMid0 = Math.cos(aMid);
@@ -215,6 +214,16 @@ function makeSphere(){
             glVertex3f(xMid0, yMid0 ,  width / numFacets + (1/numFacets) * 2*i);
             glVertex3f(xMid1, yMid1 , -width / numFacets + (1/numFacets) * 2*i);
             glVertex3f(xMid1, yMid1 ,  width / numFacets + (1/numFacets) * 2*i);
+
+        glColor3f(0.25, 0.50, 0.75);
+            glVertex3f(xMid0, yMid0 ,  width / numFacets - (1/numFacets) * 2*i);
+            glVertex3f(xMid0, yMid0 , -width / numFacets - (1/numFacets) * 2*i);
+            glVertex3f(xMid1, yMid1 , -width / numFacets - (1/numFacets) * 2*i);
+
+        glColor3f(0.50, 0.75, 0.80);
+            glVertex3f(xMid0, yMid0 ,  width / numFacets - (1/numFacets) * 2*i);
+            glVertex3f(xMid1, yMid1 , -width / numFacets - (1/numFacets) * 2*i);
+            glVertex3f(xMid1, yMid1 ,  width / numFacets - (1/numFacets) * 2*i);
 
         }
     }
