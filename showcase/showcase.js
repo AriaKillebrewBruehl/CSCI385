@@ -251,6 +251,23 @@ function makeSphere(){
         }
     }
 
+    // Produce the bottom.
+    for (let i = 0; i < numFacets; i += 1) {
+        const aBottom = dAngle * i;
+        const xBottom0 = Math.cos(aBottom) * getY(numFacets/2 - 1, numFacets);
+        const yBottom0 = Math.sin(aBottom) * getY(numFacets/2 - 1, numFacets);
+        const xBottom1 = Math.cos(aBottom + dAngle) * getY(numFacets/2 - 1, numFacets);
+        const yBottom1 = Math.sin(aBottom + dAngle) * getY(numFacets/2 - 1, numFacets);
+	if (i % 2 == 0) {
+	    glColor3f(0.25, 0.50, 0.75);
+	} else {
+	    glColor3f(0.50, 0.75, 0.80);
+	}
+	glVertex3f(     0.0,      0.0, -width / numFacets - 1 + (2/numFacets));
+        glVertex3f(xBottom0, yBottom0, -width / numFacets - 1 + (2/numFacets));
+        glVertex3f(xBottom1, yBottom1, -width / numFacets - 1 + (2/numFacets));
+    }
+
     glEnd();
 }
 
