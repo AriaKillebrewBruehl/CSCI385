@@ -202,16 +202,26 @@ function makeSphere(){
     const dAngle = 2.0 * Math.PI / numFacets;
 
     glBegin(GL_TRIANGLES, "Sphere", true);
+    // Produce the top.
+    for (let i = 0; i < numFacets; i += 1) {
+        const aTop = dAngle * i;
+        const xTop0 = Math.cos(aTop) * getY(numFacets/2 - 1, numFacets);
+        const yTop0 = Math.sin(aTop) * getY(numFacets/2 - 1, numFacets);
+        const xTop1 = Math.cos(aTop + dAngle) * getY(numFacets/2 - 1, numFacets);
+        const yTop1 = Math.sin(aTop + dAngle) * getY(numFacets/2 - 1, numFacets);
+	if (i % 2 == 0) {
+	    glColor3f(0.25, 0.50, 0.75);
+	} else {
+	    glColor3f(0.50, 0.75, 0.80);
+	}
+	glVertex3f(  0.0,   0.0, width / numFacets + 1 - (2/numFacets));
+        glVertex3f(xTop0, yTop0, width / numFacets + 1 - (2/numFacets));
+        glVertex3f(xTop1, yTop1, width / numFacets + 1 - (2/numFacets));
+    }
 
 
     for (let i = 0; i < numFacets / 2; i += 1) {
         for (let j = 0; j < numFacets; j += 1) {
-            // const aMid = dAngle * j;
-            // const xMid0 = Math.cos(aMid);
-            // const yMid0 = Math.sin(aMid);
-            // const xMid1 = Math.cos(aMid + dAngle);
-            // const yMid1 = Math.sin(aMid + dAngle);
-
             const aMid = dAngle * j;
             const xMid0 = Math.cos(aMid) * getY(i, numFacets);
             const yMid0 = Math.sin(aMid) * getY(i, numFacets);
