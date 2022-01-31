@@ -120,7 +120,7 @@ function makeCylinder() {
      * object.
      */
 
-    const width = 1.0;
+    const width = 0.5;
     //const numFacets = 24;
     numFacets = smoothness;
     const dAngle = 2.0 * Math.PI / numFacets;
@@ -184,13 +184,20 @@ function makeCylinder() {
     glEnd();
 }
 
+function getY(i, numFacets) {
+    let step = 1/numFacets;
+    let X = i * step * 2;
+    let Y = Math.sqrt(1 - X**2);
+    return Y;
+}
+
 function makeSphere(){
     /*
      * This describes the facets of a 24-sided cylindrical
      * object.
      */
 
-    const width = 1.0;
+    let width = 1.0;
     numFacets = smoothness;
     const dAngle = 2.0 * Math.PI / numFacets;
 
@@ -199,11 +206,17 @@ function makeSphere(){
 
     for (let i = 0; i < numFacets / 2; i += 1) {
         for (let j = 0; j < numFacets; j += 1) {
+            // const aMid = dAngle * j;
+            // const xMid0 = Math.cos(aMid);
+            // const yMid0 = Math.sin(aMid);
+            // const xMid1 = Math.cos(aMid + dAngle);
+            // const yMid1 = Math.sin(aMid + dAngle);
+
             const aMid = dAngle * j;
-            const xMid0 = Math.cos(aMid);
-            const yMid0 = Math.sin(aMid);
-            const xMid1 = Math.cos(aMid + dAngle);
-            const yMid1 = Math.sin(aMid + dAngle);
+            const xMid0 = Math.cos(aMid) * getY(i, numFacets);
+            const yMid0 = Math.sin(aMid) * getY(i, numFacets);
+            const xMid1 = Math.cos(aMid + dAngle) * getY(i, numFacets);
+            const yMid1 = Math.sin(aMid + dAngle) * getY(i, numFacets);
 
         glColor3f(0.25, 0.50, 0.75);
             glVertex3f(xMid0, yMid0 ,  width / numFacets + (1/numFacets) * 2*i);
