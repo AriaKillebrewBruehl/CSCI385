@@ -275,13 +275,13 @@ function makeTaurus() {
     // Produce the sides.
     for (let i = 0; i < numFacets; i += 1) {
         const aMid = dAngle * i;
-        const xMid0 = Math.cos(aMid);
-        const yMid0 = Math.sin(aMid);
-        const xMid1 = Math.cos(aMid + dAngle);
-        const yMid1 = Math.sin(aMid + dAngle);
+        const xMid0 = Math.cos(aMid) * 0.25;
+        const yMid0 = Math.sin(aMid) * 0.25;
+        const xMid1 = Math.cos(aMid + dAngle) * 0.25;
+        const yMid1 = Math.sin(aMid + dAngle) * 0.25;
 
 	glColor3f(0.80, 0.50, 0.75);
-        glVertex3f(xMid0, yMid0,  width / 2.0);
+        glVertex3f(xMid0, yMid0,  width / 2.0 );
         glVertex3f(xMid0, yMid0, -width / 2.0);
         glVertex3f(xMid1, yMid1, -width / 2.0);
 
