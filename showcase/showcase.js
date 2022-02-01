@@ -120,7 +120,7 @@ function makeCylinder() {
      * object.
      */
 
-    const width = 0.5;
+    const width = 1.0;
     numFacets = smoothness;
     const dAngle = 2.0 * Math.PI / numFacets;
 
