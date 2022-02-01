@@ -42,7 +42,7 @@ let mouseDrag   = false;
 //
 let showWhich = 1;
 //
-var smoothness = 24;
+let smoothness = 24;
 
 function makeCube() {
     /*
@@ -258,8 +258,6 @@ function makeSphere(){
 
         }
     }
-
-
     glEnd();
 }
 
@@ -319,10 +317,6 @@ function drawObject() {
     if (showWhich == 4) {
     glBeginEnd("Sphere");
     }
-    //
-
-    // Add other objects for the assignment here.
-    //
 
 }
 
@@ -379,15 +373,13 @@ function handleKey(key, x, y) {
         showWhich = 4
     }
     if (key == '+') {
-        smoothness += 1;
-        glBeginEnd("Cylinder");
-        console.log(smoothness);
+        smoothness += 2;
+        makeSmoother()
     }
     //
     if (key == '-') {
-        smoothness -= 1;
-        glBeginEnd("Cylinder");
-        console.log(smoothness);
+        smoothness -= 2;
+        makeSmoother();
     }
 
     //
@@ -472,6 +464,10 @@ function resizeWindow(w, h) {
     glutPostRedisplay();
 }
 
+function makeSmoother() {
+    makeCylinder();
+    makeSphere();
+}
 
 function main() {
     /*
