@@ -202,22 +202,22 @@ function makeSphere(){
     const dAngle = 2.0 * Math.PI / numFacets;
 
     glBegin(GL_TRIANGLES, "Sphere", true);
-    // Produce the top.
-    for (let i = 0; i < numFacets; i += 1) {
-        const aTop = dAngle * i;
-        const xTop0 = Math.cos(aTop) * getY(numFacets/2 - 1, numFacets);
-        const yTop0 = Math.sin(aTop) * getY(numFacets/2 - 1, numFacets);
-        const xTop1 = Math.cos(aTop + dAngle) * getY(numFacets/2 - 1, numFacets);
-        const yTop1 = Math.sin(aTop + dAngle) * getY(numFacets/2 - 1, numFacets);
-	if (i % 2 == 0) {
-	    glColor3f(0.25, 0.50, 0.75);
-	} else {
-	    glColor3f(0.50, 0.75, 0.80);
-	}
-	glVertex3f(  0.0,   0.0, width / numFacets + 1 - (2/numFacets));
-        glVertex3f(xTop0, yTop0, width / numFacets + 1 - (2/numFacets));
-        glVertex3f(xTop1, yTop1, width / numFacets + 1 - (2/numFacets));
-    }
+    // // Produce the top.
+    // for (let i = 0; i < numFacets; i += 1) {
+    //     const aTop = dAngle * i;
+    //     const xTop0 = Math.cos(aTop) * getY(numFacets/2 - 1, numFacets);
+    //     const yTop0 = Math.sin(aTop) * getY(numFacets/2 - 1, numFacets);
+    //     const xTop1 = Math.cos(aTop + dAngle) * getY(numFacets/2 - 1, numFacets);
+    //     const yTop1 = Math.sin(aTop + dAngle) * getY(numFacets/2 - 1, numFacets);
+	// if (i % 2 == 0) {
+	//     glColor3f(0.25, 0.50, 0.75);
+	// } else {
+	//     glColor3f(0.50, 0.75, 0.80);
+	// }
+	// glVertex3f(  0.0,   0.0, width / numFacets + 1 - (2/numFacets));
+    //     glVertex3f(xTop0, yTop0, width / numFacets + 1 - (2/numFacets));
+    //     glVertex3f(xTop1, yTop1, width / numFacets + 1 - (2/numFacets));
+    // }
 
 
     for (let i = 0; i < numFacets / 2; i += 1) {
@@ -245,10 +245,10 @@ function makeSphere(){
 
         // green diag
         glColor3f(0.00, 1.00, 0.00);
-            glVertex3f(xMid0, yMid0 , -width / numFacets + (1/numFacets) * 2*i);
-            glVertex3f(xMid1, yMid1 , -width / numFacets + (1/numFacets) * 2*i);
-            glVertex3f(xMid3, yMid3,  width / numFacets + (1/numFacets) * 2*(i+1));
-        // white diag
+            glVertex3f(xMid0, yMid0 ,  width / numFacets + (1/numFacets) * 2*i);
+            glVertex3f(xMid1, yMid1 , width / numFacets + (1/numFacets) * 2*i);
+            glVertex3f(xMid2, yMid2, - width / numFacets + (1/numFacets) * 2*(i+1));
+        // black diag
         glColor3f(0.00, 0.00, 0.00);
             glVertex3f(xMid2, yMid2 , -width / numFacets + (1/numFacets) * 2*(i+1));
             glVertex3f(xMid3, yMid3 , -width / numFacets + (1/numFacets) * 2*(i+1));
@@ -265,25 +265,36 @@ function makeSphere(){
             glVertex3f(xMid1, yMid1 , -width / numFacets - (1/numFacets) * 2*i);
             glVertex3f(xMid1, yMid1 ,  width / numFacets - (1/numFacets) * 2*i);
 
+        // green diag lower
+         glColor3f(0.00, 1.00, 0.00);
+            glVertex3f(xMid0, yMid0 , -width / numFacets - (1/numFacets) * 2*i);
+            glVertex3f(xMid1, yMid1 , -width / numFacets - (1/numFacets) * 2*i);
+            glVertex3f(xMid2, yMid2, width / numFacets - (1/numFacets) * 2*(i+1));
+        // black diag lower
+        glColor3f(0.00, 0.00, 0.00);
+        glVertex3f(xMid1, yMid1 , - width / numFacets - (1/numFacets) * 2*i);
+            glVertex3f(xMid3, yMid3, - width / numFacets - (1/numFacets) * 2*i);
+            glVertex3f(xMid2, yMid2 , - width / numFacets - (1/numFacets) * 2*i);
+
         }
     }
 
-    // Produce the bottom.
-    for (let i = 0; i < numFacets; i += 1) {
-        const aBottom = dAngle * i;
-        const xBottom0 = Math.cos(aBottom) * getY(numFacets/2 - 1, numFacets);
-        const yBottom0 = Math.sin(aBottom) * getY(numFacets/2 - 1, numFacets);
-        const xBottom1 = Math.cos(aBottom + dAngle) * getY(numFacets/2 - 1, numFacets);
-        const yBottom1 = Math.sin(aBottom + dAngle) * getY(numFacets/2 - 1, numFacets);
-	if (i % 2 == 0) {
-	    glColor3f(0.25, 0.50, 0.75);
-	} else {
-	    glColor3f(0.50, 0.75, 0.80);
-	}
-	glVertex3f(     0.0,      0.0, -width / numFacets - 1 + (2/numFacets));
-        glVertex3f(xBottom0, yBottom0, -width / numFacets - 1 + (2/numFacets));
-        glVertex3f(xBottom1, yBottom1, -width / numFacets - 1 + (2/numFacets));
-    }
+    // // Produce the bottom.
+    // for (let i = 0; i < numFacets; i += 1) {
+    //     const aBottom = dAngle * i;
+    //     const xBottom0 = Math.cos(aBottom) * getY(numFacets/2 - 1, numFacets);
+    //     const yBottom0 = Math.sin(aBottom) * getY(numFacets/2 - 1, numFacets);
+    //     const xBottom1 = Math.cos(aBottom + dAngle) * getY(numFacets/2 - 1, numFacets);
+    //     const yBottom1 = Math.sin(aBottom + dAngle) * getY(numFacets/2 - 1, numFacets);
+	// if (i % 2 == 0) {
+	//     glColor3f(0.25, 0.50, 0.75);
+	// } else {
+	//     glColor3f(0.50, 0.75, 0.80);
+	// }
+	// glVertex3f(     0.0,      0.0, -width / numFacets - 1 + (2/numFacets));
+    //     glVertex3f(xBottom0, yBottom0, -width / numFacets - 1 + (2/numFacets));
+    //     glVertex3f(xBottom1, yBottom1, -width / numFacets - 1 + (2/numFacets));
+    // }
 
     glEnd();
 }
