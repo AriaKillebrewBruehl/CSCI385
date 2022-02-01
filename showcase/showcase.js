@@ -121,7 +121,6 @@ function makeCylinder() {
      */
 
     const width = 0.5;
-    //const numFacets = 24;
     numFacets = smoothness;
     const dAngle = 2.0 * Math.PI / numFacets;
 
@@ -193,7 +192,7 @@ function getY(i, numFacets) {
 
 function makeSphere(){
     /*
-     * This describes the facets of a 24-sided cylindrical
+     * This describes the facets of a sphere
      * object.
      */
 
@@ -261,6 +260,42 @@ function makeSphere(){
     glEnd();
 }
 
+function makeTaurus() {
+    /*
+     * This describes the facets of a taurus
+     * object.
+     */
+
+    let width = 1.0;
+    numFacets = smoothness;
+    const dAngle = 2.0 * Math.PI / numFacets;
+
+    glBegin(GL_TRIANGLES, "Taurus", true);
+
+    // Produce the sides.
+    for (let i = 0; i < numFacets; i += 1) {
+        const aMid = dAngle * i;
+        const xMid0 = Math.cos(aMid);
+        const yMid0 = Math.sin(aMid);
+        const xMid1 = Math.cos(aMid + dAngle);
+        const yMid1 = Math.sin(aMid + dAngle);
+
+	glColor3f(0.80, 0.50, 0.75);
+        glVertex3f(xMid0, yMid0,  width / 2.0);
+        glVertex3f(xMid0, yMid0, -width / 2.0);
+        glVertex3f(xMid1, yMid1, -width / 2.0);
+
+	glColor3f(0.90, 0.75, 0.80);
+        glVertex3f(xMid0, yMid0,  width / 2.0);
+        glVertex3f(xMid1, yMid1, -width / 2.0);
+        glVertex3f(xMid1, yMid1,  width / 2.0);
+
+    }
+
+    glEnd();
+
+}
+
 function makeTetra() {
 
     // This describes the facets of a tetrahedron whose
@@ -317,6 +352,9 @@ function drawObject() {
     if (showWhich == 4) {
     glBeginEnd("Sphere");
     }
+    if (showWhich == 5) {
+        glBeginEnd("Taurus");
+    }
 
 }
 
@@ -371,6 +409,9 @@ function handleKey(key, x, y) {
     //
     if (key == '4') {
         showWhich = 4
+    }
+    if(key == '5') {
+        showWhich = 5;
     }
     if (key == '+') {
         smoothness += 2;
@@ -467,6 +508,7 @@ function resizeWindow(w, h) {
 function makeSmoother() {
     makeCylinder();
     makeSphere();
+    makeTaurus();
 }
 
 function main() {
@@ -486,6 +528,7 @@ function main() {
     makeCube();
     makeCylinder();
     makeSphere();
+    makeTaurus();
 
     // Register interaction callbacks.
     glutKeyboardFunc(handleKey);
