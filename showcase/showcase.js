@@ -227,23 +227,40 @@ function makeSphere(){
             const yMid0 = Math.sin(aMid) * getY(i, numFacets);
             const xMid1 = Math.cos(aMid + dAngle) * getY(i, numFacets);
             const yMid1 = Math.sin(aMid + dAngle) * getY(i, numFacets);
+            const xMid2 = Math.cos(aMid) * getY(i + 1, numFacets);
+            const yMid2 = Math.sin(aMid) * getY(i + 1, numFacets);
+            const xMid3 = Math.cos(aMid + dAngle) * getY(i + 1, numFacets);
+            const yMid3 = Math.sin(aMid + dAngle) * getY(i + 1, numFacets);
 
-        glColor3f(0.25, 0.50, 0.75);
+        // red
+        glColor3f(1.0, 0.00, 0.00);
             glVertex3f(xMid0, yMid0 ,  width / numFacets + (1/numFacets) * 2*i);
             glVertex3f(xMid0, yMid0 , -width / numFacets + (1/numFacets) * 2*i);
             glVertex3f(xMid1, yMid1 , -width / numFacets + (1/numFacets) * 2*i);
-
-        glColor3f(0.50, 0.75, 0.80);
+        // blue
+        glColor3f(0.00, 0.00, 1.00);
             glVertex3f(xMid0, yMid0 ,  width / numFacets + (1/numFacets) * 2*i);
             glVertex3f(xMid1, yMid1 , -width / numFacets + (1/numFacets) * 2*i);
             glVertex3f(xMid1, yMid1 ,  width / numFacets + (1/numFacets) * 2*i);
 
-        glColor3f(0.25, 0.50, 0.75);
+        // green diag
+        glColor3f(0.00, 1.00, 0.00);
+            glVertex3f(xMid0, yMid0 , -width / numFacets + (1/numFacets) * 2*i);
+            glVertex3f(xMid1, yMid1 , -width / numFacets + (1/numFacets) * 2*i);
+            glVertex3f(xMid3, yMid3,  width / numFacets + (1/numFacets) * 2*(i+1));
+        // white diag
+        glColor3f(0.00, 0.00, 0.00);
+            glVertex3f(xMid2, yMid2 , -width / numFacets + (1/numFacets) * 2*(i+1));
+            glVertex3f(xMid3, yMid3 , -width / numFacets + (1/numFacets) * 2*(i+1));
+            glVertex3f(xMid1, yMid1 ,  width / numFacets + (1/numFacets) * 2*i);
+
+        // red lower
+        glColor3f(1.0, 0.00, 0.00);
             glVertex3f(xMid0, yMid0 ,  width / numFacets - (1/numFacets) * 2*i);
             glVertex3f(xMid0, yMid0 , -width / numFacets - (1/numFacets) * 2*i);
             glVertex3f(xMid1, yMid1 , -width / numFacets - (1/numFacets) * 2*i);
-
-        glColor3f(0.50, 0.75, 0.80);
+        // blue lower
+        glColor3f(0.00, 0.00, 1.00);
             glVertex3f(xMid0, yMid0 ,  width / numFacets - (1/numFacets) * 2*i);
             glVertex3f(xMid1, yMid1 , -width / numFacets - (1/numFacets) * 2*i);
             glVertex3f(xMid1, yMid1 ,  width / numFacets - (1/numFacets) * 2*i);
