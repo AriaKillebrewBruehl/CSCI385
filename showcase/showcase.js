@@ -380,7 +380,7 @@ function makeQuarterSphere() {
      * object.
      */
 
-    let width = 1.0;
+    let width = 0.10;
     numFacets = smoothness;
     const dAngle = 2.0 * Math.PI / numFacets;
 
@@ -424,7 +424,42 @@ function makeQuarterSphere() {
 }
 function makeLasagne() {
 
-    //glBeginEnd("quarterSphere");
+    glBegin(GL_TRIANGLES, "Lasagne", true);
+
+        glColor3f(0.00, 0.00, 0.00);
+            glVertex3f(-1.0, 0 ,  0.5);
+            glVertex3f(-1.0, 0 , -0.5);
+            glVertex3f(1.0,  0 ,  -0.5);
+
+        glColor3f(1.00, 1.00, 1.00);
+            glVertex3f(1.0,  0 ,  0.5);
+            glVertex3f(1.0,  0 , -0.5);
+            glVertex3f(-1.0, 0 ,  0.5);
+
+        // for (let i = 0; i < )
+
+
+    glEnd();
+
+    // let on = false;
+    // for (let angle = 0.0; angle < 360; angle += 15) {
+	// glPushMatrix(); // Save the coordinate frame.
+
+	// // Change the coordinate frame. Sweeps the disk around.
+	// glRotatef(angle,0.0,1.0,0.0);
+	// glTranslatef(1.5,0.0,0.0);
+	// glScalef(0.25,0.25,0.5);
+
+	// if (on) {
+	//     glColor3f(0.8,0.4,1.0); // Light purple.
+	// } else {
+	//     glColor3f(0.4,0.2,0.5); // Dark purple.
+	// }
+	// glBeginEnd("Sphere");
+
+	// glPopMatrix(); // Restore the coordinate frame.
+	// on = !on;
+    // }
 }
 
 function drawObject() {
@@ -453,7 +488,7 @@ function drawObject() {
 	    glBeginEnd("Band");
     }
     if (showWhich == 7) {
-        makeLasagne();
+        glBeginEnd("Lasagne");
     }
     if (showWhich == 8) {
         glBeginEnd("quarterSphere");
