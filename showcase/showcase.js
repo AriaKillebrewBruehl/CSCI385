@@ -387,7 +387,7 @@ function makeQuarterSphere() {
     glBegin(GL_TRIANGLES, "quarterSphere", true);
 
     for (let i = 0; i < numFacets / 2; i += 1) {
-        for (let j = 0; j < numFacets; j += 1) {
+        for (let j = 0; j < numFacets / 2; j += 1) {
             const aMid = dAngle * j;
             const xMid0 = Math.cos(aMid) * getY(i, numFacets);
             const yMid0 = Math.sin(aMid) * getY(i, numFacets);
