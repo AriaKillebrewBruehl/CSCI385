@@ -375,52 +375,52 @@ function makeTetra() {
 }
 
 function makeQuarterSphere() {
-//     /*
-//      * This describes the facets of a sphere
-//      * object.
-//      */
+    /*
+     * This describes the facets of a sphere
+     * object.
+     */
 
-//     let width = 1.0;
-//     numFacets = smoothness;
-//     const dAngle = 2.0 * Math.PI / numFacets;
+    let width = 1.0;
+    numFacets = smoothness;
+    const dAngle = 2.0 * Math.PI / numFacets;
 
-//     glBegin(GL_TRIANGLES, "quarterSphere", true);
+    glBegin(GL_TRIANGLES, "quarterSphere", true);
 
-//     for (let i = 0; i < numFacets / 2; i += 1) {
-//         for (let j = 0; j < numFacets; j += 1) {
-//             const aMid = dAngle * j;
-//             const xMid0 = Math.cos(aMid) * getY(i, numFacets);
-//             const yMid0 = Math.sin(aMid) * getY(i, numFacets);
-//             const xMid1 = Math.cos(aMid + dAngle) * getY(i, numFacets);
-//             const yMid1 = Math.sin(aMid + dAngle) * getY(i, numFacets);
-//             const xMid2 = Math.cos(aMid) * getY(i + 1, numFacets);
-//             const yMid2 = Math.sin(aMid) * getY(i + 1, numFacets);
-//             const xMid3 = Math.cos(aMid + dAngle) * getY(i + 1, numFacets);
-//             const yMid3 = Math.sin(aMid + dAngle) * getY(i + 1, numFacets);
+    for (let i = 0; i < numFacets / 2; i += 1) {
+        for (let j = 0; j < numFacets; j += 1) {
+            const aMid = dAngle * j;
+            const xMid0 = Math.cos(aMid) * getY(i, numFacets);
+            const yMid0 = Math.sin(aMid) * getY(i, numFacets);
+            const xMid1 = Math.cos(aMid + dAngle) * getY(i, numFacets);
+            const yMid1 = Math.sin(aMid + dAngle) * getY(i, numFacets);
+            const xMid2 = Math.cos(aMid) * getY(i + 1, numFacets);
+            const yMid2 = Math.sin(aMid) * getY(i + 1, numFacets);
+            const xMid3 = Math.cos(aMid + dAngle) * getY(i + 1, numFacets);
+            const yMid3 = Math.sin(aMid + dAngle) * getY(i + 1, numFacets);
 
-//         // red
-//         glColor3f(1.0, 0.00, 0.00);
-//             glVertex3f(xMid0, yMid0 ,  width / numFacets + (1/numFacets) * 2*i);
-//             glVertex3f(xMid0, yMid0 , -width / numFacets + (1/numFacets) * 2*i);
-//             glVertex3f(xMid1, yMid1 , -width / numFacets + (1/numFacets) * 2*i);
-//         // blue
-//         glColor3f(0.00, 0.00, 1.00);
-//             glVertex3f(xMid0, yMid0 ,  width / numFacets + (1/numFacets) * 2*i);
-//             glVertex3f(xMid1, yMid1 , -width / numFacets + (1/numFacets) * 2*i);
-//             glVertex3f(xMid1, yMid1 ,  width / numFacets + (1/numFacets) * 2*i);
-//         // green diag
-//         glColor3f(0.00, 1.00, 0.00);
-//             glVertex3f(xMid0, yMid0 ,  width / numFacets + (1/numFacets) * 2*i);
-//             glVertex3f(xMid1, yMid1 , width / numFacets + (1/numFacets) * 2*i);
-//             glVertex3f(xMid2, yMid2, - width / numFacets + (1/numFacets) * 2*(i+1));
-//         // black diag
-//         glColor3f(0.00, 0.00, 0.00);
-//             glVertex3f(xMid2, yMid2 , -width / numFacets + (1/numFacets) * 2*(i+1));
-//             glVertex3f(xMid3, yMid3 , -width / numFacets + (1/numFacets) * 2*(i+1));
-//             glVertex3f(xMid1, yMid1 ,  width / numFacets + (1/numFacets) * 2*i);
-//         }
-//     }
-//     glEnd();
+        // red
+        glColor3f(1.0, 0.00, 0.00);
+            glVertex3f(xMid0, yMid0 ,  width / numFacets + (1/numFacets) * 2*i);
+            glVertex3f(xMid0, yMid0 , -width / numFacets + (1/numFacets) * 2*i);
+            glVertex3f(xMid1, yMid1 , -width / numFacets + (1/numFacets) * 2*i);
+        // blue
+        glColor3f(0.00, 0.00, 1.00);
+            glVertex3f(xMid0, yMid0 ,  width / numFacets + (1/numFacets) * 2*i);
+            glVertex3f(xMid1, yMid1 , -width / numFacets + (1/numFacets) * 2*i);
+            glVertex3f(xMid1, yMid1 ,  width / numFacets + (1/numFacets) * 2*i);
+        // green diag
+        glColor3f(0.00, 1.00, 0.00);
+            glVertex3f(xMid0, yMid0 ,  width / numFacets + (1/numFacets) * 2*i);
+            glVertex3f(xMid1, yMid1 , width / numFacets + (1/numFacets) * 2*i);
+            glVertex3f(xMid2, yMid2, - width / numFacets + (1/numFacets) * 2*(i+1));
+        // black diag
+        glColor3f(0.00, 0.00, 0.00);
+            glVertex3f(xMid2, yMid2 , -width / numFacets + (1/numFacets) * 2*(i+1));
+            glVertex3f(xMid3, yMid3 , -width / numFacets + (1/numFacets) * 2*(i+1));
+            glVertex3f(xMid1, yMid1 ,  width / numFacets + (1/numFacets) * 2*i);
+        }
+    }
+    glEnd();
 }
 function makeLasagne() {
 
@@ -454,6 +454,9 @@ function drawObject() {
     }
     if (showWhich == 7) {
         makeLasagne();
+    }
+    if (showWhich == 8) {
+        glBeginEnd("quarterSphere");
     }
 
 }
@@ -516,8 +519,11 @@ function handleKey(key, x, y) {
     if (key == '6') {
         showWhich = 6;
     }
-    if (key == 'L') {
+    if (key == 'l') {
         showWhich = 7;
+    }
+    if (key == 'q') {
+        showWhich = 8;
     }
     if (key == '+') {
         smoothness += 2;
