@@ -296,6 +296,46 @@ function makeTaurus() {
 
 }
 
+
+// function makeBand() {
+//     const numFacets = 24;
+//     glBegin(GL_TRIANGLE_STRIP, "Band", true);
+//     for (let i = 0; i <= numFacets; i += 1) {
+//         const a = 2.0 * Math.PI * i / numFacets;
+//         let x = Math.cos(a);
+//         let y = Math.sin(a);
+// 	if (i % 2 == 0) {
+// 	    glColor3f(1.0,1.0,1.0);
+// 	} else {
+// 	    glColor3f(1.0,1.0,1.0);
+// 	}
+//         glVertex3f( 2 * x,  2 * y, 0.5);
+//         glVertex3f( x,  y,-0.5);
+//     }
+//     glEnd();
+// }
+
+function makeBand() {
+    const numFacets = 24;
+    glBegin(GL_TRIANGLE_STRIP, "Band", true);
+    for (let i = 0; i <= numFacets; i += 1) {
+        const a = 2.0 * Math.PI * i / numFacets;
+        let x = Math.cos(a);
+        let y = Math.sin(a);
+        let dx = (1 / numFacets) * 1;
+        let slope = 2.0 * Math.PI / 8;
+	if (i % 2 == 0) {
+	    glColor3f(1.0,1.0,1.0);
+	} else {
+	    glColor3f(0.0,0.0,0.0);
+	}
+        glVertex3f( x + dx,  y, 0);
+        glVertex3f( x + dx,  y, (1 + dx) * Math.sin(slope));
+
+    }
+    glEnd();
+}
+
 function makeTetra() {
 
     // This describes the facets of a tetrahedron whose
@@ -355,6 +395,10 @@ function drawObject() {
     if (showWhich == 5) {
         glBeginEnd("Taurus");
     }
+    if (showWhich == 6) {
+        glColor3f(0.4,0.2,0.5);
+	    glBeginEnd("Band");
+    }
 
 }
 
@@ -412,6 +456,9 @@ function handleKey(key, x, y) {
     }
     if(key == '5') {
         showWhich = 5;
+    }
+    if (key == '6') {
+        showWhich = 6;
     }
     if (key == '+') {
         smoothness += 2;
@@ -509,6 +556,7 @@ function makeSmoother() {
     makeCylinder();
     makeSphere();
     makeTaurus();
+    makeBand();
 }
 
 function main() {
@@ -529,6 +577,7 @@ function main() {
     makeCylinder();
     makeSphere();
     makeTaurus();
+    makeBand();
 
     // Register interaction callbacks.
     glutKeyboardFunc(handleKey);
