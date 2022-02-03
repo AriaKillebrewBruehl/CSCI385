@@ -43,6 +43,8 @@ let mouseDrag   = false;
 let showWhich = 1;
 //
 let smoothness = 24;
+//
+let scalar = 5;
 
 function makeCube() {
     /*
@@ -374,7 +376,7 @@ function makeTetra() {
     glEnd();
 }
 
-function makeQuarterSphere(scalar) {
+function makeQuarterSphere() {
     /*
      * This describes the facets of a sphere
      * object.
@@ -397,6 +399,10 @@ function makeQuarterSphere(scalar) {
             const yMid2 = Math.sin(aMid) * getY(i + 1, numFacets);
             const xMid3 = Math.cos(aMid + dAngle) * getY(i + 1, numFacets);
             const yMid3 = Math.sin(aMid + dAngle) * getY(i + 1, numFacets);
+
+            if ( i == 0) {
+                console.log(xMid0 / scalar);
+            }
 
         // red
         glColor3f(1.0, 0.00, 0.00);
@@ -430,16 +436,31 @@ function makeQuarterSphere(scalar) {
 
         glColor3f(0.00, 0.00, 0.00);
             glVertex3f(xMid0 / scalar, 0, zMid0 / scalar);
-            glVertex3f(xMid0 / scalar, 0,  numFacets / 2 * width );
+            glVertex3f(xMid0 / scalar, 0,  numFacets / 2 * width / scalar);
             glVertex3f(xMid1/ scalar, 0, zMid1 / scalar);
 
         glColor3f(1.00, 1.00, 1.00);
-            glVertex3f(xMid0 / scalar, 0, numFacets/2 * width );
+            glVertex3f(xMid0 / scalar, 0, numFacets/2 * width / scalar);
             glVertex3f(xMid1/ scalar, 0, zMid1 / scalar);
-            glVertex3f(xMid1/ scalar, 0, numFacets/2 * width );
+            glVertex3f(xMid1/ scalar, 0, numFacets/2 * width / scalar);
 
     }
     glEnd();
+}
+
+function travelingQuarterSphere(scalar, num) {
+    let radius = 1/scalar;
+    let dy = 0;
+    let dz = 0;
+    for (let i = 0; i < num; i += 1) {
+        let dx = radius * i;
+        glPushMatrix();
+        glTranslate3f(dx,dy,dz);
+        glBeginEnd("quarterSphere");
+        glPopMatrix();
+
+    }
+
 }
 function makeLasagne() {
 
@@ -742,7 +763,7 @@ function makeSmoother() {
     makeTaurus();
     makeBand();
     makeLasagne();
-    makeQuarterSphere(1);
+    makeQuarterSphere();
 }
 
 function main() {
@@ -765,7 +786,7 @@ function main() {
     makeTaurus();
     makeBand();
     makeLasagne();
-    makeQuarterSphere(1);
+    makeQuarterSphere();
 
     // Register interaction callbacks.
     glutKeyboardFunc(handleKey);
