@@ -44,7 +44,7 @@ let showWhich = 1;
 //
 let smoothness = 24;
 //
-let scalar = 5;
+let scalar = 10;
 
 function makeCube() {
     /*
@@ -261,12 +261,12 @@ function makeSphere(){
     }
     glEnd();
 }
-
+/*
 function makeTaurus() {
-    /*
-     * This describes the facets of a taurus
-     * object.
-     */
+    //
+     // This describes the facets of a taurus
+     // object.
+     //
 
     let width = 1.0;
     numFacets = smoothness;
@@ -297,47 +297,7 @@ function makeTaurus() {
     glEnd();
 
 }
-
-
-// function makeBand() {
-//     const numFacets = 24;
-//     glBegin(GL_TRIANGLE_STRIP, "Band", true);
-//     for (let i = 0; i <= numFacets; i += 1) {
-//         const a = 2.0 * Math.PI * i / numFacets;
-//         let x = Math.cos(a);
-//         let y = Math.sin(a);
-// 	if (i % 2 == 0) {
-// 	    glColor3f(1.0,1.0,1.0);
-// 	} else {
-// 	    glColor3f(1.0,1.0,1.0);
-// 	}
-//         glVertex3f( 2 * x,  2 * y, 0.5);
-//         glVertex3f( x,  y,-0.5);
-//     }
-//     glEnd();
-// }
-
-function makeBand() {
-    const numFacets = 24;
-    glBegin(GL_TRIANGLE_STRIP, "Band", true);
-    for (let i = 0; i <= numFacets; i += 1) {
-        const a = 2.0 * Math.PI * i / numFacets;
-        let x = Math.cos(a);
-        let y = Math.sin(a);
-        let dx = (1 / numFacets) * 1;
-        let slope = 2.0 * Math.PI / 8;
-	if (i % 2 == 0) {
-	    glColor3f(1.0,1.0,1.0);
-	} else {
-	    glColor3f(0.0,0.0,0.0);
-	}
-        glVertex3f( x + dx,  y, 0);
-        glVertex3f( x + dx,  y, (1 + dx) * Math.sin(slope));
-
-    }
-    glEnd();
-}
-
+*/
 function makeTetra() {
 
     // This describes the facets of a tetrahedron whose
@@ -376,11 +336,12 @@ function makeTetra() {
     glEnd();
 }
 
+
 function makeQuarterSphere() {
-    /*
-     * This describes the facets of a sphere
-     * object.
-     */
+    //
+     //This describes the facets of a sphere
+     // object.
+     //
 
     let width = 0.10;
     numFacets = smoothness;
@@ -399,10 +360,6 @@ function makeQuarterSphere() {
             const yMid2 = Math.sin(aMid) * getY(i + 1, numFacets);
             const xMid3 = Math.cos(aMid + dAngle) * getY(i + 1, numFacets);
             const yMid3 = Math.sin(aMid + dAngle) * getY(i + 1, numFacets);
-
-            if ( i == 0) {
-                console.log(xMid0 / scalar);
-            }
 
         // red
         glColor3f(1.0, 0.00, 0.00);
@@ -426,6 +383,7 @@ function makeQuarterSphere() {
             glVertex3f(xMid1 / scalar, yMid1 / scalar,  width / numFacets + (1/numFacets) * 2*i / scalar);
         }
     }
+    // edge
     for (let i = 0; i < numFacets / 2; i += 1) {
         const aMid = dAngle * i;
         const aMid1 = dAngle * (i + 1);
@@ -448,20 +406,37 @@ function makeQuarterSphere() {
     glEnd();
 }
 
-function travelingQuarterSphere(scalar, num) {
+
+function travelingQuarterSphere(num) {
     let radius = 1/scalar;
     let dy = 0;
     let dz = 0;
     for (let i = 0; i < num; i += 1) {
-        let dx = radius * i;
-        glPushMatrix();
-        glTranslate3f(dx,dy,dz);
-        glBeginEnd("quarterSphere");
-        glPopMatrix();
+        let dx = 2 * radius * (i);
+        if (i % 2 == 0) {
+            glPushMatrix();
+            glTranslatef(dx,0.0,0.0);
+            glBeginEnd("quarterSphere");
+            glPopMatrix();
+            glPushMatrix();
+            glTranslatef(-dx,0.0,0.0);
+            glBeginEnd("quarterSphere");
+            glPopMatrix();
+        }
+        // else {
+        //     glPushMatrix();
+        //     glRotatef(180,1,0,1);
+        //     glTranslatef(dx,0.0,0.0);
+
+        //     glBeginEnd("quarterSphere");
+        //     glPopMatrix();
+        // }
+
 
     }
-
 }
+
+/*
 function makeLasagne() {
 
     let width = 0.10;
@@ -493,7 +468,6 @@ function makeLasagne() {
             glVertex3f( (lasLen / 2), -0.01 ,  (lasLen / 4));
             glVertex3f( (lasLen / 2), -0.01 , -(lasLen / 4));
             glVertex3f(-(lasLen / 2), -0.01 ,  (lasLen / 4));
-
 
 
             for (let i = 0; i < numFacets / 2; i += 1) {
@@ -566,7 +540,7 @@ function makeLasagne() {
 	// on = !on;
     // }
 }
-
+*/
 function drawObject() {
 
     /*
@@ -585,18 +559,15 @@ function drawObject() {
     if (showWhich == 4) {
     glBeginEnd("Sphere");
     }
-    if (showWhich == 5) {
-        glBeginEnd("Taurus");
-    }
-    if (showWhich == 6) {
-        glColor3f(0.4,0.2,0.5);
-	    glBeginEnd("Band");
-    }
-    if (showWhich == 7) {
-        glBeginEnd("Lasagne");
-    }
+    // if (showWhich == 5) {
+    //     glBeginEnd("Taurus");
+    // }
+    // if (showWhich == 7) {
+    //     glBeginEnd("Lasagne");
+    // }
     if (showWhich == 8) {
-        glBeginEnd("quarterSphere");
+        //glBeginEnd("quarterSphere");
+        travelingQuarterSphere(10);
     }
 
 }
@@ -760,9 +731,8 @@ function resizeWindow(w, h) {
 function makeSmoother() {
     makeCylinder();
     makeSphere();
-    makeTaurus();
-    makeBand();
-    makeLasagne();
+    // makeTaurus();
+    // makeLasagne();
     makeQuarterSphere();
 }
 
@@ -783,9 +753,8 @@ function main() {
     makeCube();
     makeCylinder();
     makeSphere();
-    makeTaurus();
-    makeBand();
-    makeLasagne();
+    // makeTaurus();
+    // makeLasagne();
     makeQuarterSphere();
 
     // Register interaction callbacks.
