@@ -274,21 +274,21 @@ function makeTorus() {
 
     glBegin(GL_TRIANGLES, "Torus", true);
 
-    // Produce the top.
+    // Produce flat disk
     for (let i = 0; i < numFacets; i += 1) {
         const aTop = dAngle * i;
-        const xTop0 = Math.cos(aTop);
-        const zTop0 = Math.sin(aTop);
-        const xTop1 = Math.cos(aTop + dAngle);
-        const zTop1 = Math.sin(aTop + dAngle);
+        const cx0 = Math.cos(aTop);
+        const cz0 = Math.sin(aTop);
+        const cx1 = Math.cos(aTop + dAngle);
+        const cz1 = Math.sin(aTop + dAngle);
 	if (i % 2 == 0) {
 	    glColor3f(0.25, 0.50, 0.75);
 	} else {
 	    glColor3f(0.50, 0.75, 0.80);
 	}
 	    glVertex3f(  0.0, 0.0, 0.0  );
-        glVertex3f(xTop0, 0,0, zTop0);
-        glVertex3f(xTop1, 0.0, zTop1);
+        glVertex3f(cx0, 0.0, cz0);
+        glVertex3f(cx1, 0.0, cz1);
     }
 
     // // Produce the sides.
