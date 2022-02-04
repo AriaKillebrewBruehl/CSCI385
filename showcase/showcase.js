@@ -297,17 +297,17 @@ function makeTorus() {
             const aSide = dAngle * j;
             const px0 = r * Math.cos(aSide);
             const py0 = r * Math.sin(aSide);
-            const px1 = r * Math.cos(aSide + 1);
-            const py1 = r * Math.sin(aSide + 1);
-            if (i % 2 == 0) {
+            const px1 = r * Math.cos(aSide + r);
+            const py1 = r * Math.sin(aSide + r);
+            if (j % 2 == 0) {
                 glColor3f(0.00, 0.00, 0.00);
             } else {
                 glColor3f(1.00, 1.0, 1.00);
             }
                 // create wedge
                 glVertex3f(  0.0,   0.0, width);
-                glVertex3f(px0, py0, width);
-                glVertex3f(px1, py1, width);
+                glVertex3f(0.0, px0, width + py0);
+                glVertex3f(0.0, px1, width + py1);
         }
 
     }
