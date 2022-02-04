@@ -261,10 +261,10 @@ function makeSphere(){
     }
     glEnd();
 }
-/*
-function makeTaurus() {
+
+function makeTorus() {
     //
-     // This describes the facets of a taurus
+     // This describes the facets of a torus
      // object.
      //
 
@@ -272,32 +272,49 @@ function makeTaurus() {
     numFacets = smoothness;
     const dAngle = 2.0 * Math.PI / numFacets;
 
-    glBegin(GL_TRIANGLES, "Taurus", true);
+    glBegin(GL_TRIANGLES, "Torus", true);
 
-    // Produce the sides.
+    // Produce the top.
     for (let i = 0; i < numFacets; i += 1) {
-        const aMid = dAngle * i;
-        const xMid0 = Math.cos(aMid) * 0.25;
-        const yMid0 = Math.sin(aMid) * 0.25;
-        const xMid1 = Math.cos(aMid + dAngle) * 0.25;
-        const yMid1 = Math.sin(aMid + dAngle) * 0.25;
-
-	glColor3f(0.80, 0.50, 0.75);
-        glVertex3f(xMid0, yMid0,  width / 2.0 );
-        glVertex3f(xMid0, yMid0, -width / 2.0);
-        glVertex3f(xMid1, yMid1, -width / 2.0);
-
-	glColor3f(0.90, 0.75, 0.80);
-        glVertex3f(xMid0, yMid0,  width / 2.0);
-        glVertex3f(xMid1, yMid1, -width / 2.0);
-        glVertex3f(xMid1, yMid1,  width / 2.0);
-
+        const aTop = dAngle * i;
+        const xTop0 = Math.cos(aTop);
+        const zTop0 = Math.sin(aTop);
+        const xTop1 = Math.cos(aTop + dAngle);
+        const zTop1 = Math.sin(aTop + dAngle);
+	if (i % 2 == 0) {
+	    glColor3f(0.25, 0.50, 0.75);
+	} else {
+	    glColor3f(0.50, 0.75, 0.80);
+	}
+	    glVertex3f(  0.0, 0.0, 0.0  );
+        glVertex3f(xTop0, 0,0, zTop0);
+        glVertex3f(xTop1, 0.0, zTop1);
     }
+
+    // // Produce the sides.
+    // for (let i = 0; i < numFacets; i += 1) {
+    //     const aMid = dAngle * i;
+    //     const xMid0 = Math.cos(aMid) * 0.25;
+    //     const yMid0 = Math.sin(aMid) * 0.25;
+    //     const xMid1 = Math.cos(aMid + dAngle) * 0.25;
+    //     const yMid1 = Math.sin(aMid + dAngle) * 0.25;
+
+	// glColor3f(0.80, 0.50, 0.75);
+    //     glVertex3f(xMid0, yMid0,  width / 2.0 );
+    //     glVertex3f(xMid0, yMid0, -width / 2.0);
+    //     glVertex3f(xMid1, yMid1, -width / 2.0);
+
+	// glColor3f(0.90, 0.75, 0.80);
+    //     glVertex3f(xMid0, yMid0,  width / 2.0);
+    //     glVertex3f(xMid1, yMid1, -width / 2.0);
+    //     glVertex3f(xMid1, yMid1,  width / 2.0);
+
+    // }
 
     glEnd();
 
 }
-*/
+
 function makeTetra() {
 
     // This describes the facets of a tetrahedron whose
@@ -559,9 +576,9 @@ function drawObject() {
     if (showWhich == 4) {
     glBeginEnd("Sphere");
     }
-    // if (showWhich == 5) {
-    //     glBeginEnd("Taurus");
-    // }
+    if (showWhich == 5) {
+        glBeginEnd("Torus");
+    }
     // if (showWhich == 7) {
     //     glBeginEnd("Lasagne");
     // }
@@ -731,7 +748,7 @@ function resizeWindow(w, h) {
 function makeSmoother() {
     makeCylinder();
     makeSphere();
-    // makeTaurus();
+    makeTorus();
     // makeLasagne();
     makeQuarterSphere();
 }
@@ -753,7 +770,7 @@ function main() {
     makeCube();
     makeCylinder();
     makeSphere();
-    // makeTaurus();
+    makeTorus();
     // makeLasagne();
     makeQuarterSphere();
 
