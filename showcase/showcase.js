@@ -276,19 +276,40 @@ function makeTorus() {
 
     // Produce flat disk
     for (let i = 0; i < numFacets; i += 1) {
-        const aTop = dAngle * i;
-        const cx0 = Math.cos(aTop);
-        const cz0 = Math.sin(aTop);
-        const cx1 = Math.cos(aTop + dAngle);
-        const cz1 = Math.sin(aTop + dAngle);
+        const aCenter = dAngle * i;
+        const cx0 = Math.cos(aCenter);
+        const cz0 = Math.sin(aCenter);
+        const cx1 = Math.cos(aCenter + dAngle);
+        const cz1 = Math.sin(aCenter + dAngle);
 	if (i % 2 == 0) {
 	    glColor3f(0.25, 0.50, 0.75);
 	} else {
 	    glColor3f(0.50, 0.75, 0.80);
 	}
+        // create wedge
 	    glVertex3f(  0.0, 0.0, 0.0  );
         glVertex3f(cx0, 0.0, cz0);
         glVertex3f(cx1, 0.0, cz1);
+
+        // create disk centered at wedge
+        for (let j = 0; j < numFacets; j+= 1) {
+            const r = 0.25;
+            const aSide = dAngle * j;
+            const px0 = r * Math.cos(aSide);
+            const py0 = r * Math.sin(aSide);
+            const px1 = r * Math.cos(aSide + 1);
+            const py1 = r * Math.sin(aSide + 1);
+            if (i % 2 == 0) {
+                glColor3f(0.00, 0.00, 0.00);
+            } else {
+                glColor3f(1.00, 1.0, 1.00);
+            }
+                // create wedge
+                glVertex3f(  0.0,   0.0, width);
+                glVertex3f(px0, py0, width);
+                glVertex3f(px1, py1, width);
+        }
+
     }
 
     // // Produce the sides.
