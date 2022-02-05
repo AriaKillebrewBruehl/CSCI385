@@ -371,7 +371,7 @@ function makeTetra() {
 }
 
 
-function makeQuarterSphere() {
+function makeQuarterSphere(x, y, z) {
     //
      //This describes the facets of a sphere
      // object.
@@ -402,30 +402,21 @@ function makeQuarterSphere() {
                 const yMid2 = Math.sin(aMid) * getY(i + 1, numFacets);
                 const xMid3 = Math.cos(aMid + dAngle) * getY(i + 1, numFacets);
                 const yMid3 = Math.sin(aMid + dAngle) * getY(i + 1, numFacets);
-                let px0 = xMid0 / scalar + dx;
-                let py0 = yMid0 / scalar;
-                let pz0 = radius / numFacets + (1/numFacets) * 2*i / scalar;
-                let px1 = xMid1 / scalar + dx;
-                let py1 = yMid1 / scalar;
-                let pz1 = -radius / numFacets + (1/numFacets) * 2*i / scalar;
-                let px2 = xMid2 / scalar + dx;
-                let py2 = yMid2 / scalar;
-                let px3 = xMid3 / scalar + dx;
-                let py3 = yMid3 / scalar;
-                let pz3 = -radius / numFacets + (1/numFacets) * 2*(i+1) / scalar;
+                let px0 = xMid0 / scalar + dx + x;
+                let py0 = yMid0 / scalar + y;
+                let pz0 = radius / numFacets + (1/numFacets) * 2*i / scalar + z;
+                let px1 = xMid1 / scalar + dx + x;
+                let py1 = yMid1 / scalar + y;
+                let pz1 = -radius / numFacets + (1/numFacets) * 2*i / scalar + z;
+                let px2 = xMid2 / scalar + dx + x;
+                let py2 = yMid2 / scalar + y;
+                let px3 = xMid3 / scalar + dx + x;
+                let py3 = yMid3 / scalar + y;
+                let pz3 = -radius / numFacets + (1/numFacets) * 2*(i+1) / scalar + z;
 
                 if (k % 2 == 0) {
-                    px0 *= -1;
-                    px1 *= -1;
-                    px2 *= -1;
-                    px3 *= -1;
-                    py0 *= -1;
-                    py1 *= -1;
-                    py2 *= -1;
-                    py3 *= -1;
-                    // pz0 *= -1;
-                    // pz1 *= -1;
-                    // pz3 *= -1;
+                    px0 *= -1;  px1 *= -1;  px2 *= -1;  px3 *= -1;
+                    py0 *= -1;  py1 *= -1;  py2 *= -1;  py3 *= -1;
                 }
 
             // red
@@ -456,27 +447,26 @@ function makeQuarterSphere() {
             const xMid1 = Math.cos(aMid1) * getY(0, numFacets);
             const zMid1 = Math.sin(aMid1) * getY(0, numFacets);
 
-            let pz = numFacets / 2 * radius / scalar;
-            let px0 = xMid0 / scalar + dx;
-            let pz0 = zMid0 / scalar;
-            let px1 = xMid1 / scalar + dx;
-            let pz1 = zMid1 / scalar;
+            let pz = numFacets / 2 * radius / scalar + z;
+            let px0 = xMid0 / scalar + dx + x;
+            let pz0 = zMid0 / scalar + y + z;
+            let px1 = xMid1 / scalar + dx + x;
+            let pz1 = zMid1 / scalar + y + z;
 
 
             if (k % 2 == 0) {
-                px0 *= -1;
-                px1 *= -1;
+                px0 *= -1;  px1 *= -1;
             }
 
             glColor3f(0.00, 0.00, 0.00);
-                glVertex3f(px0, 0, pz0);
-                glVertex3f(px0, 0, pz);
-                glVertex3f(px1, 0, pz1);
+                glVertex3f(px0, y, pz0);
+                glVertex3f(px0, y, pz);
+                glVertex3f(px1, y, pz1);
 
             glColor3f(1.00, 1.00, 1.00);
-                glVertex3f(px0, 0, pz);
-                glVertex3f(px1, 0, pz1);
-                glVertex3f(px1, 0, pz);
+                glVertex3f(px0, y, pz);
+                glVertex3f(px1, y, pz1);
+                glVertex3f(px1, y, pz);
         }
 
     }
@@ -812,7 +802,7 @@ function makeSmoother() {
     makeSphere();
     makeTorus();
     // makeLasagne();
-    makeQuarterSphere();
+    makeQuarterSphere(0, 0, 2);
 }
 
 function main() {
@@ -834,7 +824,7 @@ function main() {
     makeSphere();
     makeTorus();
     // makeLasagne();
-    makeQuarterSphere();
+    makeQuarterSphere(0, 0, 2);
 
     // Register interaction callbacks.
     glutKeyboardFunc(handleKey);
