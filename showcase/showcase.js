@@ -470,146 +470,93 @@ function makeQuarterSphere(x, y, z) {
         }
 
     }
-    //}
     }
     glEnd();
 }
 
 
-function travelingQuarterSphere(num) {
-    let radius = 1/scalar;
-    let dy = 0;
-    let dz = 0;
-    for (let i = 0; i < num; i += 1) {
-        let dx = 2 * radius * (i);
-        if (i % 2 == 0) {
-            glPushMatrix();
-            glTranslatef(dx,0.0,0.0);
-            glBeginEnd("quarterSphere");
-            glPopMatrix();
-            glPushMatrix();
-            glTranslatef(-dx,0.0,0.0);
-            glBeginEnd("quarterSphere");
-            glPopMatrix();
-        }
-        // else {
-        //     glPushMatrix();
-        //     glRotatef(180,1,0,1);
-        //     glTranslatef(dx,0.0,0.0);
-
-        //     glBeginEnd("quarterSphere");
-        //     glPopMatrix();
-        // }
-
-
-    }
-}
-
-/*
 function makeLasagne() {
 
-    let width = 0.10;
     numFacets = smoothness;
-    const dAngle = 2.0 * Math.PI / numFacets;
-    let scalar = 20;
-    const lasLen = 2.0;
-    const dx = lasLen
+    const len = 2.0;
+    const width = (len / 4);
+    const height = 0.1;
+    const dx = len
 
 
     glBegin(GL_TRIANGLES, "Lasagne", true);
 
+        // top
         glColor3f(0.00, 0.00, 0.00);
-            glVertex3f(-(lasLen / 2), 0.01 ,  (lasLen / 4));
-            glVertex3f(-(lasLen / 2), 0.01 , -(lasLen / 4));
-            glVertex3f( (lasLen / 2), 0.01 , -(lasLen / 4));
+            glVertex3f(-(len / 2), height ,  width);
+            glVertex3f(-(len / 2), height , -width);
+            glVertex3f( (len / 2), height , -width);
 
         glColor3f(1.00, 1.00, 1.00);
-            glVertex3f( (lasLen / 2), 0.01 ,  (lasLen / 4));
-            glVertex3f( (lasLen / 2), 0.01 , -(lasLen / 4));
-            glVertex3f(-(lasLen / 2), 0.01 ,  (lasLen / 4));
+            glVertex3f( (len / 2), height ,  width);
+            glVertex3f( (len / 2), height , -width);
+            glVertex3f(-(len / 2), height ,  width);
 
+        // bottom
         glColor3f(0.00, 0.00, 0.00);
-            glVertex3f(-(lasLen / 2), -0.01 ,  (lasLen / 4));
-            glVertex3f(-(lasLen / 2), -0.01 , -(lasLen / 4));
-            glVertex3f( (lasLen / 2), -0.01 , -(lasLen / 4));
+            glVertex3f(-(len / 2), -height ,  width);
+            glVertex3f(-(len / 2), -height , -width);
+            glVertex3f( (len / 2), -height , -width);
 
         glColor3f(1.00, 1.00, 1.00);
-            glVertex3f( (lasLen / 2), -0.01 ,  (lasLen / 4));
-            glVertex3f( (lasLen / 2), -0.01 , -(lasLen / 4));
-            glVertex3f(-(lasLen / 2), -0.01 ,  (lasLen / 4));
+            glVertex3f( (len / 2), -height ,  width);
+            glVertex3f( (len / 2), -height , -width);
+            glVertex3f(-(len / 2), -height ,  width);
 
+        // front
+        glColor3f(0.00, 0.00, 0.00);
+            glVertex3f(-(len / 2),  height , width);
+            glVertex3f(-(len / 2), -height , width);
+            glVertex3f( (len / 2), -height , width);
 
-            for (let i = 0; i < numFacets / 2; i += 1) {
-                for (let j = 0; j < numFacets / 2; j += 1) {
-                    const aMid = dAngle * j;
-                    const xMid0 = Math.cos(aMid) * getY(i, numFacets);
-                    const yMid0 = Math.sin(aMid) * getY(i, numFacets);
-                    const xMid1 = Math.cos(aMid + dAngle) * getY(i, numFacets);
-                    const yMid1 = Math.sin(aMid + dAngle) * getY(i, numFacets);
-                    const xMid2 = Math.cos(aMid) * getY(i + 1, numFacets);
-                    const yMid2 = Math.sin(aMid) * getY(i + 1, numFacets);
-                    const xMid3 = Math.cos(aMid + dAngle) * getY(i + 1, numFacets);
-                    const yMid3 = Math.sin(aMid + dAngle) * getY(i + 1, numFacets);
+        glColor3f(1.00, 1.00, 1.00);
+            glVertex3f( (len / 2),  height ,  width);
+            glVertex3f( (len / 2), -height ,  width);
+            glVertex3f(-(len / 2),  height ,  width);
 
-                // red
-                glColor3f(1.0, 0.00, 0.00);
-                    glVertex3f(xMid0 / scalar, yMid0 / scalar,
-                        width / numFacets + (1/numFacets) * 2*i / scalar - (0.5 + width/2));
-                    glVertex3f(xMid0 / scalar, yMid0 / scalar,
-                        -width / numFacets + (1/numFacets) * 2*i / scalar - (0.5 + width/2));
-                    glVertex3f(xMid1 / scalar, yMid1 / scalar,
-                        -width / numFacets + (1/numFacets) * 2*i / scalar - (0.5 + width/2));
-                // blue
-                glColor3f(0.00, 0.00, 1.00);
-                    glVertex3f(xMid0 / scalar, yMid0 / scalar,
-                        width / numFacets + (1/numFacets) * 2*i / scalar - (0.5 + width/2));
-                    glVertex3f(xMid1 / scalar, yMid1 / scalar,
-                         -width / numFacets + (1/numFacets) * 2*i / scalar - (0.5 + width/2));
-                    glVertex3f(xMid1 / scalar, yMid1 / scalar,
-                        width / numFacets + (1/numFacets) * 2*i / scalar - (0.5 + width/2));
-                // green diag
-                glColor3f(0.00, 1.00, 0.00);
-                    glVertex3f(xMid0 / scalar, yMid0 / scalar,
-                        width / numFacets + (1/numFacets) * 2*i / scalar - (0.5 + width/2));
-                    glVertex3f(xMid1 / scalar, yMid1 / scalar,
-                        width / numFacets + (1/numFacets) * 2*i / scalar - (0.5 + width/2));
-                    glVertex3f(xMid2 / scalar, yMid2 / scalar,
-                        - width / numFacets + (1/numFacets) * 2*(i+1) / scalar - (0.5 + width/2));
-                // black diag
-                glColor3f(0.00, 0.00, 0.00);
-                    glVertex3f(xMid2 / scalar, yMid2 / scalar,
-                        -width / numFacets + (1/numFacets) * 2*(i+1) / scalar - (0.5 + width/2));
-                    glVertex3f(xMid3 / scalar, yMid3 / scalar,
-                        -width / numFacets + (1/numFacets) * 2*(i+1) / scalar - (0.5 + width/2));
-                    glVertex3f(xMid1 / scalar, yMid1 / scalar,
-                        width / numFacets + (1/numFacets) * 2*i / scalar - (0.5 + width/2));
-                }
-            }
+        // back
+        glColor3f(0.00, 0.00, 0.00);
+            glVertex3f(-(len / 2),  height , -width);
+            glVertex3f(-(len / 2), -height , -width);
+            glVertex3f( (len / 2), -height , -width);
+
+        glColor3f(1.00, 1.00, 1.00);
+            glVertex3f( (len / 2),  height ,  -width);
+            glVertex3f( (len / 2), -height ,  -width);
+            glVertex3f(-(len / 2),  height ,  -width);
+
+        // left side
+        glColor3f(0.00, 0.00, 0.00);
+            glVertex3f(-(len / 2),  height , -width);
+            glVertex3f(-(len / 2), -height , -width);
+            glVertex3f(-(len / 2), -height , width);
+
+        glColor3f(1.00, 1.00, 1.00);
+            glVertex3f(-(len / 2),  height ,  -width);
+            glVertex3f(-(len / 2),  height ,  width);
+            glVertex3f(-(len / 2),  -height , width);
+
+        // right side
+        glColor3f(0.00, 0.00, 0.00);
+            glVertex3f((len / 2),  height , -width);
+            glVertex3f((len / 2), -height , -width);
+            glVertex3f((len / 2), -height , width);
+
+        glColor3f(1.00, 1.00, 1.00);
+            glVertex3f((len / 2),  height ,  -width);
+            glVertex3f((len / 2),  height ,  width);
+            glVertex3f((len / 2),  -height , width);
 
 
     glEnd();
-
-    // let on = false;
-    // for (let angle = 0.0; angle < 360; angle += 15) {
-	// glPushMatrix(); // Save the coordinate frame.
-
-	// // Change the coordinate frame. Sweeps the disk around.
-	// glRotatef(angle,0.0,1.0,0.0);
-	// glTranslatef(1.5,0.0,0.0);
-	// glScalef(0.25,0.25,0.5);
-
-	// if (on) {
-	//     glColor3f(0.8,0.4,1.0); // Light purple.
-	// } else {
-	//     glColor3f(0.4,0.2,0.5); // Dark purple.
-	// }
-	// glBeginEnd("Sphere");
-
-	// glPopMatrix(); // Restore the coordinate frame.
-	// on = !on;
-    // }
+    makeQuarterSphere(0, )
 }
-*/
+
 function drawObject() {
 
     /*
@@ -631,9 +578,9 @@ function drawObject() {
     if (showWhich == 5) {
         glBeginEnd("Torus");
     }
-    // if (showWhich == 7) {
-    //     glBeginEnd("Lasagne");
-    // }
+    if (showWhich == 7) {
+        glBeginEnd("Lasagne");
+    }
     if (showWhich == 8) {
         glBeginEnd("quarterSphere");
         // travelingQuarterSphere(10);
@@ -801,7 +748,7 @@ function makeSmoother() {
     makeCylinder();
     makeSphere();
     makeTorus();
-    // makeLasagne();
+    makeLasagne();
     makeQuarterSphere(0, 0, 2);
 }
 
@@ -823,7 +770,7 @@ function main() {
     makeCylinder();
     makeSphere();
     makeTorus();
-    // makeLasagne();
+    makeLasagne();
     makeQuarterSphere(0, 0, 2);
 
     // Register interaction callbacks.
