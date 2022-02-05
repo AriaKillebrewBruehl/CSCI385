@@ -278,6 +278,7 @@ function makeTorus() {
     for (let i = 0; i < numFacets; i += 1) {
         const aCenter = dAngle * i;
         const cx0 = Math.cos(aCenter);
+        const cy = 0;
         const cz0 = Math.sin(aCenter);
         const cx1 = Math.cos(aCenter + dAngle);
         const cz1 = Math.sin(aCenter + dAngle);
@@ -287,50 +288,67 @@ function makeTorus() {
 	    glColor3f(0.50, 0.75, 0.80);
 	}
         // create wedge
-	    glVertex3f(  0.0, 0.0, 0.0  );
-        glVertex3f(cx0, 0.0, cz0);
-        glVertex3f(cx1, 0.0, cz1);
+	    glVertex3f(  0.0, cy, 0.0  );
+        glVertex3f(cx0, cy, cz0);
+        glVertex3f(cx1, cy, cz1);
+
+
 
         // create disk centered at wedge
         for (let j = 0; j < numFacets; j+= 1) {
             const r = 0.25;
             const aSide = dAngle * j;
-            const px0 = r * Math.cos(aSide);
-            const py0 = r * Math.sin(aSide);
-            const px1 = r * Math.cos(aSide + r);
-            const py1 = r * Math.sin(aSide + r);
-            if (j % 2 == 0) {
+            const u0 =  r * Math.cos(aSide);
+            const v0 =  r * Math.sin(aSide);
+            const w0 = 0;
+            const u1 =  r * Math.cos(aSide + r);
+            const v1 =  r * Math.sin(aSide + r);
+            const w1 = 0;
+            const px0 = cx0 + u0;
+            const py0 = cy  + v0;
+            // const pz0 = cz0;
+            const pz0 = 0;
+            const px1 = cx0 + u1;
+            const py1 = cy  + v1;
+            // const pz1 = cz0 ;
+            const pz1 = 0;
+            const x = r * Math.cos(aSide);
+            const y = r * Math.sin(aSide);
+            const z = 0;
+            const x1 = r * Math.cos(aSide + r);
+            const y1 = r * Math.sin(aSide + r);
+            const z1 = 0;
+
+
+
+
+            if (j > numFacets / 2) {
                 glColor3f(0.00, 0.00, 0.00);
             } else {
                 glColor3f(1.00, 1.0, 1.00);
             }
                 // create wedge
-                glVertex3f(  0.0,   0.0, width);
-                glVertex3f(0.0, px0, width + py0);
-                glVertex3f(0.0, px1, width + py1);
-        }
+                glVertex3f(0, 0 , 0); // center of disk
+                glVertex3f(Math.cos(aCenter) * x + Math.sin(aCenter) * z, y,Math.sin(aCenter) * x + Math.cos(aCenter) * z);
+                glVertex3f(Math.cos(aCenter) * x1 + Math.sin(aCenter) * z1, y1, Math.sin(aCenter)  * x1+ Math.cos(aCenter) * z1);
+                // glVertex3f(1, 0 , 0); // center of disk
+                // glVertex3f(1, v0, u0);
+                // glVertex3f(1, v1, u1);
+                // glVertex3f(cx0, cy , cz0); // center of disk
+                // glVertex3f(px0, py0, pz0);
+                // glVertex3f(px1, py1, pz1);
+                // glVertex3f(cx0, cy , cz0); // center of disk
+                // glVertex3f((Math.cos(aCenter) * px0 - Math.sin(aCenter) * py0), cy, (Math.sin(aCenter) * px0 + Math.cos(aCenter) * px0));
+                // glVertex3f((Math.cos(aCenter) * px1 - Math.sin(aCenter) * py1), cy, (Math.sin(aCenter) * py1 + Math.cos(aCenter) * py1));
+                // glVertex3f(cx0, cy , cz0); // center of disk
+                // glVertex3f(cx0 + (Math.cos(aCenter) * u0 + Math.sin(aCenter) * v0), cy, cz0 + (Math.sin(aCenter) * u0 + Math.cos(aCenter) * v0));
+                // glVertex3f(cx0 + (Math.cos(aCenter) * u1 - Math.sin(aCenter) * v1), cy, cz0 + (Math.sin(aCenter) * u1 + Math.cos(aCenter) * v1));
+
+            }
+
+
 
     }
-
-    // // Produce the sides.
-    // for (let i = 0; i < numFacets; i += 1) {
-    //     const aMid = dAngle * i;
-    //     const xMid0 = Math.cos(aMid) * 0.25;
-    //     const yMid0 = Math.sin(aMid) * 0.25;
-    //     const xMid1 = Math.cos(aMid + dAngle) * 0.25;
-    //     const yMid1 = Math.sin(aMid + dAngle) * 0.25;
-
-	// glColor3f(0.80, 0.50, 0.75);
-    //     glVertex3f(xMid0, yMid0,  width / 2.0 );
-    //     glVertex3f(xMid0, yMid0, -width / 2.0);
-    //     glVertex3f(xMid1, yMid1, -width / 2.0);
-
-	// glColor3f(0.90, 0.75, 0.80);
-    //     glVertex3f(xMid0, yMid0,  width / 2.0);
-    //     glVertex3f(xMid1, yMid1, -width / 2.0);
-    //     glVertex3f(xMid1, yMid1,  width / 2.0);
-
-    // }
 
     glEnd();
 
