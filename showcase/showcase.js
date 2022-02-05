@@ -282,21 +282,21 @@ function makeTorus() {
         const cz0 = Math.sin(aCenter);
         const cx1 = Math.cos(aCenter + dAngle);
         const cz1 = Math.sin(aCenter + dAngle);
-	if (i % 2 == 0) {
-	    glColor3f(0.25, 0.50, 0.75);
-	} else {
-	    glColor3f(0.50, 0.75, 0.80);
-	}
-        // create wedge
-	    glVertex3f(  0.0, cy, 0.0  );
-        glVertex3f(cx0, cy, cz0);
-        glVertex3f(cx1, cy, cz1);
+	// if (i % 2 == 0) {
+	//     glColor3f(0.25, 0.50, 0.75);
+	// } else {
+	//     glColor3f(0.50, 0.75, 0.80);
+	// }
+    //     // create wedge
+	//     glVertex3f(  0.0, cy, 0.0  );
+    //     glVertex3f(cx0, cy, cz0);
+    //     glVertex3f(cx1, cy, cz1);
 
 
 
         // create disk centered at wedge
         for (let j = 0; j < numFacets; j+= 1) {
-            const r = 0.25;
+            const r = 0.5;
             const aSide = dAngle * j;
             const u0 =  r * Math.cos(aSide);
             const v0 =  r * Math.sin(aSide);
@@ -304,20 +304,18 @@ function makeTorus() {
             const u1 =  r * Math.cos(aSide + r);
             const v1 =  r * Math.sin(aSide + r);
             const w1 = 0;
-            const px0 = cx0 + u0;
-            const py0 = cy  + v0;
-            // const pz0 = cz0;
-            const pz0 = 0;
-            const px1 = cx0 + u1;
-            const py1 = cy  + v1;
-            // const pz1 = cz0 ;
-            const pz1 = 0;
-            const x0 = Math.cos(aCenter) * u0 + Math.sin(aCenter) * w0;
-            const y0 = v0;
-            const z0 = Math.sin(aCenter) * u0 + Math.cos(aCenter) * w0;
-            const x1 = Math.cos(aCenter) * u1 + Math.sin(aCenter) * w1;
-            const y1 = v1;
-            const z1 = Math.sin(aCenter)  * u1+ Math.cos(aCenter) * w1;
+            const x00 = Math.cos(aCenter) * u0 + Math.sin(aCenter) * w0;
+            const y00 = v0;
+            const z00 = Math.sin(aCenter) * u0 + Math.cos(aCenter) * w0;
+            const x01 = Math.cos(aCenter) * u1 + Math.sin(aCenter) * w1;
+            const y01 = v1;
+            const z01 = Math.sin(aCenter)  * u1+ Math.cos(aCenter) * w1;
+            const x10 = Math.cos(aCenter + dAngle) * u0 + Math.sin(aCenter + dAngle) * w0;
+            const y10 = v0;
+            const z10 = Math.sin(aCenter + dAngle) * u0 + Math.cos(aCenter + dAngle) * w0;
+            const x11 = Math.cos(aCenter + dAngle) * u1 + Math.sin(aCenter + dAngle) * w1;
+            const y11 = v1;
+            const z11 = Math.sin(aCenter + dAngle)  * u1+ Math.cos(aCenter + dAngle) * w1;
 
 
 
@@ -327,11 +325,23 @@ function makeTorus() {
             } else {
                 glColor3f(1.00, 1.0, 1.00);
             }
-                // create wedge
-                glVertex3f(cx0, cy , cz0); // center of disk
-                glVertex3f(cx0 + x0, cy + y0, cz0 + z0);
-                glVertex3f(cx0 + x1, cy + y1, cz0 + z1);
-            }
+                // // create wedge
+                // glVertex3f(cx0, cy , cz0); // center of disk
+                // glVertex3f(cx0 + x00, cy + y00, cz0 + z00);
+                // glVertex3f(cx0 + x01, cy + y01, cz0 + z01);
+
+                // create side 1
+                glColor3f(0.00, 0.00, 0.00);
+                glVertex3f(cx0 + x00, cy + y00, cz0 + z00);
+                glVertex3f(cx0 + x01, cy + y01, cz0 + z01);
+                glVertex3f(cx1 + x10, cy + y10, cz1 + z10);
+                // create side 2
+                glColor3f(1.00, 1.0, 1.00);
+                glVertex3f(cx0 + x01, cy + y01, cz0 + z01);
+                glVertex3f(cx1 + x10, cy + y10, cz1 + z10);
+                glVertex3f(cx1 + x11, cy + y11, cz1 + z11);
+                }
+
 
     }
 
