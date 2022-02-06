@@ -614,7 +614,6 @@ function drawObject() {
     }
     if (showWhich == 7) {
         makeLasagne();
-        //glBeginEnd("LasagneBase");
     }
     if (showWhich == 8) {
         glBeginEnd("quarterSphere");
@@ -684,7 +683,7 @@ function handleKey(key, x, y) {
     if (key == 'l') {
         showWhich = 7;
     }
-    if (key == 'q') {
+    if (key == 's') {
         showWhich = 8;
     }
     if (key == '+') {
