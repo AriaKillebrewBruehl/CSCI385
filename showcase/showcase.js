@@ -418,44 +418,44 @@ function makeQuarterSphere(x, y, z, radius, len) {
 
             // front side
             // red
-            glColor3f(1.0, 0.00, 0.00);
+            glColor3f(1.0, 0.00, 1.0);
                 glVertex3f(px0, py0, pz0 );
                 glVertex3f(px0, py0, pz1);
                 glVertex3f(px1, py1, pz1);
             // blue
-            glColor3f(0.00, 0.00, 1.00);
+            glColor3f(1.0, 0.00, 1.0);
                 glVertex3f(px0, py0, pz0);
                 glVertex3f(px1, py1, pz1);
                 glVertex3f(px1, py1, pz0);
             // green diag
-            glColor3f(0.00, 1.00, 0.00);
+            glColor3f(0.0, 0.00, 1.00);
                 glVertex3f(px0, py0, pz0);
                 glVertex3f(px1, py1, pz0);
                 glVertex3f(px2, py2, pz3);
             // black diag
-            glColor3f(0.00, 0.00, 0.00);
+            glColor3f(1.0, 0.00, 1.00);
                 glVertex3f(px2, py2, pz3);
                 glVertex3f(px3, py3, pz3);
                 glVertex3f(px1, py1, pz0);
 
             // back
             // red
-            glColor3f(1.0, 0.00, 0.00);
+            glColor3f(1.0, 0.00, 1.0);
                 glVertex3f(px0, py0, -pz0 );
                 glVertex3f(px0, py0, -pz1);
                 glVertex3f(px1, py1, -pz1);
             // blue
-            glColor3f(0.00, 0.00, 1.00);
+            glColor3f(1.0, 0.00, 1.0);
                 glVertex3f(px0, py0, -pz0);
                 glVertex3f(px1, py1, -pz1);
                 glVertex3f(px1, py1, -pz0);
             // green diag
-            glColor3f(0.00, 1.00, 0.00);
+            glColor3f(0.0, 0.00, 1.0);
                 glVertex3f(px0, py0, -pz0);
                 glVertex3f(px1, py1, -pz0);
                 glVertex3f(px2, py2, -pz3);
             // black diag
-            glColor3f(0.00, 0.00, 0.00);
+            glColor3f(0.0, 0.00, 1.0);
                 glVertex3f(px2, py2, -pz3);
                 glVertex3f(px3, py3, -pz3);
                 glVertex3f(px1, py1, -pz0);
@@ -479,23 +479,23 @@ function makeQuarterSphere(x, y, z, radius, len) {
             }
 
             // front side
-            glColor3f(0.00, 0.00, 0.00);
+            glColor3f(1.0, 0.00, 1.0);
                 glVertex3f(px0, y, pz0);
                 glVertex3f(px0, y, pz);
                 glVertex3f(px1, y, pz1);
 
-            glColor3f(1.00, 1.00, 1.00);
+            glColor3f(1.0, 0.00, 1.0);
                 glVertex3f(px0, y, pz);
                 glVertex3f(px1, y, pz1);
                 glVertex3f(px1, y, pz);
 
             // back side
-            glColor3f(0.00, 0.00, 0.00);
+            glColor3f(1.0, 0.00, 1.0);
                 glVertex3f(px0, -y, -pz0);
                 glVertex3f(px0, -y, -pz);
                 glVertex3f(px1, -y, -pz1);
 
-            glColor3f(1.00, 1.00, 1.00);
+            glColor3f(1.00, 0.00, 1.00);
                 glVertex3f(px0, -y, -pz);
                 glVertex3f(px1, -y, -pz1);
                 glVertex3f(px1, -y,-pz);
@@ -511,70 +511,70 @@ function makeLasagneBase(len, width, height, radius) {
     glBegin(GL_TRIANGLES, "LasagneBase", true);
 
         // top
-        glColor3f(0.00, 0.00, 0.00);
-            glVertex3f(-(len / 2 + radius), height ,  width);
-            glVertex3f(-(len / 2 + radius), height , -width);
-            glVertex3f( (len / 2 + radius), height , -width);
+        glColor3f(1.0, 0.00, 1.0);
+            glVertex3f(-(len / 2) - radius, height ,  width);
+            glVertex3f(-(len / 2) - radius, height , -width);
+            glVertex3f( (len / 2 )- radius, height , -width);
 
-        glColor3f(1.00, 1.00, 1.00);
-            glVertex3f( (len / 2 + radius), height ,  width);
-            glVertex3f( (len / 2 + radius), height , -width);
-            glVertex3f(-(len / 2 + radius), height ,  width);
+        glColor3f(1.0, 0.00, 1.0);
+            glVertex3f( (len / 2) - radius, height ,  width);
+            glVertex3f( (len / 2) - radius, height , -width);
+            glVertex3f(-(len / 2) - radius, height ,  width);
 
         // bottom
-        glColor3f(0.00, 0.00, 0.00);
-            glVertex3f(-(len / 2 + radius), -height ,  width);
-            glVertex3f(-(len / 2 + radius), -height , -width);
-            glVertex3f( (len / 2 + radius), -height , -width);
+        glColor3f(1.0, 0.00, 1.0);
+            glVertex3f(-(len / 2) - radius, -height ,  width);
+            glVertex3f(-(len / 2) - radius, -height , -width);
+            glVertex3f( (len / 2) - radius, -height , -width);
 
-        glColor3f(1.00, 1.00, 1.00);
-            glVertex3f( (len / 2 + radius), -height ,  width);
-            glVertex3f( (len / 2 + radius), -height , -width);
-            glVertex3f(-(len / 2 + radius), -height ,  width);
+        glColor3f(1.0, 0.00, 1.0);
+            glVertex3f( (len / 2) - radius, -height ,  width);
+            glVertex3f( (len / 2) - radius, -height , -width);
+            glVertex3f(-(len / 2) - radius, -height ,  width);
 
         // front
-        glColor3f(0.00, 0.00, 0.00);
-            glVertex3f(-(len / 2 + radius),  height , width);
-            glVertex3f(-(len / 2 + radius), -height , width);
-            glVertex3f( (len / 2), -height , width);
+        glColor3f(1.0, 0.00, 1.0);
+            glVertex3f(-(len / 2) - radius,  height , width);
+            glVertex3f(-(len / 2) - radius, -height , width);
+            glVertex3f( (len / 2) - radius, -height , width);
 
-        glColor3f(1.00, 1.00, 1.00);
-            glVertex3f( (len / 2 + radius),  height ,  width);
-            glVertex3f( (len / 2 + radius), -height ,  width);
-            glVertex3f(-(len / 2 + radius),  height ,  width);
+        glColor3f(1.0, 0.00, 1.0);
+            glVertex3f( (len / 2) - radius,  height ,  width);
+            glVertex3f( (len / 2) - radius, -height ,  width);
+            glVertex3f(-(len / 2) - radius,  height ,  width);
 
         // back
-        glColor3f(0.00, 0.00, 0.00);
-            glVertex3f(-(len / 2 + radius),  height , -width);
-            glVertex3f(-(len / 2 + radius), -height , -width);
-            glVertex3f( (len / 2), -height , -width);
+        glColor3f(1.0, 0.00, 1.0);
+            glVertex3f(-(len / 2) - radius,  height , -width);
+            glVertex3f(-(len / 2) - radius, -height , -width);
+            glVertex3f( (len / 2) - radius, -height , -width);
 
-        glColor3f(1.00, 1.00, 1.00);
-            glVertex3f( (len / 2 + radius),  height ,  -width);
-            glVertex3f( (len / 2 + radius), -height ,  -width);
-            glVertex3f(-(len / 2 + radius),  height ,  -width);
+        glColor3f(1.0, 0.00, 1.0);
+            glVertex3f( (len / 2) - radius,  height ,  -width);
+            glVertex3f( (len / 2) - radius, -height ,  -width);
+            glVertex3f(-(len / 2) - radius,  height ,  -width);
 
         // left side
-        glColor3f(0.00, 0.00, 0.00);
-            glVertex3f(-(len / 2 + radius),  height , -width);
-            glVertex3f(-(len / 2 + radius), -height , -width);
-            glVertex3f(-(len / 2 + radius), -height , width);
+        glColor3f(1.0, 0.00, 1.0);
+            glVertex3f(-(len / 2) - radius,  height , -width);
+            glVertex3f(-(len / 2) - radius, -height , -width);
+            glVertex3f(-(len / 2) - radius, -height , width);
 
-        glColor3f(1.00, 1.00, 1.00);
-            glVertex3f(-(len / 2 + radius),  height ,  -width);
-            glVertex3f(-(len / 2 + radius),  height ,  width);
-            glVertex3f(-(len / 2 + radius),  -height , width);
+         glColor3f(1.0, 0.00, 1.0);
+            glVertex3f(-(len / 2) - radius,  height ,  -width);
+            glVertex3f(-(len / 2) - radius,  height ,  width);
+            glVertex3f(-(len / 2) - radius,  -height , width);
 
         // right side
-        glColor3f(0.00, 0.00, 0.00);
-            glVertex3f((len / 2 + radius),  height , -width);
-            glVertex3f((len / 2 + radius), -height , -width);
-            glVertex3f((len / 2 + radius), -height , width);
+        glColor3f(1.0, 0.00, 1.0);
+            glVertex3f((len / 2) - radius,  height , -width);
+            glVertex3f((len / 2) - radius, -height , -width);
+            glVertex3f((len / 2) - radius, -height , width);
 
-        glColor3f(1.00, 1.00, 1.00);
-            glVertex3f((len / 2 + radius),  height ,  -width);
-            glVertex3f((len / 2 + radius),  height ,  width);
-            glVertex3f((len / 2 + radius),  -height , width);
+        glColor3f(1.0, 0.00, 1.0);
+            glVertex3f((len / 2) - radius,  height ,  -width);
+            glVertex3f((len / 2) - radius,  height ,  width);
+            glVertex3f((len / 2) - radius,  -height , width);
     glEnd();
 
 }
@@ -583,9 +583,9 @@ function makeLasagne() {
     const len = 2.0;
     const width = (len / 4);
     const height = 0.02;
-    const radius = 0.1;
-    makeQuarterSphere(0, 0, -width / 4, radius, len / 2);
-    makeLasagneBase(len, width / 2, height);
+    const radius = 0.05;
+    makeQuarterSphere(0, 0, -width / 2, radius, len / 2);
+    makeLasagneBase(len, width / 2, height, radius);
     glBeginEnd("quarterSphere");
     glBeginEnd("LasagneBase");
 
