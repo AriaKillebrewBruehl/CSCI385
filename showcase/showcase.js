@@ -310,10 +310,6 @@ function makeTorus() {
             } else {
                 glColor3f(1.00, 1.0, 1.00);
             }
-                // // create wedge
-                // glVertex3f(cx0, cy , cz0); // center of disk
-                // glVertex3f(cx0 + x00, cy + y00, cz0 + z00);
-                // glVertex3f(cx0 + x01, cy + y01, cz0 + z01);
 
                 // create side 1
                 glColor3f(0.00, 0.00, 0.00);
@@ -591,6 +587,117 @@ function makeLasagne() {
 
 }
 
+function makeStar() {
+
+    const r0 = 0.50 ;
+    const r1 = 0.25;
+    numFacets = smoothness;
+    const dAngle = 2.0 * Math.PI / numFacets;
+    const dAngle0 = 2.0 * Math.PI / 5;
+    const dAngle1 = 2.0 * Math.PI / 10;
+
+    glBegin(GL_TRIANGLES, "Star", true);
+
+    for (let i = 0; i < numFacets; i +=1) {
+        const aCenter = dAngle * i;
+        const cx0 = Math.cos(aCenter);
+        const cy0 = 0;
+        const cz0 = Math.sin(aCenter);
+        const cx1 = Math.cos(aCenter + dAngle);
+        const cy1 = 0;
+        const cz1 = Math.sin(aCenter + dAngle);
+
+        for (let j = 0; j < 5; j += 1) {
+            const currentAngle0 = dAngle0 * j;
+            const currentAngle1 = dAngle1 * (2 * j + 1);
+
+            // standard star
+            let u00 = r0 * Math.cos(currentAngle0);
+            let v00 = r0 * Math.sin(currentAngle0);
+            let w00 = cz0;
+
+            let u01 = r1 * Math.cos(currentAngle1);
+            let v01 = r1 * Math.sin(currentAngle1);
+            let w01 = cz0;
+
+            let u10 = r0 * Math.cos(currentAngle0 + 2 * dAngle1);
+            let v10 = r0 * Math.sin(currentAngle0 + 2 * dAngle1);
+            let w10 = cz0;
+
+            // rotated star
+            const x000 = Math.cos(aCenter) * u00 + Math.sin(aCenter) * w00;
+            const y000 = v00;
+            const z000 = Math.sin(aCenter) * u00 + Math.cos(aCenter) * w00;
+
+            const x001 = Math.cos(aCenter) * u01 + Math.sin(aCenter) * w01;
+            const y001 = v01;
+            const z001 = Math.sin(aCenter) * u01 + Math.cos(aCenter) * w01;
+
+            const x010 = Math.cos(aCenter) * u10 + Math.sin(aCenter) * w10;
+            const y010 = v10;
+            const z010 = Math.sin(aCenter) * u10 + Math.cos(aCenter) * w10;
+
+            const x100 = Math.cos(aCenter  + dAngle) * u00 + Math.sin(aCenter + dAngle) * w00;
+            const y100 = v00;
+            const z100 = Math.sin(aCenter + dAngle) * u00 + Math.cos(aCenter + dAngle) * w00;
+
+            const x101 = Math.cos(aCenter + dAngle) * u01 + Math.sin(aCenter + dAngle) * w01;
+            const y101 = v01;
+            const z101 = Math.sin(aCenter + dAngle) * u01 + Math.cos(aCenter) * w01;
+
+            const x110 = Math.cos(aCenter + dAngle) * u10 + Math.sin(aCenter + dAngle) * w10;
+            const y110 = v10;
+            const z110 = Math.sin(aCenter + dAngle) * u10 + Math.cos(aCenter + dAngle) * w10;
+
+
+
+        glColor3f(1.0, 0.00, 1.0);
+            glVertex3f(cx0 + x000, cy0 + y000, cz0 + z000 );
+            glVertex3f(cx0 + x001, cy0 + y001, cz0 + z001);
+            glVertex3f(cx0, cy0, cz0);
+
+        glColor3f(1.0, 0.00, 1.0);
+            glVertex3f(cx0 + x001, cy0 + y001, cz0 + z001 );
+            glVertex3f(cx0 + x010, cy0 + y010, cz0 + z010);
+            glVertex3f(cx0, cy0, cz0);
+
+
+
+        }
+    }
+/*
+    for (let i = 0; i < 5; i += 1) {
+        const currentAngle0 = dAngle0 * i;
+        const currentAngle1 = dAngle1 * (2 * i + 1);
+        let pcx = 0.0;
+        let pcy = 0.0;
+        let pcz = 0.0;
+        let px00 = r0 * Math.cos(currentAngle0);
+        let py00 = r0 * Math.sin(currentAngle0);
+        let pz00 = pcz;
+        let px01 = r1 * Math.cos(currentAngle1);
+        let py01 = r1 * Math.sin(currentAngle1);
+        let pz01 = pcz;
+        let px10 = r0 * Math.cos(currentAngle0 + 2 * dAngle1);
+        let py10 = r0 * Math.sin(currentAngle0 + 2 * dAngle1);
+        let pz10 = pcz;
+
+        glColor3f(1.0, 0.00, 1.0);
+            glVertex3f(px00, py00, pz00 );
+            glVertex3f(px01, py01, pz01);
+            glVertex3f(pcx, pcy, pcz);
+
+        glColor3f(1.0, 0.00, 1.0);
+            glVertex3f(px01, py01, pz01 );
+            glVertex3f(px10, py10, pz10);
+            glVertex3f(pcx, pcy, pcz);
+    }
+    */
+
+    glEnd();
+
+}
+
 function drawObject() {
 
     /*
@@ -613,11 +720,10 @@ function drawObject() {
     glBeginEnd("Torus");
     }
     if (showWhich == 7) {
-        makeLasagne();
+    makeLasagne();
     }
     if (showWhich == 8) {
-        glBeginEnd("quarterSphere");
-        glBeginEnd("LasagneBase");
+    glBeginEnd("Star");
     }
 
 }
@@ -804,6 +910,7 @@ function main() {
     makeCylinder();
     makeSphere();
     makeTorus();
+    makeStar();
     makeLasagneBase();
     makeQuarterSphere(0, 0, -0.5, 0.1);
 
