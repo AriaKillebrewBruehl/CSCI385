@@ -593,36 +593,29 @@ function makeLasagne() {
 
 function makeStar() {
     const r = 1.0;
-    const r0 = 0.50 ;
-    const r1 = 0.25;
+    const r0 = 0.20 ;
+    const r1 = 0.05;
     numFacets = smoothness;
     const dAngle = 2.0 * Math.PI / numFacets;
     const dAngle0 = 2.0 * Math.PI / 5;
     const dAngle1 = 2.0 * Math.PI / 10;
-
+    const dy = 5 * r0 / numFacets;
     glBegin(GL_TRIANGLES, "Star", true);
+    let y = -1.5;
 
+    for (let k = 0; k < 3; k += 1) {
     for (let i = 0; i < numFacets; i +=1) {
+        y += dy;
         const aCenter = dAngle * i;
         const cx0 = r * Math.cos(aCenter);
-        const cy0 = 0;
+        const cy0 = y;
         const cz0 = r * Math.sin(aCenter);
         const cx1 = r * Math.cos(aCenter + dAngle);
-        const cy1 = 0;
+        const cy1 = y;
         const cz1 = r * Math.sin(aCenter + dAngle);
 
-        // if (i % 2 == 0) {
-        //     glColor3f(0.00, 0.00, 0.00);
-        // } else {
-        //     glColor3f(1.00, 1.00, 1.00);
-        // }
-        // glVertex3f(  cx0,   cy0, cz0);
-        // glVertex3f(cx1, cy1, cz1);
-        // glVertex3f(0, 0, 0);
-
-
-
         for (let j = 0; j < 5; j += 1) {
+            const dColor = 0.05 * j;
             const currentAngle0 = dAngle0 * j;
             const currentAngle1 = dAngle1 * (2 * j + 1);
 
@@ -634,10 +627,6 @@ function makeStar() {
             let u01 = r1 * Math.cos(currentAngle1);
             let v01 = r1 * Math.sin(currentAngle1);
             let w01 = 0;
-
-            let u10 = cx0;
-            let v10 = cy0;
-            let w10 = 0;
 
             let u11 = r0 * Math.cos(currentAngle0 + 2 * dAngle1);
             let v11 = r0 * Math.sin(currentAngle0 + 2 * dAngle1);
@@ -653,10 +642,6 @@ function makeStar() {
             const y001 = v01;
             const z001 = Math.sin(aCenter) * u01 + Math.cos(aCenter) * w01;
 
-            const x010 = Math.cos(aCenter) * u10 + Math.sin(aCenter) * w10;
-            const y010 = v10;
-            const z010 = Math.sin(aCenter) * u10 + Math.cos(aCenter) * w10;
-
             const x011 = Math.cos(aCenter) * u11 + Math.sin(aCenter) * w11;
             const y011 = v11;
             const z011 = Math.sin(aCenter) * u11 + Math.cos(aCenter) * w11;
@@ -670,43 +655,34 @@ function makeStar() {
             const y101 = v01;
             const z101 = Math.sin(aCenter + dAngle) * u01 + Math.cos(aCenter) * w01;
 
-            const x110 = Math.cos(aCenter + dAngle) * u10 + Math.sin(aCenter + dAngle) * w10;
-            const y110 = v10;
-            const z110 = Math.sin(aCenter + dAngle) * u10 + Math.cos(aCenter + dAngle) * w10;
-
             const x111 = Math.cos(aCenter + dAngle) * u11 + Math.sin(aCenter + dAngle) * w11;
             const y111 = v11;
             const z111 = Math.sin(aCenter + dAngle) * u11 + Math.cos(aCenter + dAngle) * w11;
 
 
         if (i % 2 == 0) {
-            glColor3f(0.70, 0.00, 1.0);
+            glColor3f(0.70, 0.00, 0.70 + dColor);
         } else {
-            glColor3f(1.0, 0.00, 1.0);
+            glColor3f(1.0, 0.00, 0.70 + dColor);
         }
             glVertex3f(cx0 + x000, cy0 + y000, cz0 + z000);
-            glVertex3f(cx1 + x100, cy1 + y100, cz1 + z100);
+            glVertex3f(cx1 + x100, cy1 + y100 + dy, cz1 + z100);
             glVertex3f(cx0 + x001, cy0 + y001, cz0 + z001);
 
-            glVertex3f(cx1 + x100, cy1 + y100, cz1 + z100);
+            glVertex3f(cx1 + x100, cy1 + y100 + dy, cz1 + z100);
             glVertex3f(cx0 + x001, cy0 + y001, cz0 + z001);
-            glVertex3f(cx1 + x101, cy1 + y101, cz1 + z101);
-
+            glVertex3f(cx1 + x101, cy1 + y101 + dy, cz1 + z101);
 
             glVertex3f(cx0 + x001, cy0 + y001, cz0 + z001);
             glVertex3f(cx0 + x011, cy0 + y011, cz0 + z011);
-            glVertex3f(cx1 + x111, cy1 + y111, cz1 + z111);
-            glVertex3f(cx1 + x101, cy1 + y101, cz1 + z101);
-            glVertex3f(cx1 + x111, cy1 + y111, cz1 + z111);
+            glVertex3f(cx1 + x111, cy1 + y111 + dy, cz1 + z111);
+
+            glVertex3f(cx1 + x101, cy1 + y101 + dy, cz1 + z101);
+            glVertex3f(cx1 + x111, cy1 + y111 + dy, cz1 + z111);
             glVertex3f(cx0 + x001, cy0 + y001, cz0 + z001);
-
-
-
-
-
-
         }
     }
+}
 
     glEnd();
 
