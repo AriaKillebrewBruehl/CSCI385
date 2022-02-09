@@ -784,22 +784,22 @@ function handleKey(key, x, y) {
     if (key == 's') {
         showWhich = 8;
     }
-    if (key == '+') {
+    if (key == 'i') {
         smoothness += 20;
         makeSmoother()
     }
     //
-    if (key == '-') {
+    if (key == 'o') {
         smoothness -= 20;
         makeSmoother();
     }
     if (key == 't') {
-        spiralRadius += 0.1;
+        spiralRadius -= 0.1;
         makeTighter();
     }
     //
     if (key == 'd') {
-        spiralRadius -= 0.1;
+        spiralRadius += 0.1;
         makeTighter()
     }
 
