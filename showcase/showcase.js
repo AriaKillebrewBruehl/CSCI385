@@ -611,14 +611,14 @@ function makeStar() {
         const cy1 = 0;
         const cz1 = r * Math.sin(aCenter + dAngle);
 
-        if (i % 2 == 0) {
-            glColor3f(0.00, 0.00, 0.00);
-        } else {
-            glColor3f(1.00, 1.00, 1.00);
-        }
-        glVertex3f(  cx0,   cy0, cz0);
-        glVertex3f(cx1, cy1, cz1);
-        glVertex3f(0, 0, 0);
+        // if (i % 2 == 0) {
+        //     glColor3f(0.00, 0.00, 0.00);
+        // } else {
+        //     glColor3f(1.00, 1.00, 1.00);
+        // }
+        // glVertex3f(  cx0,   cy0, cz0);
+        // glVertex3f(cx1, cy1, cz1);
+        // glVertex3f(0, 0, 0);
 
 
 
@@ -678,73 +678,35 @@ function makeStar() {
             const y111 = v11;
             const z111 = Math.sin(aCenter + dAngle) * u11 + Math.cos(aCenter + dAngle) * w11;
 
-        glColor3f(1.0, 0.00, 1.0);
+
+        if (i % 2 == 0) {
+            glColor3f(0.70, 0.00, 1.0);
+        } else {
+            glColor3f(1.0, 0.00, 1.0);
+        }
             glVertex3f(cx0 + x000, cy0 + y000, cz0 + z000);
+            glVertex3f(cx1 + x100, cy1 + y100, cz1 + z100);
             glVertex3f(cx0 + x001, cy0 + y001, cz0 + z001);
-            glVertex3f(cx0, cy0 , cz0 );
+
+            glVertex3f(cx1 + x100, cy1 + y100, cz1 + z100);
+            glVertex3f(cx0 + x001, cy0 + y001, cz0 + z001);
+            glVertex3f(cx1 + x101, cy1 + y101, cz1 + z101);
+
 
             glVertex3f(cx0 + x001, cy0 + y001, cz0 + z001);
             glVertex3f(cx0 + x011, cy0 + y011, cz0 + z011);
-            glVertex3f(cx0, cy0 , cz0 );
-
-        // glColor3f(0.70, 0.00, 1.0);
-        //     glVertex3f(cx0 + x001, cy0 + y001, cz0 + z001 );
-        //     glVertex3f(cx0 + x011, cy0 + y011, cz0 + z011);
-        //     glVertex3f(cx0, cy0, cz0);
+            glVertex3f(cx1 + x111, cy1 + y111, cz1 + z111);
+            glVertex3f(cx1 + x101, cy1 + y101, cz1 + z101);
+            glVertex3f(cx1 + x111, cy1 + y111, cz1 + z111);
+            glVertex3f(cx0 + x001, cy0 + y001, cz0 + z001);
 
 
-        // glColor3f(1.0, 0.00, 1.0);
-        //     glVertex3f(cx0 + x000, cy0 + y000, cz0 + z000 );
-        //     glVertex3f(cx0 + x001, cy0 + y001, cz0 + z001);
-        //     glVertex3f(cx0, cy0, cz0);
 
-        // glColor3f(1.0, 0.00, 1.0);
-        //     glVertex3f(cx0 + x001, cy0 + y001, cz0 + z001 );
-        //     glVertex3f(cx0 + x010, cy0 + y010, cz0 + z010);
-        //     glVertex3f(cx0, cy0, cz0);
-
-        // glColor3f(1.0, 0.00, 1.0);
-        //     glVertex3f(cx0 + u00, cy0 + v00, cz0 + w00 );
-        //     glVertex3f(cx0 + u01, cy0 + v01, cz0 + w01);
-        //     glVertex3f(cx0 + u10, cy0 + v10, cz0 + w10);
-
-        // glColor3f(0.70, 0.00, 1.0);
-        //     glVertex3f(cx0 + u01, cy0 + v01, cz0 + w01 );
-        //     glVertex3f(cx0 + u11, cy0 + v11, cz0 + w11);
-        //     glVertex3f(cx0 + u10, cy0 + v10, cz0 + w10);
 
 
 
         }
     }
-/*
-    for (let i = 0; i < 5; i += 1) {
-        const currentAngle0 = dAngle0 * i;
-        const currentAngle1 = dAngle1 * (2 * i + 1);
-        let pcx = 0.0;
-        let pcy = 0.0;
-        let pcz = 0.0;
-        let px00 = r0 * Math.cos(currentAngle0);
-        let py00 = r0 * Math.sin(currentAngle0);
-        let pz00 = pcz;
-        let px01 = r1 * Math.cos(currentAngle1);
-        let py01 = r1 * Math.sin(currentAngle1);
-        let pz01 = pcz;
-        let px10 = r0 * Math.cos(currentAngle0 + 2 * dAngle1);
-        let py10 = r0 * Math.sin(currentAngle0 + 2 * dAngle1);
-        let pz10 = pcz;
-
-        glColor3f(1.0, 0.00, 1.0);
-            glVertex3f(px00, py00, pz00 );
-            glVertex3f(px01, py01, pz01);
-            glVertex3f(pcx, pcy, pcz);
-
-        glColor3f(1.0, 0.00, 1.0);
-            glVertex3f(px01, py01, pz01 );
-            glVertex3f(px10, py10, pz10);
-            glVertex3f(pcx, pcy, pcz);
-    }
-    */
 
     glEnd();
 
