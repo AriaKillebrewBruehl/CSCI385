@@ -45,6 +45,8 @@ let showWhich = 1;
 let smoothness = 24;
 //
 let scalar = 10;
+//
+let spiralRadius = 1.0;
 
 function makeCube() {
     /*
@@ -592,7 +594,7 @@ function makeLasagne() {
 }
 
 function makeStar() {
-    const r = 1.0;
+    r = spiralRadius;
     const r0 = 0.20 ;
     const r1 = 0.05;
     numFacets = smoothness;
@@ -791,6 +793,15 @@ function handleKey(key, x, y) {
         smoothness -= 20;
         makeSmoother();
     }
+    if (key == 't') {
+        spiralRadius += 0.1;
+        makeTighter();
+    }
+    //
+    if (key == 'd') {
+        spiralRadius -= 0.1;
+        makeTighter()
+    }
 
     //
 
@@ -880,6 +891,11 @@ function makeSmoother() {
     makeTorus();
     makeLasagneBase();
     makeQuarterSphere(0, 0, -0.5, 0.1);
+    makeStar();
+}
+
+function makeTighter(){
+    makeStar();
 }
 
 function main() {
