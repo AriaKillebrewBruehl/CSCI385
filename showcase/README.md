@@ -6,8 +6,7 @@ To increase or decrease the smoothness of the sphere, torus, lasagne, or stars, 
 
 ## Part 1: Sphere :crystal_ball:
 
-<img src="./images/sphere.jpg" alt="sphere" width="200"/>
-
+![Sphere](./images/sphere.png)
 
 ### Design
 
@@ -31,4 +30,11 @@ To make the torus I made a base disk in the center, similar to the top of the cy
 ### Notes
 
 Rotating the smaller disks in was the hardest part of this assignment for me. It took me some time to realize that I had to rotate the disks around the y-axis. To do so I had to dig deep into my trig memories form highschool. As with the sphere I was careful in doing these sine and cosine calculations so that I could reuse the numbers I found to make my code run more efficiently.
+
+## Part3: Surface of Rotation :star2:
+## Part 4: Pasta :spaghetti:
+
+### Design
+
+I decided to make a lasagne noodle as my pasta shape. The design is fairly straight forward. The center section is simply a rectangle. The wavy sides are made out of quarter spheres which alternate being rotated 180 degrees around the x axis. Since there are more parts of this shape I created a `makeLasagne()` function that calls `makeLasagneBase(len, width, height, radius)` (for the center rectangle) and `makeQuarterSpheres(x, y, z, radius, len)` (for the sides). I took care to make sure that the spheres would divide evenly into the base of the noodle by parameterizing the helper functions.
 
