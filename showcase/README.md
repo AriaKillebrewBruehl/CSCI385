@@ -6,7 +6,8 @@ To increase or decrease the smoothness of the sphere, torus, lasagne, or stars, 
 
 ## Part 1: Sphere :crystal_ball:
 
-![Sphere](./images/sphere.png)
+<img src="./images/sphere.jpg" alt="sphere" width="200"/>
+
 
 ### Design
 
