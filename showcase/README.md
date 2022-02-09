@@ -32,6 +32,18 @@ To make the torus I made a base disk in the center, similar to the top of the cy
 Rotating the smaller disks in was the hardest part of this assignment for me. It took me some time to realize that I had to rotate the disks around the y-axis. To do so I had to dig deep into my trig memories form highschool. As with the sphere I was careful in doing these sine and cosine calculations so that I could reuse the numbers I found to make my code run more efficiently.
 
 ## Part3: Surface of Rotation :star2:
+
+### Design
+
+The basic idea of the star spiral is similar to the torus. First I created a flat star object. I then places it at even increments around the circumference of the base disk. Then I rotated the stars in and connected each star to the one after it. To make the stars spiral up I increased the y coordinate each time I created a new star.
+
+### Notes
+
+Getting the positioning and rotation of the star was slightly more complicated that just the torus since the star is made by doing 5 loops where on each loop a v-shaped section of the star is made out of two triangles that are made out of 4 points.
+
+There is also a button to increase of decrease the tightness of the spiral. Tightening the spiral all the way gives bonus rontini!
+
+
 ## Part 4: Pasta :spaghetti:
 
 ### Design
