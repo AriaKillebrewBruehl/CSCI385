@@ -596,7 +596,7 @@ function makeLasagne() {
 
 }
 
-function makeStar() {
+function makeRevolution() {
     r = spiralRadius;
     h = spiralHeight;
     const r0 = 0.20 ;
@@ -910,16 +910,16 @@ function makeSmoother() {
     makeTorus();
     makeLasagneBase();
     makeQuarterSphere(0, 0, -0.5, 0.1);
-    makeStar();
+    makeRevolution();
 }
 
 function makeTighter() {
     makeTorus();
-    makeStar();
+    makeRevolution();
 }
 
 function makeTaller() {
-    makeStar();
+    makeRevolution();
 }
 
 function main() {
@@ -940,7 +940,7 @@ function main() {
     makeCylinder();
     makeSphere();
     makeTorus();
-    makeStar();
+    makeRevolution();
     makeLasagneBase();
     makeQuarterSphere(0, 0, -0.5, 0.1);
 
