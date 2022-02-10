@@ -35,6 +35,8 @@ Rotating the smaller disks in was the hardest part of this assignment for me. It
 
 ### Design
 
+![stars](./images/star.png)
+
 The basic idea of the star spiral is similar to the torus. First I created a flat star object. I then places it at even increments around the circumference of the base disk. Then I rotated the stars in and connected each star to the one after it. To make the stars spiral up I increased the y coordinate each time I created a new star.
 
 ### Notes
