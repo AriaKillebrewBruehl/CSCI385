@@ -47,6 +47,8 @@ let smoothness = 24;
 let scalar = 10;
 //
 let spiralRadius = 1.0;
+//
+let spiralHeight = 3.0;
 
 function makeCube() {
     /*
@@ -270,6 +272,7 @@ function makeTorus() {
      // object.
      //
 
+    r = spiralRadius;
     let width = 1.0;
     numFacets = smoothness;
     const dAngle = 2.0 * Math.PI / numFacets;
@@ -278,11 +281,11 @@ function makeTorus() {
 
     for (let i = 0; i < numFacets; i += 1) {
         const aCenter = dAngle * i;
-        const cx0 = Math.cos(aCenter);
+        const cx0 = r * Math.cos(aCenter);
         const cy = 0;
-        const cz0 = Math.sin(aCenter);
-        const cx1 = Math.cos(aCenter + dAngle);
-        const cz1 = Math.sin(aCenter + dAngle);
+        const cz0 = r * Math.sin(aCenter);
+        const cx1 = r * Math.cos(aCenter + dAngle);
+        const cz1 = r * Math.sin(aCenter + dAngle);
 
         for (let j = 0; j < numFacets; j+= 1) {
             const r = 0.5;
@@ -595,6 +598,7 @@ function makeLasagne() {
 
 function makeStar() {
     r = spiralRadius;
+    h = spiralHeight;
     const r0 = 0.20 ;
     const r1 = 0.05;
     numFacets = smoothness;
@@ -603,9 +607,9 @@ function makeStar() {
     const dAngle1 = 2.0 * Math.PI / 10;
     const dy = 5 * r0 / numFacets;
     glBegin(GL_TRIANGLES, "Star", true);
-    let y = -1.5;
+    let y = -h/2;
 
-    for (let k = 0; k < 3; k += 1) {
+    for (let k = 0; k < h; k += 1) {
     for (let i = 0; i < numFacets; i +=1) {
         y += dy;
         const aCenter = dAngle * i;
@@ -772,18 +776,23 @@ function handleKey(key, x, y) {
     if (key == '4') {
         showWhich = 4
     }
+    //
     if(key == '5') {
         showWhich = 5;
     }
+    //
     if (key == '6') {
         showWhich = 6;
     }
+    //
     if (key == 'l') {
         showWhich = 7;
     }
+    //
     if (key == 's') {
         showWhich = 8;
     }
+    //
     if (key == 'i') {
         smoothness += 20;
         makeSmoother()
@@ -793,6 +802,7 @@ function handleKey(key, x, y) {
         smoothness -= 20;
         makeSmoother();
     }
+    //
     if (key == 't') {
         spiralRadius -= 0.1;
         makeTighter();
@@ -800,9 +810,18 @@ function handleKey(key, x, y) {
     //
     if (key == 'd') {
         spiralRadius += 0.1;
-        makeTighter()
+        makeTighter();
     }
-
+    //
+    if (key == 'h') {
+        spiralHeight += 0.5;
+        makeTaller();
+    }
+    //
+    if (key == 'j') {
+        spiralHeight -= 0.5;
+        makeTaller();
+    }
     //
 
     glutPostRedisplay();
@@ -894,7 +913,12 @@ function makeSmoother() {
     makeStar();
 }
 
-function makeTighter(){
+function makeTighter() {
+    makeTorus();
+    makeStar();
+}
+
+function makeTaller() {
     makeStar();
 }
 
