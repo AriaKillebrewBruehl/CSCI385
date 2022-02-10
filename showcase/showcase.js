@@ -585,7 +585,7 @@ function makeLasagneBase(len, width, height, radius) {
 }
 
 function makeLasagne() {
-    const len = 2.0;
+    const len = 3.0;
     const width = (len / 4);
     const height = 0.02;
     const radius = 0.05;
