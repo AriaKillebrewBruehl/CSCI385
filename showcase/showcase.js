@@ -617,6 +617,7 @@ function makeRevolution() {
 
     for (let k = 0; k < h; k += 1) {
     for (let i = 0; i < numFacets; i +=1) {
+        let dColor = ( 1 / (numFacets * h) ) * (i * k);
         y += dy;
         const aCenter = dAngle * i;
         const cx0 = r * Math.cos(aCenter);
@@ -627,7 +628,7 @@ function makeRevolution() {
         const cz1 = r * Math.sin(aCenter + dAngle);
 
         for (let j = 0; j < 5; j += 1) {
-            const dColor = 0.05 * j;
+            const dColorj = 0.05 * j;
             const currentAngle0 = dAngle0 * j;
             const currentAngle1 = dAngle1 * (2 * j + 1);
 
@@ -673,9 +674,9 @@ function makeRevolution() {
 
 
         if (i % 2 == 0) {
-            glColor3f(0.70, 0.00, 0.70 + dColor);
+            glColor3f(0.70 % 1, 0.00 + dColor, 1.00 );
         } else {
-            glColor3f(1.0, 0.00, 0.70 + dColor);
+            glColor3f(0.50, 0.00 + dColor, 1.00 );
         }
             glVertex3f(cx0 + x000, cy0 + y000, cz0 + z000);
             glVertex3f(cx1 + x100, cy1 + y100 + dy, cz1 + z100);
