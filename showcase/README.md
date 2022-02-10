@@ -50,5 +50,7 @@ There is also a button to increase of decrease the tightness of the spiral. Tigh
 
 ### Design
 
+![lasagne](./images/lasagne.png)
+
 I decided to make a lasagne noodle as my pasta shape. The design is fairly straight forward. The center section is simply a rectangle. The wavy sides are made out of quarter spheres which alternate being rotated 180 degrees around the x axis. Since there are more parts of this shape I created a `makeLasagne()` function that calls `makeLasagneBase(len, width, height, radius)` (for the center rectangle) and `makeQuarterSpheres(x, y, z, radius, len)` (for the sides). I took care to make sure that the spheres would divide evenly into the base of the noodle by parameterizing the helper functions.
 
