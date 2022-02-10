@@ -599,13 +599,19 @@ function makeLasagne() {
 function makeRevolution() {
     r = spiralRadius;
     h = spiralHeight;
-    const r0 = 0.20 ;
-    const r1 = 0.05;
+    console.log(h);
     numFacets = smoothness;
+    const r0 = 0.20;
+    const r1 = 0.05;
+    let dy = 0;
+    if (h > 0.5) {
+        dy = 5 * r0 / numFacets;
+    }
+
     const dAngle = 2.0 * Math.PI / numFacets;
     const dAngle0 = 2.0 * Math.PI / 5;
     const dAngle1 = 2.0 * Math.PI / 10;
-    const dy = 5 * r0 / numFacets;
+
     glBegin(GL_TRIANGLES, "Star", true);
     let y = -h/2;
 
@@ -715,10 +721,10 @@ function drawObject() {
     if (showWhich == 5) {
     glBeginEnd("Torus");
     }
-    if (showWhich == 7) {
+    if (showWhich == 6) {
     makeLasagne();
     }
-    if (showWhich == 8) {
+    if (showWhich == 7) {
     glBeginEnd("Star");
     }
 
@@ -781,16 +787,12 @@ function handleKey(key, x, y) {
         showWhich = 5;
     }
     //
-    if (key == '6') {
+    if (key == 'l') {
         showWhich = 6;
     }
     //
-    if (key == 'l') {
-        showWhich = 7;
-    }
-    //
     if (key == 's') {
-        showWhich = 8;
+        showWhich = 7;
     }
     //
     if (key == 'i') {
