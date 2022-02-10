@@ -127,7 +127,7 @@ function makeCylinder(smoothness) {
      */
 
     const width = 1.0;
-    numFacets = smoothness;
+    const numFacets = 24;
     const dAngle = 2.0 * Math.PI / numFacets;
 
     glBegin(GL_TRIANGLES, "Cylinder", true);
@@ -908,8 +908,7 @@ function makeSmoother() {
     makeCylinder();
     makeSphere();
     makeTorus();
-    makeLasagneBase();
-    makeQuarterSphere(0, 0, -0.5, 0.1);
+    makeLasagne();
     makeRevolution();
 }
 
