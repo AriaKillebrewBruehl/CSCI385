@@ -1,5 +1,9 @@
 # CSCI 385 Program 1: Showcase
 
+## Running the Showcase
+
+To run the showcase and see these objects in action clone this repo, open the and run the command `open showcase.html`. The showcase will then open in your browser!
+
 ## Part 0: Increasing and Decreasing Smoothness :sparkles:
 
 To increase or decrease the smoothness of the sphere, torus, lasagne, or stars, the `numFacets` parameter is increased or decreased by `20` and the function `makeSmoother()` is called. This function increases simply redraws each of these figures. Since their smoothness is determined by `numFacets` they become more or less smooth.
