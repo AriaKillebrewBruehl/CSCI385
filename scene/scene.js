@@ -64,6 +64,78 @@ function setAngle2(angle) {
     glutPostRedisplay();
 }
 
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+// makeStar():
+//
+// Makes a unit regular star centered at the origin.
+//
+function makeStar() {
+    const r0 = 0.1;
+    const r1 = 0.5;
+
+    const dAngle0 = 2.0 * Math.PI / 5;
+    const dAngle1 = 2.0 * Math.PI / 10;
+
+    glBegin(GL_TRIANGLES, "Star");
+    console.log("hi");
+    for (let j = 0; j < 5; j += 1) {
+        const currentAngle0 = dAngle0 * j;
+        const currentAngle1 = dAngle1 * (2 * j + 1);
+
+        // standard star
+        let u00 = r0 * Math.cos(currentAngle0);
+        let v00 = r0 * Math.sin(currentAngle0);
+        let w00 = 0;
+
+        let u01 = r1 * Math.cos(currentAngle1);
+        let v01 = r1 * Math.sin(currentAngle1);
+        let w01 = 0;
+
+        let u10 = 0;
+        let v10 = 0;
+        let w10 = 0;
+
+        let u11 = r0 * Math.cos(currentAngle0 + 2 * dAngle1);
+        let v11 = r0 * Math.sin(currentAngle0 + 2 * dAngle1);
+        let w11 = 0;
+
+        glVertex3f(u00, v00, w00);
+        glVertex3f(u01, v01, w01);
+        glVertex3f(u10, v10, w00);
+
+        glVertex3f(u10, v10, w10);
+        glVertex3f(u01, v01, w01);
+        glVertex3f(u11, v11, w11);
+
+    }
+
+    glEnd();
+
+}
+
+// STAR
+//
+// Draws an star whose corner is at the origin
+// and whose radius is along the +x and +y axes with unit length.
+//
+function STAR() {
+    glBeginEnd("Star");
+}
+
+// ROCKET
+//
+// Below are a set of procedures for drawing a rocket
+//
+function ROCKET() {
+    glColor3f(0.0, 0.0, 0.0);
+    RECT()
+    glTranslatef(-1.0, 2,0, 0.0);
+    glRotatef(-90, 0, 0);
+    RTRI();
+}
 
 function makeWireCube() {
     glBegin(GL_LINES, "WireCube");
@@ -516,6 +588,72 @@ function drawHouse() {
 
 
 function drawSpace() {
+    glPushMatrix();
+    // Draw initial stars
+    // for (let i = 0; i < 10; i += 1) {
+    //     let randomColor = Math.random();
+    //     glColor3f(0.937, 0.882, 0.0 + randomColor);
+    //     glPushMatrix();
+    //     let randomX = getRandomArbitrary(-1.0, 1.0);
+    //     let randomY = getRandomArbitrary(-1.0, 1.0);
+    //     let randomScale = Math.random();
+    //     let randomRotate = getRandomArbitrary(0, 180);
+    //     glTranslatef(5.0 * randomX, 0.0, 0.0);
+    //     // glScalef(randomScale, randomScale, randomScale);
+    //     // glRotatef(randomRotate, 0.0, 0.0);
+
+    //     STAR()
+    //     glPopMatrix();
+    // }
+
+    // Draw the planets
+    // Neptunish
+    glColor3f(0.027, 0.227, 0.552);
+    glPushMatrix();
+    glTranslatef(-1.5, 1.0, 0.0);
+    glScalef(0.75, 0.75, 0.75);
+    DISK();
+    glPopMatrix();
+    // Plutoish
+    glColor3f(0.568, 0.564, 0.552);
+    glPushMatrix();
+    glTranslatef(1.5, -0.60, 0.0);
+    glScalef(0.2, 0.2, 0.2);
+    DISK();
+    glPopMatrix();
+    // Jupiterish
+    glColor3f(0.921, 0.682, 0.215);
+    glPushMatrix();
+    glTranslatef(-0.50, -0.60, 0.0);
+    DISK();
+    // Jupiter Storm
+    glColor3f(0.788, 0.317, 0.133);
+    glTranslatef(-0.3, -0.40, 0.0);
+    glScalef(0.5, 0.2, 0.0);
+    DISK();
+    glPopMatrix();
+
+    // Draw more stars
+    // for (let i = 0; i < 10; i += 1) {
+    //     let randomColor = Math.random();
+    //     glColor3f(0.937, 0.882, 0.0 + randomColor);
+    //     glPushMatrix();
+    //     let randomX = getRandomArbitrary(-1.0, 1.0);
+    //     let randomY = getRandomArbitrary(-1.0, 1.0);
+    //     let randomScale = Math.random();
+    //     let randomRotate = getRandomArbitrary(0, 180);
+    //     glTranslatef(5.0 * randomX, 0.0, 0.0);
+    //     // glScalef(randomScale, randomScale, randomScale);
+    //     // glRotatef(randomRotate, 0.0, 0.0);
+
+    //     STAR()
+    //     glPopMatrix();
+    // }
+
+    // Draw rocket
+
+
+    glPopMatrix();
 
 }
 function draw() {
@@ -526,6 +664,8 @@ function draw() {
     // Clear the rendering information.
     if (scene == "scene") {
 	glClearColor(0.8, 0.9, 1.0, 1.0);
+    } else if (scene == "space") {
+    glClearColor(0.560, 0.305, 0.592);
     } else {
 	glClearColor(0.4, 0.45, 0.5, 1.0);
     }
@@ -539,9 +679,9 @@ function draw() {
     glLoadIdentity();
 
     if (scene == "scene") {
-
 	drawHouse();
-
+    } else if (scene == "space") {
+    drawSpace();
     } else if (scene == "animation") {
 
 
@@ -667,6 +807,7 @@ function main() {
     makeDISK();
     makeSquare();
     makeWireCube();
+    makeStar();
 
     ortho(800,640);
 
