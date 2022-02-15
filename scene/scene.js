@@ -46,6 +46,10 @@ var sunLocation = {x: -1.5, y: 1.0};
 var lastw = 800;
 var lasth = 640;
 
+const randomX = [];
+const randomY = [];
+const randomScale = [];
+
 function setLevel(level) {
     recursiveLevels = level;
     // Redraw.
@@ -628,21 +632,18 @@ function drawHouse() {
 function drawSpace() {
     glPushMatrix();
     // // Draw initial stars
-    // for (let i = 0; i < 10; i += 1) {
-    //     let randomColor = Math.random();
-    //     glColor3f(0.937, 0.882, 0.0 + randomColor);
-    //     glPushMatrix();
-    //     let randomX = getRandomArbitrary(-1.0, 1.0);
-    //     let randomY = getRandomArbitrary(-1.0, 1.0);
-    //     let randomScale = Math.random();
-    //     let randomRotate = getRandomArbitrary(0, 180);
-    //     glTranslatef(5.0 * randomX, 0.0, 0.0);
-    //     // glScalef(randomScale, randomScale, randomScale);
-    //     // glRotatef(randomRotate, 0.0, 0.0);
+    for (let i = 0; i < 30; i += 1) {
+        let randomColor = Math.random();
+        glColor3f(0.937, 0.882, 0.0 + randomColor);
 
-    //     STAR()
-    //     glPopMatrix();
-    // }
+        glPushMatrix();
+        glRotatef(180 * randomScale, 0.0, 0.0, 1.0);
+        glTranslatef(randomX[i], randomY[i], 0.0);
+        glScalef(randomScale[i], randomScale[i], randomScale[i]);
+
+        STAR()
+        glPopMatrix();
+    }
 
     // Draw the planets
     // Neptunish
@@ -671,22 +672,18 @@ function drawSpace() {
     DISK();
     glPopMatrix();
 
-    // // Draw more stars
-    // for (let i = 0; i < 10; i += 1) {
-    //     let randomColor = Math.random();
-    //     glColor3f(0.937, 0.882, 0.0 + randomColor);
-    //     glPushMatrix();
-    //     let randomX = getRandomArbitrary(-1.0, 1.0);
-    //     let randomY = getRandomArbitrary(-1.0, 1.0);
-    //     let randomScale = Math.random();
-    //     let randomRotate = getRandomArbitrary(0, 180);
-    //     glTranslatef(5.0 * randomX, 0.0, 0.0);
-    //     // glScalef(randomScale, randomScale, randomScale);
-    //     // glRotatef(randomRotate, 0.0, 0.0);
+    // Draw more stars
+    for (let i = 0; i < 10; i += 1) {
+        let randomColor = Math.random();
+        glColor3f(0.937, 0.882, 0.0 + randomColor);
+        glPushMatrix();
+        glTranslatef(randomX[(i + 5) % 10], randomY[(i) % 10], 0.0);
+        glScalef(randomScale[i] * 2, randomScale[i] * 2, randomScale[i] * 2);
+        // glRotatef(randomRotate, 0.0, 0.0);
 
-    //     STAR()
-    //     glPopMatrix();
-    // }
+        STAR()
+        glPopMatrix();
+    }
 
     // Draw rocket
     glRotatef(45, 0, 0, 1);
@@ -848,6 +845,12 @@ function main() {
     makeSquare();
     makeWireCube();
     makeStar();
+
+    for (let i = 0; i < 10; i += 1) {
+        randomX.push(getRandomArbitrary(-2, 2));
+        randomY.push(getRandomArbitrary(-2, 2));
+        randomScale.push(getRandomArbitrary(0.25, 0.50));
+    }
 
     ortho(800,640);
 
