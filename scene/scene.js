@@ -342,6 +342,50 @@ function drawSquarepinski(levels) {
     }
 }
 
+// TWIG():
+//
+// Makes a 0.25 x 2 rectangle centered at the origin.
+//
+function TWIG() {
+    glPushMatrix();
+    glColor3f(0.556, 0.419, 0.145);
+    glTranslatef(-0.25, -1.50, 0.0);
+    glScalef(0.25 / 2, 2.0, 0.0);
+    BOX();
+    glPopMatrix();
+}
+// drawRecursiveBranch(levels):
+//
+// Draws the recursive figure of a leaf.  The integer
+// parameter `levels` indicates how many recursive levels should be
+// shown. 0 indicates that only a solid rectangle gets drawn.
+//
+function drawRecursiveBranch(levels) {
+    TWIG();
+    if (levels == 0) {
+        return
+    } else {
+        let thetas = [40, 40, 10];
+        let dYs = [-0.25, 0.4, 0.9];
+        glPushMatrix();
+        glScalef(1/3, 1/3, 1/3);
+        for (let i = 0; i < 3; i ++) {
+            glPushMatrix();
+            glRotatef(thetas[i], 0.0, 0.0, 1.0);
+            glTranslatef(0.0, dYs[i] * 3, 0.0);
+            glPushMatrix();
+            glColor3f(0.556, 0.419, 0.145);
+            glTranslatef(-0.25, -1.50, 0.0);
+            glScalef(0.25 / 2, 2.0, 0.0);
+            BOX();
+            glPopMatrix();
+            drawRecursiveBranch(levels - 1);
+            glPopMatrix();
+        }
+        glPopMatrix();
+    }
+}
+
 // RTRI
 //
 // Describes an isoceles right triangle whose corner is at the origin
@@ -556,8 +600,6 @@ function SUN() {
     glPopMatrix();
 }
 
-
-
 function handleKey(key, x, y) {
     /*
      * Handle a keypress.
@@ -580,6 +622,13 @@ function handleKey(key, x, y) {
     // Handle the r key.
     if (key == 'r') {
         scene = "recursive";
+        // Redraw.
+        glutPostRedisplay();
+    }
+
+    // Handle the r key.
+    if (key == 'l') {
+        scene = "leaf";
         // Redraw.
         glutPostRedisplay();
     }
@@ -635,7 +684,6 @@ function drawSpace() {
     for (let i = 0; i < 30; i += 1) {
         let randomColor = Math.random();
         glColor3f(0.937, 0.882, 0.0 + randomColor);
-
         glPushMatrix();
         glRotatef(180 * randomScale, 0.0, 0.0, 1.0);
         glTranslatef(randomX[i], randomY[i], 0.0);
@@ -678,8 +726,7 @@ function drawSpace() {
         glColor3f(0.937, 0.882, 0.0 + randomColor);
         glPushMatrix();
         glTranslatef(randomX[(i + 5) % 10], randomY[(i) % 10], 0.0);
-        glScalef(randomScale[i] * 2, randomScale[i] * 2, randomScale[i] * 2);
-        // glRotatef(randomRotate, 0.0, 0.0);
+        glScalef(randomScale[i] * 2, randomScale[i] * 2, randomScale[i] * 2); // so new stars are not in position of initial stars
 
         STAR()
         glPopMatrix();
@@ -689,9 +736,7 @@ function drawSpace() {
     glRotatef(45, 0, 0, 1);
     ROCKET();
 
-
     glPopMatrix();
-
 }
 function draw() {
     /*
@@ -703,6 +748,8 @@ function draw() {
 	glClearColor(0.8, 0.9, 1.0, 1.0);
     } else if (scene == "space") {
     glClearColor(0.560, 0.305, 0.592);
+    } else if (scene == "leaf") {
+        glClearColor(0.803, 0.972, 0.976);
     } else {
 	glClearColor(0.4, 0.45, 0.5, 1.0);
     }
@@ -730,11 +777,16 @@ function draw() {
 
     } else if (scene == "recursive") {
 
-	glColor3f(0.5, 0.3, 0.55);
+	glClearColor(0.5, 0.3, 0.55);
 	glPushMatrix();
 	glScalef(3.0,3.0,3.0);
 	drawSquarepinski(recursiveLevels);
 	glPopMatrix();
+
+    } else if (scene == "leaf") {
+    glPushMatrix();
+    drawRecursiveBranch(1);
+    glPopMatrix();
 
     }
     // Render the scene.
