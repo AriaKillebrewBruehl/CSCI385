@@ -644,51 +644,52 @@ function drawSpace() {
     //     glPopMatrix();
     // }
 
-    // // Draw the planets
-    // // Neptunish
-    // glColor3f(0.027, 0.227, 0.552);
-    // glPushMatrix();
-    // glTranslatef(-1.5, 1.0, 0.0);
-    // glScalef(0.75, 0.75, 0.75);
-    // DISK();
-    // glPopMatrix();
-    // // Plutoish
-    // glColor3f(0.568, 0.564, 0.552);
-    // glPushMatrix();
-    // glTranslatef(1.5, -0.60, 0.0);
-    // glScalef(0.2, 0.2, 0.2);
-    // DISK();
-    // glPopMatrix();
-    // // Jupiterish
-    // glColor3f(0.921, 0.682, 0.215);
-    // glPushMatrix();
-    // glTranslatef(-0.50, -0.60, 0.0);
-    // DISK();
-    // // Jupiter Storm
-    // glColor3f(0.788, 0.317, 0.133);
-    // glTranslatef(-0.3, -0.40, 0.0);
-    // glScalef(0.5, 0.2, 0.0);
-    // DISK();
-    // glPopMatrix();
+    // Draw the planets
+    // Neptunish
+    glColor3f(0.027, 0.227, 0.552);
+    glPushMatrix();
+    glTranslatef(-1.5, 1.0, 0.0);
+    glScalef(0.75, 0.75, 0.75);
+    DISK();
+    glPopMatrix();
+    // Plutoish
+    glColor3f(0.568, 0.564, 0.552);
+    glPushMatrix();
+    glTranslatef(1.5, -0.60, 0.0);
+    glScalef(0.2, 0.2, 0.2);
+    DISK();
+    glPopMatrix();
+    // Jupiterish
+    glColor3f(0.921, 0.682, 0.215);
+    glPushMatrix();
+    glTranslatef(-0.50, -0.60, 0.0);
+    DISK();
+    // Jupiter Storm
+    glColor3f(0.788, 0.317, 0.133);
+    glTranslatef(-0.3, -0.40, 0.0);
+    glScalef(0.5, 0.2, 0.0);
+    DISK();
+    glPopMatrix();
 
     // // Draw more stars
-    // // for (let i = 0; i < 10; i += 1) {
-    // //     let randomColor = Math.random();
-    // //     glColor3f(0.937, 0.882, 0.0 + randomColor);
-    // //     glPushMatrix();
-    // //     let randomX = getRandomArbitrary(-1.0, 1.0);
-    // //     let randomY = getRandomArbitrary(-1.0, 1.0);
-    // //     let randomScale = Math.random();
-    // //     let randomRotate = getRandomArbitrary(0, 180);
-    // //     glTranslatef(5.0 * randomX, 0.0, 0.0);
-    // //     // glScalef(randomScale, randomScale, randomScale);
-    // //     // glRotatef(randomRotate, 0.0, 0.0);
+    // for (let i = 0; i < 10; i += 1) {
+    //     let randomColor = Math.random();
+    //     glColor3f(0.937, 0.882, 0.0 + randomColor);
+    //     glPushMatrix();
+    //     let randomX = getRandomArbitrary(-1.0, 1.0);
+    //     let randomY = getRandomArbitrary(-1.0, 1.0);
+    //     let randomScale = Math.random();
+    //     let randomRotate = getRandomArbitrary(0, 180);
+    //     glTranslatef(5.0 * randomX, 0.0, 0.0);
+    //     // glScalef(randomScale, randomScale, randomScale);
+    //     // glRotatef(randomRotate, 0.0, 0.0);
 
-    // //     STAR()
-    // //     glPopMatrix();
-    // // }
+    //     STAR()
+    //     glPopMatrix();
+    // }
 
     // Draw rocket
+    glRotatef(45, 0, 0, 1);
     ROCKET();
 
 
