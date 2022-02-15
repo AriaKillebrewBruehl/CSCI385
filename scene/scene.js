@@ -50,6 +50,8 @@ const randomX = [];
 const randomY = [];
 const randomScale = [];
 
+let n = 12;
+
 function setLevel(level) {
     recursiveLevels = level;
     // Redraw.
@@ -300,6 +302,159 @@ function drawWavingArm() {
     glPopMatrix();
     glPopMatrix();
 }
+
+
+function makeWireNPolygon() {
+    let dAngle = 2 * Math.PI / n;
+    let r = 0.5;
+
+    glBegin(GL_LINES, "WireNPolygon");
+
+    // Produce the top and bottom.
+    for (let i = 0; i < n; i += 1) {
+        const a = dAngle * i;
+        const x0 = r * Math.cos(a);
+        const y0 = r * Math.sin(a);
+        const x1 = r * Math.cos(a + dAngle);
+        const y1 = r * Math.sin(a + dAngle);
+
+    glVertex3f(x0, y0, 0.0);
+    glVertex3f(x1, y1, 0.0);
+    glVertex3f(x0, y0, 1.0);
+    glVertex3f(x1, y1, 1.0);
+    }
+
+    // Sides
+    for (let i = 0; i < n; i += 1) {
+        const a = dAngle * i;
+        const x0 = r * Math.cos(a);
+        const y0 = r * Math.sin(a);
+
+        glVertex3f(x0, y0, 0.0);
+        glVertex3f(x0, y0, 1.0);
+    }
+
+    glEnd();
+}
+
+function makeWireNCone() {
+
+    let dAngle = 2 * Math.PI / n;
+    let r = 0.5;
+
+    glBegin(GL_LINES, "WireNCone");
+
+    for (let i = 0; i < n; i += 1) {
+        const a = dAngle * i;
+        const x0 = r * Math.cos(a);
+        const y0 = r * Math.sin(a);
+        const x1 = r * Math.cos(a + dAngle);
+        const y1 = r * Math.sin(a + dAngle);
+
+    glVertex3f(x0, y0, 1.0);
+    glVertex3f(x1, y1, 1.0);
+
+    glVertex3f(0.0, 0.0, 0.0);
+    glVertex3f(x0, y0, 1.0);
+    }
+
+    glEnd();
+
+}
+
+function SHADE() {
+    glPushMatrix();
+    glScalef(1.0, 1.0, 0.25);
+    glBeginEnd("WireNCone");
+    glPopMatrix();
+
+    glPushMatrix();
+    glTranslatef(0.0, 0.0, 0.25);
+    glScalef(1.0, 1.0, 0.25);
+    glBeginEnd("WireNPolygon");
+    glPopMatrix();
+}
+
+function BASE() {
+    glPushMatrix();
+    glScalef(1.0, 1.0, 0.10);
+    glBeginEnd("WireNPolygon");
+    glPopMatrix();
+}
+
+
+function drawLuxoJr() {
+    SHADE();
+    BASE();
+    // if (animate) {
+	// shoulder += 7.5/180.0 * Math.PI;
+	// elbow += 7.5/180.0 * Math.PI;
+	// wrist += 15/180.0 * Math.PI;
+    // }
+
+    // const length = 0.8;
+    // const width = 0.25;
+
+    // const shoulderAngle = 20.0 * Math.cos(shoulder) + 20;
+    // const elbowAngle = 40.0 * Math.sin(elbow) + 40.0;
+    // const wristAngle = -75.0 * Math.sin(wrist);
+
+    // glColor3f(0.5,0.6,0.2)
+
+    // glPushMatrix();
+    // glScalef(1.5,1.5,1.5);
+    // glTranslatef(-length * 1.5, -length * 1.25, 0.0);
+    // glRotatef(shoulderAngle, 0.0, 0.0, 1.0);
+
+    // // Upper arm.
+    // glPushMatrix();
+    // glTranslatef(length/2, 0.0, 0.0);
+    // glScalef(length, width, width);
+    // glBeginEnd("WireCube");
+    // glPopMatrix();
+
+    // glTranslatef(length, 0.0, 0.0);
+    // glRotatef(elbowAngle, 0.0, 0.0, 1.0);
+
+    // // Forearm.
+    // glPushMatrix();
+    // glTranslatef(1.5 * length/2, 0.0, 0.0);
+    // glScalef(1.4 * length, 0.8 * width, 0.8 * width);
+    // glBeginEnd("WireCube");
+    // glPopMatrix();
+
+    // glTranslatef(1.5 * length, 0.0, 0.0);
+    // glRotatef(wristAngle, 0.0, 0.0, 1.0);
+
+    // // Palm/hand.
+    // glPushMatrix();
+    // glTranslatef(width, 0.0, 0.0);
+    // glPushMatrix();
+    // glScalef(2*width, width, width/2);
+    // glBeginEnd("WireCube");
+    // glPopMatrix();
+
+    // // Fingers
+    // for (let f = 0; f < 4; f++) {
+	// glPushMatrix();
+	// glRotatef(f*15.0-15.0, 0.0, 0.0, 1.0);
+	// glTranslatef(width*2,0.0,0.0);
+	// glScalef(width*1.5,width/4,width/4);
+	// glBeginEnd("WireCube");
+	// glPopMatrix();
+    // }
+    // // Thumb
+    // glPushMatrix();
+    // glRotatef(90, 0.0, 0.0, 1.0);
+    // glTranslatef(width,0.0,0.0);
+    // glScalef(width,width/3,width/3);
+    // glBeginEnd("WireCube");
+    // glPopMatrix();
+
+    // glPopMatrix();
+    // glPopMatrix();
+}
+
 
 // makeSquare():
 //
@@ -633,12 +788,25 @@ function handleKey(key, x, y) {
         glutPostRedisplay();
     }
 
-    // Handle the r key.
+    // Handle the a key.
     if (key == 'a') {
 	if (scene == "animation") {
 	    animate = !animate;
 	} else {
 	    scene = "animation";
+	    animate = true;
+	}
+
+        // Redraw.
+        glutPostRedisplay();
+    }
+
+    // Handle the j key.
+    if (key == 'j') {
+	if (scene == "jr_animation") {
+	    animate = !animate;
+	} else {
+	    scene = "jr_animation";
 	    animate = true;
 	}
 
@@ -775,6 +943,15 @@ function draw() {
 	drawWavingArm();
 	glPopMatrix();
 
+    } else if (scene == "jr_animation") {
+
+
+        glPushMatrix();
+        // Reorient according to the "trackball" motion of mouse drags.
+        orientation.glRotatef();
+        drawLuxoJr();
+        glPopMatrix();
+
     } else if (scene == "recursive") {
 
 	glClearColor(0.5, 0.3, 0.55);
@@ -878,6 +1055,11 @@ function handleMouseMotion(x, y) {
 	angle = Math.asin(Math.min(Math.sqrt(dx*dx+dy*dy),1.0))
 	orientation = quatClass.for_rotation(angle,axis).times(orientation);
     }
+    if (scene == "jr_animation") {
+        axis = (new vector(-dy,dx,0.0)).unit()
+        angle = Math.asin(Math.min(Math.sqrt(dx*dx+dy*dy),1.0))
+        orientation = quatClass.for_rotation(angle,axis).times(orientation);
+        }
     if (scene == "scene") {
 	sunLocation = mouseStart;
     }
@@ -896,6 +1078,8 @@ function main() {
     makeDISK();
     makeSquare();
     makeWireCube();
+    makeWireNPolygon();
+    makeWireNCone();
     makeStar();
 
     for (let i = 0; i < 10; i += 1) {
