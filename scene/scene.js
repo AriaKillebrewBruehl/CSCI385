@@ -382,77 +382,80 @@ function BASE() {
     glPopMatrix();
 }
 
+let jr_animate = true;
+let base = 10.0;
+let hinge = -60.0;
+let shade = -30.0;
 
 function drawLuxoJr() {
-    SHADE();
-    BASE();
+
     // if (animate) {
 	// shoulder += 7.5/180.0 * Math.PI;
 	// elbow += 7.5/180.0 * Math.PI;
 	// wrist += 15/180.0 * Math.PI;
     // }
 
-    // const length = 0.8;
-    // const width = 0.25;
+    const height = 1.5;
+    const width = 0.15;
+    const baseHeight = 0.1;
 
-    // const shoulderAngle = 20.0 * Math.cos(shoulder) + 20;
-    // const elbowAngle = 40.0 * Math.sin(elbow) + 40.0;
-    // const wristAngle = -75.0 * Math.sin(wrist);
+    const baseAngle = 20.0 * Math.cos(base) + 20;
+    const hingeAngle = 40.0 * Math.sin(hinge) + 40.0;
+    const shadeAngle = -75.0 * Math.sin(shade);
 
-    // glColor3f(0.5,0.6,0.2)
+    glColor3f(0.5,0.6,0.2)
 
-    // glPushMatrix();
-    // glScalef(1.5,1.5,1.5);
-    // glTranslatef(-length * 1.5, -length * 1.25, 0.0);
-    // glRotatef(shoulderAngle, 0.0, 0.0, 1.0);
+    glPushMatrix();
+    glTranslatef(-1.5, -1.5, 0.0);
+    // Place base
+    {
+    glPushMatrix();
+    glRotatef(90.0, 90.0, 0.0, 1.0);
+    glScalef(1.2, 1.0, 1.2);
+    BASE();
+    glPopMatrix();
+    }
 
-    // // Upper arm.
-    // glPushMatrix();
-    // glTranslatef(length/2, 0.0, 0.0);
-    // glScalef(length, width, width);
-    // glBeginEnd("WireCube");
-    // glPopMatrix();
+    // Base to hinge segment
+    {
+    glPushMatrix();
+    glRotatef(base, 0.0, 0.0, 1.0);
+    glTranslatef(0.0, height / 2, 0.0);
+    glScalef(width, height, width);
+    glBeginEnd("WireCube");
+    glPopMatrix();
+    }
 
-    // glTranslatef(length, 0.0, 0.0);
-    // glRotatef(elbowAngle, 0.0, 0.0, 1.0);
+    // Hinge to shade
+    {
+    glPushMatrix();
+    glRotatef(base, 0.0, 0.0, 1.0);
+    glTranslatef(0.0, height, 0.0);
+    glPushMatrix();
+    glRotatef(hinge, 0.0, 0.0, 1.0);
+    glTranslatef(0.0, height / 2, 0.0);
+    glScalef(width, height, width);
+    glBeginEnd("WireCube");
+    glPopMatrix();
+    glPopMatrix();
+    }
 
-    // // Forearm.
-    // glPushMatrix();
-    // glTranslatef(1.5 * length/2, 0.0, 0.0);
-    // glScalef(1.4 * length, 0.8 * width, 0.8 * width);
-    // glBeginEnd("WireCube");
-    // glPopMatrix();
+    // Hinge
+    {
+    glPushMatrix();
+    glRotatef(base, 0.0, 0.0, 1.0);
+    glTranslatef(0.0, height, 0.0);
+    glRotatef(hinge, 0.0, 0.0, 1.0);
+    glTranslatef(0.0, height, 0.0);
+    glPushMatrix();
+    glRotatef(90, 0.0, 1.0, 0.0);
+    SHADE();
+    glPopMatrix()
+    glPopMatrix()
+    }
 
-    // glTranslatef(1.5 * length, 0.0, 0.0);
-    // glRotatef(wristAngle, 0.0, 0.0, 1.0);
 
-    // // Palm/hand.
-    // glPushMatrix();
-    // glTranslatef(width, 0.0, 0.0);
-    // glPushMatrix();
-    // glScalef(2*width, width, width/2);
-    // glBeginEnd("WireCube");
-    // glPopMatrix();
-
-    // // Fingers
-    // for (let f = 0; f < 4; f++) {
-	// glPushMatrix();
-	// glRotatef(f*15.0-15.0, 0.0, 0.0, 1.0);
-	// glTranslatef(width*2,0.0,0.0);
-	// glScalef(width*1.5,width/4,width/4);
-	// glBeginEnd("WireCube");
-	// glPopMatrix();
-    // }
-    // // Thumb
-    // glPushMatrix();
-    // glRotatef(90, 0.0, 0.0, 1.0);
-    // glTranslatef(width,0.0,0.0);
-    // glScalef(width,width/3,width/3);
-    // glBeginEnd("WireCube");
-    // glPopMatrix();
-
-    // glPopMatrix();
-    // glPopMatrix();
+    glPopMatrix();
 }
 
 
@@ -845,7 +848,6 @@ function drawHouse() {
     glPopMatrix();
 }
 
-
 function drawSpace() {
     glPushMatrix();
     // // Draw initial stars
@@ -856,7 +858,6 @@ function drawSpace() {
         glRotatef(180 * randomScale, 0.0, 0.0, 1.0);
         glTranslatef(randomX[i], randomY[i], 0.0);
         glScalef(randomScale[i], randomScale[i], randomScale[i]);
-
         STAR()
         glPopMatrix();
     }
@@ -895,7 +896,6 @@ function drawSpace() {
         glPushMatrix();
         glTranslatef(randomX[(i + 5) % 10], randomY[(i) % 10], 0.0);
         glScalef(randomScale[i] * 2, randomScale[i] * 2, randomScale[i] * 2); // so new stars are not in position of initial stars
-
         STAR()
         glPopMatrix();
     }
