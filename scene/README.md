@@ -10,6 +10,7 @@ Coming soon!
 
 ## Part 1: Drawing
 
+![Drawing](./images/drawing.png)
 ### Design
 
 Before I started the drawing I generated 3 random lists, `randomX`, `randomY`, and `randomScale`. This was done in `main()` rather than `drawSpace()` since the image is redraw approximately 60 times per second, so doing these calculations in `drawSpace()` made the stars look like they moving all over the page.
