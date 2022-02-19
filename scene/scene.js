@@ -414,14 +414,6 @@ function SHADE() {
     glTranslatef(0.0, 0.0, -0.5);
     BULB(1.0, 0.35);
     glPopMatrix();
-
-    if (lightOn) {
-        glPushMatrix();
-        //glScalef(1.0, 1.0, -1.0);
-        glTranslatef(0.0, 0.0, 0.65);
-        glBeginEnd("WireLightRays");
-        glPopMatrix();
-    }
 }
 
 function BASE() {
@@ -536,7 +528,7 @@ function drawLuxoJr() {
     glPopMatrix();
     }
 
-    // Shade and bulb
+    // Shade and light
     {
     glPushMatrix();
     glRotatef(baseAngle, 0.0, 0.0, 1.0);
@@ -546,6 +538,10 @@ function drawLuxoJr() {
     glPushMatrix();
     glRotatef(90, 0.0, 1.0, 0.0);
     SHADE();
+    if (lightOn) {
+        glTranslatef(0.0, 0.0, 0.65);
+        glBeginEnd("WireLightRays");
+    }
     glPopMatrix()
     }
     glPopMatrix();
@@ -591,6 +587,35 @@ function drawSquarepinski(levels) {
         }
         glPopMatrix();
     }
+}
+
+// drawTripinski(levels):
+//
+// Draws the recursive figure of a Sierpinski triangle.  The integer
+// parameter `levels` indicates how many recursive levels should be
+// shown. 0 indicates that only a solid triangle gets drawn.
+//
+function drawTripinski(levels) {
+    if (levels == 0) {
+        EQTRI();
+    } else {
+        glPushMatrix();
+        glScalef(1/2, 1/2, 1/2);
+        for (let i = -1; i <= 1; i++) {
+            glPushMatrix();
+            if (i == 0) {
+                glTranslatef(i / 2, Math.sqrt(3) / 2, 0.0);
+            } else {
+                glTranslatef(i / 2, 0.0, 0.0);
+            }
+            drawTripinski(levels - 1);
+            glPopMatrix();
+        }
+        glPopMatrix();
+    }
+
+	//EQTRI();
+
 }
 
 // TWIG():
@@ -657,6 +682,22 @@ function makeRTRI() {
 //
 function RTRI() {
     glBeginEnd("RTRI");
+}
+
+// EQTRI
+//
+// Draws an equilateral triangle whose corner is at the origin
+// and whose sides are unit length.
+//
+function EQTRI() {
+    glPushMatrix();
+    glScalef(0.5, Math.sqrt(3)/2, 1.0);
+    glBeginEnd("RTRI");
+    glPopMatrix();
+    glPushMatrix();
+    glScalef(-0.5, Math.sqrt(3)/2, 1.0);
+    glBeginEnd("RTRI");
+    glPopMatrix();
 }
 
 // makeDISK
@@ -877,9 +918,9 @@ function handleKey(key, x, y) {
         glutPostRedisplay();
     }
 
-    // Handle the r key.
-    if (key == 'l') {
-        scene = "leaf";
+    // Handle the b key.
+    if (key == 't') {
+        scene = "triangle";
         // Redraw.
         glutPostRedisplay();
     }
@@ -899,15 +940,27 @@ function handleKey(key, x, y) {
 
     // Handle the j key.
     if (key == 'j') {
+        lightOn = !lightOn;
 	if (scene == "jr_animation") {
-	    jr_animate = !animate;
+	    jr_animate = !jr_animate;
 	} else {
 	    scene = "jr_animation";
 	    jr_animate = true;
 	}
 
+     // Handle the l key
+     if (key == 'q') {
+        console.log('hello');
+        lightOn = !lightOn;
+        // Redraw.
+
+    }
         // Redraw.
         glutPostRedisplay();
+
+
+
+
     }
 
 }
@@ -1054,9 +1107,12 @@ function draw() {
 	drawSquarepinski(recursiveLevels);
 	glPopMatrix();
 
-    } else if (scene == "leaf") {
+    } else if (scene == "triangle") {
+    glClearColor(0.5, 0.3, 0.55);
     glPushMatrix();
-    drawRecursiveBranch(1);
+    glScalef(3.0,3.0,3.0);
+    glTranslatef(0.0, -0.5, 0.0);
+    drawTripinski(recursiveLevels);
     glPopMatrix();
 
     }
