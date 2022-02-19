@@ -43,7 +43,13 @@ After the planet and rocket is drawn more stars are place, the positioning and s
 
 The planets are simply scaled circles and the rocket is a combination of a square, a circle, and some triangles.
 
-## Part 2: Recursive Drawing
+## Part 2: Recursive Drawing 	:cyclone:
+
+![Triangles](./images/triangles.png)
+
+### Design
+
+The Sierpinski triangles are drawn by recursively calling the ` drawTripinski(levels)` function. On each call the coordinate matrix is scaled by `0.5` in all directions. Then it is shifted by `0.5` to the right / left or shifted up by `Math.sqrt(3) / 2` up and the recursive call is made.
 
 ## Part 3: Animation :bulb:
 
