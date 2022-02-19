@@ -6,7 +6,9 @@ To run the scene and see the various components in action clone this repo, open 
 
 ## Live Demo
 
-Coming soon!
+[![Watch the video](./images/thumbnail.png)](https://youtu.be/-3DUvC5bPxE?t=39)
+
+
 
 ## Part 1: Drawing :framed_picture:
 
