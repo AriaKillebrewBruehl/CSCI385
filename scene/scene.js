@@ -341,12 +341,12 @@ function makeWireNPolygon() {
     glEnd();
 }
 
-function makeWireNCone() {
+function makeWireNPyramid() {
 
     let dAngle = 2 * Math.PI / n;
     let r = 0.5;
 
-    glBegin(GL_LINES, "WireNCone");
+    glBegin(GL_LINES, "WireNPyramid");
 
     for (let i = 0; i < n; i += 1) {
         const a  = dAngle * i;
@@ -366,11 +366,11 @@ function makeWireNCone() {
 
 }
 
-function makeWireTruncatedCone() {
+function makeWireTruncatedPyramid() {
 
     let dAngle = 2 * Math.PI / n;
 
-    glBegin(GL_LINES, "WireNTruncatedCone");
+    glBegin(GL_LINES, "WireNTruncatedPyramid");
 
     for (let i = 0; i < n; i += 1) {
         const a  = dAngle * i;
@@ -400,7 +400,7 @@ function makeWireTruncatedCone() {
 function SHADE() {
     glPushMatrix();
     glScalef(1.0, 1.0, 0.25);
-    glBeginEnd("WireNCone");
+    glBeginEnd("WireNPyramid");
     glPopMatrix();
 
     glPushMatrix();
@@ -428,15 +428,19 @@ function BULB(upper, lower) {
     r1 = lower;
     glPushMatrix();
     glScalef(0.2, 0.2, 0.25);
-    glBeginEnd("WireNTruncatedCone");
+    glBeginEnd("WireNTruncatedPyramid");
     glScalef(1.0, 1.0, -0.5);
-    glBeginEnd("WireNTruncatedCone");
+    glBeginEnd("WireNTruncatedPyramid");
     glPopMatrix();
 }
 
 function KNOB() {
     glPushMatrix();
-    glScalef(0.1, 0.1, 0.1);
+    glScalef(0.25, 0.1, 0.1);
+
+    if (lightOn) {
+        glRotatef(90.0, 1.0, 0.0, 0.0);
+    }
     glBeginEnd("WireNPolygon");
     glPopMatrix();
 }
@@ -466,33 +470,27 @@ function makeWireLightRays() {
 }
 let jr_animate = true;
 let base = 10.0;
-let hinge = -60.0;
-let shade = -30.0;
+let hinge = -90.0;
+let shade = 270.0;
 
 function drawLuxoJr() {
-
-
-    // if (jr_animate) {
-	// base += 1.5/180.0 * Math.PI;
-	// hinge += 1.5/180.0 * Math.PI;
-	// shade += 2.5/180.0 * Math.PI;
-    // }
+    if (jr_animate) {
+	base  += Math.PI / 180.0;
+	hinge += Math.PI / 180.0;
+    shade += Math.PI / 180.0;
+    }
 
     const height = 1.5;
     const width = 0.15;
-    const baseHeight = 0.1;
 
-    // const baseAngle = 50.0 * Math.cos(base);
-    // const hingeAngle = 50.0 * Math.sin(hinge);
-    // const shadeAngle = -75.0 * Math.sin(shade);
-    const baseAngle = base;
-    const hingeAngle = hinge;
-    const shadeAngle = -75.0 * Math.sin(shade);
+    const baseAngle = 15.0 * Math.cos(base);
+    const hingeAngle = -45 + 30.0 * Math.sin(hinge);
+    const shadeAngle = 90 -50.0 * Math.cos(shade);
 
     glColor3f(0.5,0.6,0.2)
 
     glPushMatrix();
-    glTranslatef(-1.5, -1.5, 0.0);
+    glTranslatef(-1.0, -1.75, 0.0);
     // Place base
     {
     glPushMatrix();
@@ -536,7 +534,7 @@ function drawLuxoJr() {
     glRotatef(hingeAngle, 0.0, 0.0, 1.0);
     glTranslatef(0.0, height, 0.0);
     glPushMatrix();
-    glRotatef(90, 0.0, 1.0, 0.0);
+    glRotatef(shadeAngle, 0.0, 1.0, 0.0);
     SHADE();
     if (lightOn) {
         glTranslatef(0.0, 0.0, 0.65);
@@ -1229,8 +1227,8 @@ function main() {
     makeSquare();
     makeWireCube();
     makeWireNPolygon();
-    makeWireNCone();
-    makeWireTruncatedCone();
+    makeWireNPyramid();
+    makeWireTruncatedPyramid();
     makeWireLightRays();
     makeStar();
 
