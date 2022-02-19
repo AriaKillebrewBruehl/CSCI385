@@ -8,7 +8,7 @@ To run the scene and see the various components in action clone this repo, open 
 
 Coming soon!
 
-## Part 1: Drawing
+## Part 1: Drawing :framed_picture:
 
 ![Drawing](./images/drawing.png)
 ### Design
@@ -43,4 +43,15 @@ The planets are simply scaled circles and the rocket is a combination of a squar
 
 ## Part 2: Recursive Drawing
 
-## Part 3: Animation
+## Part 3: Animation :bulb:
+
+![Lamp](./images/lamp.png)
+### Design
+
+The lamp is draw out of 6 wire-frame objects which are scaled and rotated accordingly. The base and switch are made of a `WireNPolygon`, a `N` sided regular prism. Each arm is made of a `WireCube`. The shade is constructed from a `WireNPolygon` and a `WireNPyramid`, a pyramid with `N` sides. The bulb is made from two `WireNTruncatedPyramid`s. Finally, the light rays are made from  `WireLightRays` which simply just the sides of the `WireTruncatedPyramid`.
+
+The animation is done by varying the `baseAngle`, `hingeAngle`, and `shadeAngle`. When the lamp is animated the light turns off. When the animation is paused (press the j key again) the light turns on.
+
+### Notes
+
+The lamp offers a fun optical illusion! Pause the animation and guess which direction the lamp shade is facing. Then drag the image to check. My roommate and I got in many arguments about this!
