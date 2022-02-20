@@ -6,8 +6,8 @@ This course is an introduction to computer image synthesis and mathematical mode
 
 ## Program 1 Showcase :mag_right:
 
-Simple 3-D object rendering program. ![See more here](https://github.com/AriaKillebrewBruehl/CSCI385/blob/main/showcase/README.md)
+Simple 3-D object rendering program. [See more here](https://github.com/AriaKillebrewBruehl/CSCI385/blob/main/showcase/README.md)
 
 ## Program 2 Scene :film_projector:
 
-Program 2 creates a simple drawing and animated object by specifying rotations, scaling, and translations of the coordinate matrix. ![See more here](https://github.com/AriaKillebrewBruehl/CSCI385/blob/main/scene/README.md)
+Program 2 creates a simple drawing and animated object by specifying rotations, scaling, and translations of the coordinate matrix. [See more here](https://github.com/AriaKillebrewBruehl/CSCI385/blob/main/scene/README.md)
