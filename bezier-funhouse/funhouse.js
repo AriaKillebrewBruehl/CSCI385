@@ -39,7 +39,7 @@ class Sphere {
 	    this.position    = position0;
 	    this.radius      = MINIMUM_PLACEMENT_SCALE;
     }
-    
+
     resize(scale, bounds) {
 	    //
         // Resize the sphere.  Some checks prevent growing it beyond
@@ -50,7 +50,7 @@ class Sphere {
 	    scale = Math.min(scale, bounds.top - this.position.y);
 	    scale = Math.min(scale, this.position.x - bounds.left);
 	    scale = Math.min(scale, this.position.y - bounds.bottom) ;
-	    this.radius = scale;    
+	    this.radius = scale;
     }
 
     moveTo(position, bounds) {
@@ -97,7 +97,7 @@ class Sphere {
 
 	    // draw with highlights
 	    if (highlightColor != null) {
-	        
+
 	        glColor3f(highlightColor.r,
 		              highlightColor.g,
 		              highlightColor.b);
@@ -107,7 +107,7 @@ class Sphere {
 	    }
 
 	    glPopMatrix();
-    }	
+    }
 }
 
 
@@ -120,7 +120,7 @@ class Curve {
     // edited externally by a client. The client is required to call
     // the `update` method when any control point has been
     // edited. This will trigger a "recompiling" of the points of the
-    // polyline used to render the Bezier curve. 
+    // polyline used to render the Bezier curve.
     //
     constructor(controlPoints) {
         this.controlPoints = controlPoints; // Should be an array of 3 Point3d objects.
@@ -128,6 +128,49 @@ class Curve {
         this.points        = [];    // The samples for the approximation of the curve.
         this.compiled      = false; // Has `this.points` been computed?
     }
+
+    generate_points(point_set) {
+        // check if curve is smooth enough
+        // if (in_range(points)) {
+        //     return points
+        // }
+        // otherwise create a new set of points using Chaikin's algorithm
+        var new_points = [];
+        var i = 0;
+        console.log(point_set.length);
+        while (i < point_set.length - 1) {
+            var p0 = point_set[i];
+            var p1 = point_set[i+1];
+
+            var q = p0.combo(1/4, p1);
+            var r = p0.combo(3/4, p1);
+
+            new_points.push(q);
+            new_points.push(r);
+            i++;
+        }
+        console.log(new_points.length);
+        return new_points;
+        //generate_points(new_points);
+    }
+
+    // in_range(points) {
+    //     var i = 0;
+    //     while (i < points.length - 2) {
+    //         var p0 = points[i];
+    //         var p1 = points[i+1];
+    //         var p2 = points[i+2];
+
+    //         // total distance from p0 to p1 and p1 to p2
+    //         var actual = p1.dist(p0) + p2.dist(p1);
+    //         // approximated distance between p2 and p0
+    //         var d = p2.dist(p0);
+
+    //         if (d + (1/SMOOTHNESS) < actual) { return false; }
+    //         i++;
+    //     }
+    //     return true;
+    // }
 
     compile() {
         //
@@ -141,16 +184,24 @@ class Curve {
         //
 
         if (!this.compiled) {
-            //
-            // COMPLETE THIS CODE!
-            //
 
             // Currently just returns the three control points, rather
             // than sampling points on the entire curve.
             //
-            this.points = [this.controlPoints[0],
-                           this.controlPoints[1],
-                           this.controlPoints[2]];
+            // this.points = [this.controlPoints[0],
+            //                this.controlPoints[1],
+            //                this.controlPoints[2]];
+            var initial_points = [this.controlPoints[0],
+                          this.controlPoints[1],
+                          this.controlPoints[2]];
+            // add additonal start and end ppoints ot avoid shrinking
+            var mod_points = [this.controlPoints[0], this.controlPoints[0],
+                              this.controlPoints[1],
+                              this.controlPoints[2], this.controlPoints[2]];
+            var new_points = this.generate_points(mod_points);
+            // console.log(initial_points);
+            // console.log(new_points);
+            this.points = mod_points;
             this.compiled = true;
         }
     }
@@ -180,7 +231,7 @@ class Curve {
         }
         return which;
     }
-    
+
     drawControls() {
         //
         // Renders the three control points of a quadratic
@@ -215,7 +266,7 @@ class Curve {
 	        const dir = p1.minus(p0).unit();
 	        const len = p0.dist(p1);
 	        const ang = Math.atan2(dir.dy, dir.dx) * 180.0 / Math.PI;
-            
+
 	        glPushMatrix();
 	        //
 	        // Perform the transformations to render this segment.
@@ -230,8 +281,8 @@ class Curve {
             //
 	        glPopMatrix();
         }
-    }        
-    
+    }
+
     draw() {
         // Renders the curve control points and the actual
         // curve.
@@ -244,5 +295,5 @@ class Curve {
         this.drawCurve();    // Uses this.points.
         //
         this.drawControls();
-    }   
+    }
 }
