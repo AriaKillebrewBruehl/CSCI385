@@ -131,13 +131,13 @@ class Curve {
 
     generate_points(point_set) {
         // check if curve is smooth enough
-        // if (in_range(points)) {
-        //     return points
-        // }
+        if (this.in_range(point_set)) {
+            console.log(typeof(point_set));
+            return point_set;
+        }
         // otherwise create a new set of points using Chaikin's algorithm
         var new_points = [];
         var i = 0;
-        console.log(point_set.length);
         while (i < point_set.length - 1) {
             var p0 = point_set[i];
             var p1 = point_set[i+1];
@@ -149,28 +149,26 @@ class Curve {
             new_points.push(r);
             i++;
         }
-        console.log(new_points.length);
-        return new_points;
-        //generate_points(new_points);
+        this.generate_points(new_points);
     }
 
-    // in_range(points) {
-    //     var i = 0;
-    //     while (i < points.length - 2) {
-    //         var p0 = points[i];
-    //         var p1 = points[i+1];
-    //         var p2 = points[i+2];
+    in_range(point_set) {
+        var i = 0;
+        while (i < point_set.length - 2) {
+            var p0 = point_set[i];
+            var p1 = point_set[i+1];
+            var p2 = point_set[i+2];
 
-    //         // total distance from p0 to p1 and p1 to p2
-    //         var actual = p1.dist(p0) + p2.dist(p1);
-    //         // approximated distance between p2 and p0
-    //         var d = p2.dist(p0);
+            // total distance from p0 to p1 and p1 to p2
+            var actual = p1.dist(p0) + p2.dist(p1);
+            // approximated distance between p2 and p0
+            var d = p2.dist(p0);
 
-    //         if (d + (1/SMOOTHNESS) < actual) { return false; }
-    //         i++;
-    //     }
-    //     return true;
-    // }
+            if (d + (1/SMOOTHNESS) < actual) { return false; }
+            i++;
+        }
+        return true;
+    }
 
     compile() {
         //
@@ -198,10 +196,11 @@ class Curve {
             var mod_points = [this.controlPoints[0], this.controlPoints[0],
                               this.controlPoints[1],
                               this.controlPoints[2], this.controlPoints[2]];
+                              console.log(typeof(mod_points));
             var new_points = this.generate_points(mod_points);
             // console.log(initial_points);
-            // console.log(new_points);
-            this.points = mod_points;
+            console.log(typeof(new_points));
+            this.points = new_points;
             this.compiled = true;
         }
     }
