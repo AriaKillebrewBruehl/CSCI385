@@ -132,7 +132,6 @@ class Curve {
     generate_points(point_set) {
         // check if curve is smooth enough
         if (this.in_range(point_set)) {
-            console.log(typeof(point_set));
             return point_set;
         }
         // otherwise create a new set of points using Chaikin's algorithm
@@ -149,7 +148,7 @@ class Curve {
             new_points.push(r);
             i++;
         }
-        this.generate_points(new_points);
+        return this.generate_points(new_points);
     }
 
     in_range(point_set) {
@@ -164,7 +163,7 @@ class Curve {
             // approximated distance between p2 and p0
             var d = p2.dist(p0);
 
-            if (d + (1/SMOOTHNESS) < actual) { return false; }
+            if (d + (1/(2 * SMOOTHNESS)) < actual) { return false; }
             i++;
         }
         return true;
@@ -182,24 +181,12 @@ class Curve {
         //
 
         if (!this.compiled) {
-
-            // Currently just returns the three control points, rather
-            // than sampling points on the entire curve.
-            //
-            // this.points = [this.controlPoints[0],
-            //                this.controlPoints[1],
-            //                this.controlPoints[2]];
-            var initial_points = [this.controlPoints[0],
-                          this.controlPoints[1],
-                          this.controlPoints[2]];
-            // add additonal start and end ppoints ot avoid shrinking
+            // add additional start and end points ot avoid shrinking
             var mod_points = [this.controlPoints[0], this.controlPoints[0],
                               this.controlPoints[1],
                               this.controlPoints[2], this.controlPoints[2]];
                               console.log(typeof(mod_points));
             var new_points = this.generate_points(mod_points);
-            // console.log(initial_points);
-            console.log(typeof(new_points));
             this.points = new_points;
             this.compiled = true;
         }
