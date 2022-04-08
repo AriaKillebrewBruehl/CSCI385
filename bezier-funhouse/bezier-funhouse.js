@@ -7,7 +7,7 @@
 // Editor that allows its user to construct a scene consisting of some
 // spheres and a mirrored surface. It renders a 3D view of the scene
 // using hardware-accelerated ray tracing.
-// 
+//
 
 gTraceShader = null;
 
@@ -60,10 +60,10 @@ const gWidth  = 1024;  // This MUST be double gHeight.
 //
 const gSceneBounds = {
     //
-    left:   -1.0, 
+    left:   -1.0,
     right:   1.0,
     //
-    bottom:  0.0, 
+    bottom:  0.0,
     top:     2.0
 };
 //
@@ -75,7 +75,7 @@ const gFLOOR_COLOR1 = {r:0.125, g:0.25, b:0.175};
 //
 const LIGHT_COLOR     = {r:0.9, g:0.88, b:0.84};
 const LIGHT_POSITION  = new Point3d(0.0, 1.0, 0.0);
-//    
+//
 const EYE_POSITION    = new Point3d(0.0, 1.0, -2.0);
 const INTO_DIRECTION  = new Vector3d(0.0, 0.0, 1.0);
 const RIGHT_DIRECTION = new Vector3d(1.0, 0.0, 0.0);
@@ -101,7 +101,7 @@ let gEditing   = null;
 let gWhichCP   = -1;
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-   
+
    SUPPORT FOR SPHERE, CURVE, and CAMERA PLACEMENT
 
    The code below is used for placing spheres in the scene.
@@ -109,7 +109,7 @@ let gWhichCP   = -1;
    ---
 
    Placement editing by mouse events:
-   
+
    * Mouse clicks either select a nearby object or place a new clone
    from the object library.  Subsequent dragging motion can be used to
    resize and reorient the object until the mouse is released, but
@@ -127,7 +127,7 @@ function removeSelectedSphere() {
     /*
      * Removes the current sphere placement from the scene.
      */
-    
+
     //
     // Scan the placements, remove the one that's selected.
     for (let index = 1; index < gSpheres.length; index++) {
@@ -146,7 +146,7 @@ function selectOrCreateSphere(mouseXY) {
      * Chooses which placement the user wants to edit, given a
      * location of the mouse pointer.
      */
-    
+
     let click = new Point3d(mouseXY.x, mouseXY.y, 0.0);
 
     //
@@ -189,33 +189,33 @@ function handlePlaceSphere(mouseXY, down, drag) {
      * and de-selects it.
      *
      */
-    
+
     const mouseLocation = new Point3d(mouseXY.x, mouseXY.y, 0.0);
 
-    if (down && !drag) { 
+    if (down && !drag) {
 	    //
 	    // Just clicked the mouse button...
 	    //
 
 	    if (gEditMode == EDITING_SPHERE) {
-	        
+
 	        //
 	        // Relocate then deselect.
 	        gEditing.moveTo(mouseLocation,gSceneBounds);
 	        //
 	        gEditing  = null;
 	        gEditMode = EDITING_NOTHING;
-	        
+
 	        //
 	        glutPostRedisplay();
-	        
+
 	    } else if (gEditMode == EDITING_SPHERE_SIZE) {
 	        gEditing  = null;
 	        gEditMode = EDITING_NOTHING;
-	        
+
 	        //
 	        glutPostRedisplay();
-	        
+
 	    } else if (gEditMode == EDITING_SPHERE_POSITION) {
 	        //
 	        // Relocate then deselect.
@@ -223,10 +223,10 @@ function handlePlaceSphere(mouseXY, down, drag) {
 	        //
 	        gEditing  = null;
 	        gEditMode = EDITING_NOTHING;
-	        
+
 	        //
 	        glutPostRedisplay();
-	        
+
 	    } else if (gEditMode == EDITING_NOTHING) {
 	        //
 	        // Create or select a sphere.
@@ -235,17 +235,17 @@ function handlePlaceSphere(mouseXY, down, drag) {
 	        //
 	        glutPostRedisplay();
 	    }
-	    
+
     } else if (!down && !drag) {
 	    //
 	    // Just released the mouse button...
 	    //
-	    
+
 	    if (gEditMode == EDITING_SPHERE) {
 	        //
 	        // Haven't started resizing, so put in relocate mode.
 	        gEditMode = EDITING_SPHERE_POSITION;
-	        
+
 	    } else {
 	        //
 	        // Done resizing, deselect.
@@ -253,9 +253,9 @@ function handlePlaceSphere(mouseXY, down, drag) {
 	        gEditMode = EDITING_NOTHING;
 	        //
 	        glutPostRedisplay();
-	        
+
 	    }
-	    
+
     } else if (down && drag) {
 	    // Dragging the mouse (with mouse button pressed)...
 	    //
@@ -293,7 +293,7 @@ function handlePlaceSphere(mouseXY, down, drag) {
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-   
+
    MOUSE HANDLERS
 
 */
@@ -302,14 +302,14 @@ function mouseToSceneCoords(mousex, mousey) {
     /*
      * Convert mouse screen coordinates to scene coordinates.
      */
-    
+
     //
     // A hack to adjust for the corner of the canvas.  There is a
     // javascript way of handling this probably.
     //
     mousex -= 10;
     mousey -= 10;
-    
+
     //
     // Use the inverse of the GL_PROJECTION matrix to map from screen
     // coordinates to our scene coordinates.
@@ -326,7 +326,7 @@ function mouseToSceneCoords(mousex, mousey) {
     vec4.transformMat4(location,mousecoords,pj_inv);
     //
     return {x:location[0], y:location[1]};
-}    
+}
 
 function handleMouseClick(button, state, x, y) {
     /*
@@ -335,14 +335,14 @@ function handleMouseClick(button, state, x, y) {
 
     const mouseXY = mouseToSceneCoords(x,y);
 
-    
+
     //
     // Start tracking mouse for drags.
     if (state == GLUT_DOWN && button == GLUT_LEFT_BUTTON) {
 	    //
 	    // Handle dragging of an object within the scene.
 	    handlePlaceSphere(mouseXY, true, false);
-	    
+
     } else if (state == GLUT_UP && gEditMode >= EDITING_SPHERE) {
 	    //
 	    // A quick click starts placement of an object.
@@ -382,7 +382,7 @@ function handleMouseMove(x, y) {
      * Handle the mouse movement with the mouse button not pressed.
      */
     const mouseXY = mouseToSceneCoords(x,y);
-    
+
     if (gEditMode >= EDITING_SPHERE) {
 	    //
 	    // Only handle if placing a selected object.
@@ -391,10 +391,10 @@ function handleMouseMove(x, y) {
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-   
+
    SCENE TOP PREVIEW
 
-   The functions below render the scene 
+   The functions below render the scene
    series of camera shots.
 
 */
@@ -429,7 +429,7 @@ function drawScene() {
 	        glPopMatrix();
 	    }
     }
-	
+
     //
     // Draw each sphere, highlighting any selected one.
     for (let sphere of gSpheres) {
@@ -466,7 +466,7 @@ function draw() {
     glLoadIdentity();
     glViewport(0, 0, gWidth, gHeight);
     glOrtho(-1, 3, 0.0, 2.0, -10.0, 10.0);
-    
+
     //
     // Clear the transformation stack.
     glMatrixMode(GL_MODELVIEW);
@@ -500,7 +500,7 @@ function initTrace() {
 		              1.0,-1.0, 0.0, 1.0,
 		              1.0, 1.0, 0.0, 1.0
 		            ];
-	
+
     const cornersArray = new Float32Array(corners);
     gl.bufferData(gl.ARRAY_BUFFER, cornersArray, gl.STATIC_DRAW);
     const cornersAttrib = gl.getAttribLocation(prgm,'corner');
@@ -516,6 +516,8 @@ function initTrace() {
     const curvedMirrorUniform  = gl.getUniformLocation(prgm,'curvedMirror');
     const sphereDataUniform     = gl.getUniformLocation(prgm,'sphereData');
     const numSpheresUniform     = gl.getUniformLocation(prgm,'numSpheres');
+    const curvePointsUniform = gl.getUniformLocation(prgm, 'curvePoints');
+    const numCurvePointsUniform = gl.getUniformLocation(prgm, 'numCurvePoints');
     //
     const controlPointsUniform  = gl.getUniformLocation(prgm,'controlPoints');
     //
@@ -536,6 +538,8 @@ function initTrace() {
         curvedMirror: curvedMirrorUniform,
 	    sphereData: sphereDataUniform,
 	    numSpheres: numSpheresUniform,
+        curvePoints: curvePointsUniform,
+        numCurvePoints: numCurvePointsUniform,
         //
 	    controlPoints: controlPointsUniform
     };
@@ -580,7 +584,7 @@ function renderTrace() {
     for (let sphere of gSpheres) {
 	    spheres.push(sphere.position.x);
 	    spheres.push(sphere.radius);
-	    spheres.push(sphere.position.y);        
+	    spheres.push(sphere.position.y);
 	    spheres.push(sphere.radius);
 	    spheres.push(sphere.color.r);
 	    spheres.push(sphere.color.g);
@@ -598,6 +602,18 @@ function renderTrace() {
     gl.enableVertexAttribArray(gTraceShader.corners);
     gl.drawArrays(gl.TRIANGLES, 0, 6);
     gl.disableVertexAttribArray(gTraceShader.corners);
+
+    const points = [];
+    let index_point = 0;
+    for (let point of gCurve.points) {
+        points.push(point.x);
+        points.push(point.y);
+        index_point++;
+    }
+    if (gCurve.points.length > 0) {
+	    gl.uniform1fv(gTraceShader.curvePoints, points);
+    }
+    gl.uniform1i(gTraceShader.numCurvePoints, gCurve.points.length);
 }
 
 function handleKey(key, x, y) {
@@ -653,7 +669,7 @@ function makeSquare() {
     glVertex3f(-1.0, 1.0,0.0);
     //
     glEnd();
-}    
+}
 
 function makeSphereWireframe() {
     const numSides = 24;
@@ -762,7 +778,7 @@ function makePath() {
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-   THE MAIN PROGRAM 
+   THE MAIN PROGRAM
 */
 function editor() {
     /*
@@ -774,7 +790,7 @@ function editor() {
     glutInitWindowPosition(0, 0);
     glutInitWindowSize(gWidth, gHeight);
     glutCreateWindow('the dream of the 80s is alive in Portland')
-    
+
     // Drawn objects.
     makeSphere();
     makeSphereWireframe();
@@ -784,14 +800,14 @@ function editor() {
 
     // Rendered scene.
     initTrace();
-    
+
     // Register interaction callbacks.
     glutKeyboardFunc(handleKey);
     glutDisplayFunc(draw);
     glutMouseFunc(handleMouseClick)
     glutMotionFunc(handleMouseDrag)
     glutPassiveMotionFunc(handleMouseMove)
-    
+
     // Go!
     glutMainLoop();
 
