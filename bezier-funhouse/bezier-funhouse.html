@@ -239,6 +239,10 @@
             return false;
           }
 
+          if (p[0] < -1.0 || p[0] > 1.0) {
+              return false;
+          }
+
           vec4 a = vec4(p0[0] - p1[0], p0[1] - p1[1], p0[2] - p1[2], p0[3] - p1[3]);
           vec4 b = vec4(p0[0] - p[0], p0[1] - p[1], p0[2] - p[2], p0[3] - p[3]);
           float norma = sqrt(a[0] * a[0] + a[2] * a[2]);
@@ -263,7 +267,9 @@
         vec4 mid = vec4((p0[0] + p1[0]) / 2.0, (p0[1] + p1[1]) / 2.0, (p0[2] + p1[2]) / 2.0, 1.0);
 
         ISect intersection = rayIntersectPlane(R, d, p0, cross);
-
+        if (intersection.yes == 0) {
+            return NO_INTERSECTION();
+        }
         if (pointOnSegment(p0, p1, intersection.location)) {
            return intersection;
         }
@@ -712,7 +718,7 @@
 
           //
 
-          for (int i = 3; i < 100; i +=2) {
+          for (int i = 3; i < 500; i += 2) {
             ISect intersection;
             CHECK_CURVE_WITH_RAY(i, R, d, intersection);
             if (intersection.yes == 1) {
