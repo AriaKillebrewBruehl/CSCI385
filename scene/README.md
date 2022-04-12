@@ -2,7 +2,7 @@
 
 ## Running the Scene
 
-To run the scene and see the various components in action clone this repo, open the and run the command `open scene.html`. The program will then open in your browser!
+To run the scene and see the various components in action clone this repo, open the directory and run the command `open scene.html`. The program will then open in your browser!
 
 ## Live Demo
 
