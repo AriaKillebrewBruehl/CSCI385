@@ -114,6 +114,7 @@
       #define FAR 10.0
       #define EPSILON 0.000001
       #define ONE_PLUS_TOLERANCE 1.25
+      #define SMOOTHNESS 500
 
       // struct Sphere (* not actually used! *)
       //
@@ -256,7 +257,7 @@
 
       ISect rayIntersectPanel(vec4 R, vec4 d, vec4 p0, vec4 p1) {
 
-        vec4 lineSegVec = vec4(p0[0] - p1[0], p0[1] - p1[1], p0[2] - p1[2], p0[3] - p1[3]);
+       vec4 lineSegVec = vec4(p0[0] - p1[0], p0[1] - p1[1], p0[2] - p1[2], p0[3] - p1[3]);
         vec4 lineSegUp  = vec4(p0[0] - p0[0], p0[1] - p0[1] + 1.0,  p0[2] - p0[2], p0[3] - p0[3]);
 
         vec4 cross      = vec4(lineSegVec[1] * lineSegUp[2] - lineSegVec[2] * lineSegUp[1],
@@ -275,6 +276,7 @@
         }
 
         return NO_INTERSECTION();
+
       }
 
       ISect rayClosestWall(vec4 R, vec4 d) {
@@ -698,6 +700,33 @@
           return isect;
       }
 
+      float distBetween(vec2 p0, vec2 p1) {
+          float x = (p0[0] - p1[0]) * (p0[0] - p1[0]);
+          float y = (p0[1] - p1[1]) * (p0[1] - p1[1]);
+
+          return sqrt(x + y);
+      }
+
+      ISect calcIntersection(vec4 R, vec4 d, vec2 cp0, vec2 cp1, vec2 cp2) {
+        vec4 p0 = vec4(cp0[0], 0.0, cp0[1], 1.0);
+        vec4 p2 = vec4(cp2[0], 0.0, cp2[1], 1.0);
+        ISect intersection = rayIntersectPanel(R, d, p0, p2);
+
+        if (intersection.yes == 1) {
+          vec4 n0 = vec4(cp0[1] - cp1[1], 0.0, -(cp0[0] - cp1[0]), 0.0);
+          vec4 n2 = vec4(cp2[1] - cp1[1], 0.0, -(cp2[0] - cp1[0]), 0.0);
+          float ratio = (distBetween(cp0, vec2(intersection.location[0], intersection.location[2])) / distBetween(cp0, cp2));
+
+          vec4 norm = vec4(ratio * n0[0] + (1.0 - ratio) * n2[0], ratio * n0[1] + (1.0 - ratio) * n2[1], ratio * n0[2] + (1.0 - ratio) * n2[2], ratio * n0[3] + (1.0 - ratio) * n2[3]);
+
+          intersection.normal = norm;
+
+          return intersection;
+        }
+        return NO_INTERSECTION();
+
+      }
+
       ISect rayIntersectBezier(vec4 R, vec4 d, vec2 cp0, vec2 cp1, vec2 cp2) {
           //
           // This should return intersection information that results
@@ -718,19 +747,73 @@
 
           //
 
-          for (int i = 3; i < 500; i += 2) {
-            ISect intersection;
-            CHECK_CURVE_WITH_RAY(i, R, d, intersection);
-            if (intersection.yes == 1) {
-               return intersection;
-            }
+          float dist1 = distBetween(cp0, cp1);
+          float dist2 = distBetween(cp1, cp2);
+          float dist3 = distBetween(cp0, cp2);
+          /*(dist1 + dist2 - dist3) < 1 / SMOOTHNESS*/
+
+        bool go = true;
+          if (go) {
+              return calcIntersection(R, d, cp0, cp1, cp2);
+              /*vec4 p0 = vec4(cp0[0], 0.0, cp0[1], 1.0);
+              vec4 p2 = vec4(cp2[0], 0.0, cp2[1], 1.0);
+              ISect intersection = rayIntersectPanel(R, d, p0, p2);
+
+              if (intersection.yes == 1) {
+                vec4 n0 = vec4(cp0[1] - cp1[1], 0.0, -(cp0[0] - cp1[0]), 0.0);
+                vec4 n2 = vec4(cp2[1] - cp1[1], 0.0, -(cp2[0] - cp1[0]), 0.0);
+                float ratio = (distBetween(cp0, vec2(intersection.location[0], intersection.location[2])) / distBetween(cp0, cp2));
+
+                vec4 norm = vec4(ratio * n0[0] + (1.0 - ratio) * n2[0], ratio * n0[1] + (1.0 - ratio) * n2[1], ratio * n0[2] + (1.0 - ratio) * n2[2], ratio * n0[3] + (1.0 - ratio) * n2[3]);
+
+                intersection.normal = norm;
+
+                return intersection;
+              }
+              return NO_INTERSECTION();
+              */
           }
 
-          return NO_INTERSECTION();
+          vec2 L0 = cp0;
+          vec2 L1 = vec2((cp0[0] + cp1[0]) / 2.0, (cp0[1] + cp1[1]) / 2.0);
+
+          vec2 R2 = cp2;
+          vec2 R1 = vec2((cp1[0] + cp2[0]) / 2.0, (cp1[1] + cp2[1]) / 2.0);
+
+          vec2 L2 = vec2((L1[0] + R1[0]) / 2.0, (L1[1] + R1[1]) / 2.0);
+          vec2 R0 = L2;
+
+          /* ISect left_intersection = rayIntersectBezier1(R, d, L0, L1, L2);
+          ISect right_intersection = rayIntersectBezier1(R, d, R0, R1, R2);
+
+          if (left_intersection.distance < right_intersection.distance) {
+              return left_intersection;
+          }
+          return right_intersection;
+          */
+      }
+/*
+      ISect rayIntersectBezier1(vec4 R, vec4 d, vec2 cp0, vec2 cp1, vec2 cp2) {
+        ISect intersection10 =
+        ISect intersection11 =
+
+        ISect intersection20 =
+        ISect intersection21 =
+      }
+
+      ISect rayIntersectBezier1(vec4 R, vec4 d, vec2 cp0) {
+        ISect intersection20 =
+        ISect intersection21 =
+
+
+      }
+
+      ISect rayIntersectBezier2(vec4 R, vec4 d, vec2 cp2) {
+
       }
 
 
-
+*/
       ISect rayIntersectMirror(vec4 R, vec4 d) {
           //
           // Checks whether a ray hits the one mirrored object in the
