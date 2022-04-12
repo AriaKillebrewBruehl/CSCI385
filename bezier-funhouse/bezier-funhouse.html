@@ -665,18 +665,6 @@
         INFO = bestISect(INFO, cswr);                                    \
     };
 
-    // CHECK_CURVE_WITH_RAY
-      #define CHECK_CURVE_WITH_RAY(INDEX, R, D, INTERSECTION) \
-      if (INDEX < numCurvePoints) {                           \
-        float x0 = curvePoints[INDEX - 3];                    \
-        float z0 = curvePoints[INDEX - 2];                    \
-        float x1 = curvePoints[INDEX - 1];                    \
-        float z1 = curvePoints[INDEX];                        \
-        vec4 p0 = vec4(x0, 0.0, z0, 1.0);                     \
-        vec4 p1 = vec4(x1, 0.0, z1, 1.0);                     \
-        INTERSECTION = rayIntersectPanel(R, D, p0, p1);       \
-      };
-
       ISect rayClosestSphere(vec4 R, vec4 d) {
           //
           // Checks each of the scene spheres, up to 10, to see
@@ -738,7 +726,7 @@
         if (go) {
             return calcIntersection(R, d, cp0, cp1, cp2);
         }
-
+/*
         vec2 L0 = cp0;
         vec2 L1 = vec2((cp0[0] + cp1[0]) / 2.0, (cp0[1] + cp1[1]) / 2.0);
 
@@ -747,31 +735,31 @@
 
         vec2 L2 = vec2((L1[0] + R1[0]) / 2.0, (L1[1] + R1[1]) / 2.0);
         vec2 R0 = L2;
-        /*
+
         ISect left_intersection = rayIntersectBezier4(R, d, L0, L1, L2);
         ISect right_intersection = rayIntersectBezier4(R, d, R0, R1, R2);
 
         if (left_intersection.distance < right_intersection.distance) {
             return left_intersection;
         }
-        return right_intersection;
-        */
+        return right_intersection;*/
+
 
       }
 
 
       ISect rayIntersectBezier2(vec4 R, vec4 d,vec2 cp0, vec2 cp1, vec2 cp2) {
-        float dist1 = distBetween(cp0, cp1);
+          float dist1 = distBetween(cp0, cp1);
           float dist2 = distBetween(cp1, cp2);
           float dist3 = distBetween(cp0, cp2);
-          if ((dist1 + dist2 - dist3) < 1.0 / SMOOTHNESS) {
+          /*if ((dist1 + dist2 - dist3) < 1.0 / SMOOTHNESS) {
             return calcIntersection(R, d, cp0, cp1, cp2);
-          }
+          }*/
 
-        /*bool go = true;
+        bool go = true;
           if (go) {
               return calcIntersection(R, d, cp0, cp1, cp2);
-          }*/
+          }
 
           vec2 L0 = cp0;
           vec2 L1 = vec2((cp0[0] + cp1[0]) / 2.0, (cp0[1] + cp1[1]) / 2.0);
@@ -797,15 +785,16 @@
         float dist1 = distBetween(cp0, cp1);
         float dist2 = distBetween(cp1, cp2);
         float dist3 = distBetween(cp0, cp2);
-        /*(dist1 + dist2 - dist3) < 1 / SMOOTHNESS*/
+
         if ((dist1 + dist2 - dist3) < 1.0 / SMOOTHNESS) {
             return calcIntersection(R, d, cp0, cp1, cp2);
-          }
-
-        /*bool go = true;
+        }
+        return rayIntersectBezier2(R, d, cp0, cp1, cp2);
+        /* bool go = true;
         if (go) {
-            return calcIntersection(R, d, cp0, cp1, cp2);
-        }*/
+            return rayIntersectBezier2(R, d, cp0, cp1, cp2);
+            // return calcIntersection(R, d, cp0, cp1, cp2);
+        } */
 
         vec2 L0 = cp0;
         vec2 L1 = vec2((cp0[0] + cp1[0]) / 2.0, (cp0[1] + cp1[1]) / 2.0);
@@ -815,9 +804,11 @@
 
         vec2 L2 = vec2((L1[0] + R1[0]) / 2.0, (L1[1] + R1[1]) / 2.0);
         vec2 R0 = L2;
-
-        ISect left_intersection = rayIntersectBezier2(R, d, L0, L1, L2);
-        ISect right_intersection = rayIntersectBezier2(R, d, R0, R1, R2);
+        return rayIntersectBezier2(R, d, cp0, cp1, cp2);
+        ISect left_intersection = rayIntersectBezier2(R, d, cp0, cp1, cp2);
+        ISect right_intersection = rayIntersectBezier2(R, d, cp0, cp1, cp2);
+        // ISect left_intersection = rayIntersectBezier2(R, d, L0, L1, L2);
+        // ISect right_intersection = rayIntersectBezier2(R, d, R0, R1, R2);
 
         if (left_intersection.distance < right_intersection.distance) {
             return left_intersection;
@@ -844,36 +835,19 @@
           // height of 1.5.
           //
 
-          //
 
           float dist1 = distBetween(cp0, cp1);
           float dist2 = distBetween(cp1, cp2);
           float dist3 = distBetween(cp0, cp2);
-          /*(dist1 + dist2 - dist3) < 1.0 / SMOOTHNESS*/
+
           if ((dist1 + dist2 - dist3) < 1.0 / SMOOTHNESS) {
             return calcIntersection(R, d, cp0, cp1, cp2);
           }
 
-        /*bool go = true;
+          /*bool go = true;
           if (go) {
-              return calcIntersection(R, d, cp0, cp1, cp2);
-              vec4 p0 = vec4(cp0[0], 0.0, cp0[1], 1.0);
-              vec4 p2 = vec4(cp2[0], 0.0, cp2[1], 1.0);
-              ISect intersection = rayIntersectPanel(R, d, p0, p2);
-
-              if (intersection.yes == 1) {
-                vec4 n0 = vec4(cp0[1] - cp1[1], 0.0, -(cp0[0] - cp1[0]), 0.0);
-                vec4 n2 = vec4(cp2[1] - cp1[1], 0.0, -(cp2[0] - cp1[0]), 0.0);
-                float ratio = (distBetween(cp0, vec2(intersection.location[0], intersection.location[2])) / distBetween(cp0, cp2));
-
-                vec4 norm = vec4(ratio * n0[0] + (1.0 - ratio) * n2[0], ratio * n0[1] + (1.0 - ratio) * n2[1], ratio * n0[2] + (1.0 - ratio) * n2[2], ratio * n0[3] + (1.0 - ratio) * n2[3]);
-
-                intersection.normal = norm;
-
-                return intersection;
-              }
-              return NO_INTERSECTION();
-
+            return rayIntersectBezier1(R, d, cp0, cp1, cp2);
+            // return calcIntersection(R, d, cp0, cp1, cp2);
           } */
 
           vec2 L0 = cp0;
