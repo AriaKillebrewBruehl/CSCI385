@@ -114,7 +114,7 @@
       #define FAR 10.0
       #define EPSILON 0.000001
       #define ONE_PLUS_TOLERANCE 1.25
-      #define SMOOTHNESS 500
+      #define SMOOTHNESS 500.0
 
       // struct Sphere (* not actually used! *)
       //
@@ -764,12 +764,14 @@
         float dist1 = distBetween(cp0, cp1);
           float dist2 = distBetween(cp1, cp2);
           float dist3 = distBetween(cp0, cp2);
-          /*(dist1 + dist2 - dist3) < 1 / SMOOTHNESS*/
+          if ((dist1 + dist2 - dist3) < 1.0 / SMOOTHNESS) {
+            return calcIntersection(R, d, cp0, cp1, cp2);
+          }
 
-        bool go = true;
+        /*bool go = true;
           if (go) {
               return calcIntersection(R, d, cp0, cp1, cp2);
-          }
+          }*/
 
           vec2 L0 = cp0;
           vec2 L1 = vec2((cp0[0] + cp1[0]) / 2.0, (cp0[1] + cp1[1]) / 2.0);
@@ -796,11 +798,14 @@
         float dist2 = distBetween(cp1, cp2);
         float dist3 = distBetween(cp0, cp2);
         /*(dist1 + dist2 - dist3) < 1 / SMOOTHNESS*/
+        if ((dist1 + dist2 - dist3) < 1.0 / SMOOTHNESS) {
+            return calcIntersection(R, d, cp0, cp1, cp2);
+          }
 
-        bool go = true;
+        /*bool go = true;
         if (go) {
             return calcIntersection(R, d, cp0, cp1, cp2);
-        }
+        }*/
 
         vec2 L0 = cp0;
         vec2 L1 = vec2((cp0[0] + cp1[0]) / 2.0, (cp0[1] + cp1[1]) / 2.0);
@@ -844,12 +849,15 @@
           float dist1 = distBetween(cp0, cp1);
           float dist2 = distBetween(cp1, cp2);
           float dist3 = distBetween(cp0, cp2);
-          /*(dist1 + dist2 - dist3) < 1 / SMOOTHNESS*/
+          /*(dist1 + dist2 - dist3) < 1.0 / SMOOTHNESS*/
+          if ((dist1 + dist2 - dist3) < 1.0 / SMOOTHNESS) {
+            return calcIntersection(R, d, cp0, cp1, cp2);
+          }
 
-        bool go = true;
+        /*bool go = true;
           if (go) {
               return calcIntersection(R, d, cp0, cp1, cp2);
-              /*vec4 p0 = vec4(cp0[0], 0.0, cp0[1], 1.0);
+              vec4 p0 = vec4(cp0[0], 0.0, cp0[1], 1.0);
               vec4 p2 = vec4(cp2[0], 0.0, cp2[1], 1.0);
               ISect intersection = rayIntersectPanel(R, d, p0, p2);
 
@@ -865,8 +873,8 @@
                 return intersection;
               }
               return NO_INTERSECTION();
-              */
-          }
+
+          } */
 
           vec2 L0 = cp0;
           vec2 L1 = vec2((cp0[0] + cp1[0]) / 2.0, (cp0[1] + cp1[1]) / 2.0);
