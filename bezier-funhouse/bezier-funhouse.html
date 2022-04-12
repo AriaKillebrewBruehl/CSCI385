@@ -727,6 +727,100 @@
 
       }
 
+
+      ISect rayIntersectBezier3(vec4 R, vec4 d, vec2 cp0, vec2 cp1, vec2 cp2){
+        float dist1 = distBetween(cp0, cp1);
+        float dist2 = distBetween(cp1, cp2);
+        float dist3 = distBetween(cp0, cp2);
+        /*(dist1 + dist2 - dist3) < 1 / SMOOTHNESS*/
+
+      bool go = true;
+        if (go) {
+            return calcIntersection(R, d, cp0, cp1, cp2);
+        }
+
+        vec2 L0 = cp0;
+        vec2 L1 = vec2((cp0[0] + cp1[0]) / 2.0, (cp0[1] + cp1[1]) / 2.0);
+
+        vec2 R2 = cp2;
+        vec2 R1 = vec2((cp1[0] + cp2[0]) / 2.0, (cp1[1] + cp2[1]) / 2.0);
+
+        vec2 L2 = vec2((L1[0] + R1[0]) / 2.0, (L1[1] + R1[1]) / 2.0);
+        vec2 R0 = L2;
+        /*
+        ISect left_intersection = rayIntersectBezier4(R, d, L0, L1, L2);
+        ISect right_intersection = rayIntersectBezier4(R, d, R0, R1, R2);
+
+        if (left_intersection.distance < right_intersection.distance) {
+            return left_intersection;
+        }
+        return right_intersection;
+        */
+
+      }
+
+
+      ISect rayIntersectBezier2(vec4 R, vec4 d,vec2 cp0, vec2 cp1, vec2 cp2) {
+        float dist1 = distBetween(cp0, cp1);
+          float dist2 = distBetween(cp1, cp2);
+          float dist3 = distBetween(cp0, cp2);
+          /*(dist1 + dist2 - dist3) < 1 / SMOOTHNESS*/
+
+        bool go = true;
+          if (go) {
+              return calcIntersection(R, d, cp0, cp1, cp2);
+          }
+
+          vec2 L0 = cp0;
+          vec2 L1 = vec2((cp0[0] + cp1[0]) / 2.0, (cp0[1] + cp1[1]) / 2.0);
+
+          vec2 R2 = cp2;
+          vec2 R1 = vec2((cp1[0] + cp2[0]) / 2.0, (cp1[1] + cp2[1]) / 2.0);
+
+          vec2 L2 = vec2((L1[0] + R1[0]) / 2.0, (L1[1] + R1[1]) / 2.0);
+          vec2 R0 = L2;
+
+          ISect left_intersection = rayIntersectBezier3(R, d, L0, L1, L2);
+          ISect right_intersection = rayIntersectBezier3(R, d, R0, R1, R2);
+
+          if (left_intersection.distance < right_intersection.distance) {
+              return left_intersection;
+          }
+          return right_intersection;
+
+
+      }
+
+      ISect rayIntersectBezier1(vec4 R, vec4 d, vec2 cp0, vec2 cp1, vec2 cp2) {
+        float dist1 = distBetween(cp0, cp1);
+        float dist2 = distBetween(cp1, cp2);
+        float dist3 = distBetween(cp0, cp2);
+        /*(dist1 + dist2 - dist3) < 1 / SMOOTHNESS*/
+
+        bool go = true;
+        if (go) {
+            return calcIntersection(R, d, cp0, cp1, cp2);
+        }
+
+        vec2 L0 = cp0;
+        vec2 L1 = vec2((cp0[0] + cp1[0]) / 2.0, (cp0[1] + cp1[1]) / 2.0);
+
+        vec2 R2 = cp2;
+        vec2 R1 = vec2((cp1[0] + cp2[0]) / 2.0, (cp1[1] + cp2[1]) / 2.0);
+
+        vec2 L2 = vec2((L1[0] + R1[0]) / 2.0, (L1[1] + R1[1]) / 2.0);
+        vec2 R0 = L2;
+
+        ISect left_intersection = rayIntersectBezier2(R, d, L0, L1, L2);
+        ISect right_intersection = rayIntersectBezier2(R, d, R0, R1, R2);
+
+        if (left_intersection.distance < right_intersection.distance) {
+            return left_intersection;
+        }
+        return right_intersection;
+
+    }
+
       ISect rayIntersectBezier(vec4 R, vec4 d, vec2 cp0, vec2 cp1, vec2 cp2) {
           //
           // This should return intersection information that results
@@ -783,37 +877,16 @@
           vec2 L2 = vec2((L1[0] + R1[0]) / 2.0, (L1[1] + R1[1]) / 2.0);
           vec2 R0 = L2;
 
-          /* ISect left_intersection = rayIntersectBezier1(R, d, L0, L1, L2);
+          ISect left_intersection = rayIntersectBezier1(R, d, L0, L1, L2);
           ISect right_intersection = rayIntersectBezier1(R, d, R0, R1, R2);
 
           if (left_intersection.distance < right_intersection.distance) {
               return left_intersection;
           }
           return right_intersection;
-          */
-      }
-/*
-      ISect rayIntersectBezier1(vec4 R, vec4 d, vec2 cp0, vec2 cp1, vec2 cp2) {
-        ISect intersection10 =
-        ISect intersection11 =
-
-        ISect intersection20 =
-        ISect intersection21 =
-      }
-
-      ISect rayIntersectBezier1(vec4 R, vec4 d, vec2 cp0) {
-        ISect intersection20 =
-        ISect intersection21 =
-
 
       }
 
-      ISect rayIntersectBezier2(vec4 R, vec4 d, vec2 cp2) {
-
-      }
-
-
-*/
       ISect rayIntersectMirror(vec4 R, vec4 d) {
           //
           // Checks whether a ray hits the one mirrored object in the
