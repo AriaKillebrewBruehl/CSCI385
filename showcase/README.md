@@ -5,7 +5,7 @@
 To run the showcase and see these objects in action clone this repo, open the and run the command `open showcase.html`. The showcase will then open in your browser!
 
 ## Live Demo
-[![Watch the video](./images/thumbnail.png)](https://youtu.be/jouoTrrdlUU)
+[![Watch the video](./images/thumbnail.png)](https://youtu.be/5LCdkaUx5qE)
 
 ## Part 0: Increasing and Decreasing Smoothness :sparkles:
 
