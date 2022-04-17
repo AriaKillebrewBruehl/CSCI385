@@ -236,6 +236,7 @@
       }
 
       bool pointOnSegment(vec4 p0, vec4 p1, vec4 p) {
+          // check that you are inside the box
           if (p[1] > 1.5 || p[1] < 0.0) {
             return false;
           }
@@ -247,7 +248,7 @@
           if (p[2] < -2.0 || p[2] > 2.0) {
             return false;
         }
-
+          // use midpt of panel points to check if intersection is in range
           vec4 midpt = (p0 + p1) / 2.0;
           vec4 b = midpt - p;
           vec4 a = midpt - p1;
@@ -261,29 +262,23 @@
       }
 
       ISect rayIntersectPanel(vec4 R, vec4 d, vec4 p0, vec4 p1) {
+        // calculate plane normal
 
         vec4 lineSegVec = p1 - p0;
-       //  vec4 lineSegVec = p0 - p1;
         vec4 lineSegUp  = vec4(0.0, 1.0, 0.0, 0.0);
-
         vec4 cross      = vec4(lineSegVec[1] * lineSegUp[2] - lineSegVec[2] * lineSegUp[1],
                                lineSegVec[2] * lineSegUp[0] - lineSegVec[0] * lineSegUp[2],
                                lineSegVec[0] * lineSegUp[1] - lineSegVec[1] * lineSegUp[0],
                                0.0);
 
-        vec4 cross1      = vec4(lineSegUp[1] * lineSegVec[2] - lineSegUp[2] * lineSegVec[1],
-                               lineSegUp[2] * lineSegVec[0] - lineSegUp[0] * lineSegVec[2],
-                               lineSegUp[0] * lineSegVec[1] - lineSegUp[1] * lineSegVec[0],
-                               0.0);
-
-
+        // find intersection in plane
         ISect intersection = rayIntersectPlane(R, d, p0, cross);
-
         vec4 du = normalize(d);
 
         if (intersection.yes == 0) {
             return NO_INTERSECTION();
         }
+        // if intersection point is between panel points return the intersection
         if (pointOnSegment(p0, p1, intersection.location)) {
            return intersection;
         }
