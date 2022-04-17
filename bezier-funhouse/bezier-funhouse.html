@@ -498,6 +498,7 @@
     }
 
     ISect calcIntersection(vec4 R, vec4 d, vec2 cp0, vec2 cp1, vec2 cp2) {
+        // convert control points
       vec4 p0 = vec4(cp0[0], 0.0, cp0[1], 1.0);
       vec4 p1 = vec4(cp1[0], 0.0, cp1[1], 1.0);
       vec4 p2 = vec4(cp2[0], 0.0, cp2[1], 1.0);
@@ -505,22 +506,25 @@
       ISect intersection0 = rayIntersectPanel(R, d, p0, p2);
       ISect intersection1 = rayIntersectPanel(R, d, p2, p0);
 
-      ISect best = bestISect(intersection0, intersection1);
+      ISect intersection = bestISect(intersection0, intersection1);
 
-      if (best.yes == 1) {
+      if (intersection.yes == 1) {
         vec4 diff1 = p1 - p0;
         vec4 diff2 = p1 - p2;
-        vec4 n0 = normalize(vec4(diff1[2], 0.0, -diff1[0], 0.0));
-        vec4 n2 = normalize(vec4(-diff2[1], 0.0, diff2[0], 0.0));
 
-        float ratio = (distBetween(cp0, vec2(best.location[0], best.location[2])) / distBetween(cp0, cp2));
+        vec4 n0 = normalize(vec4(diff1[2], 0.0, -diff1[0], 0.0));
+
+        vec4 n2 = normalize(vec4(-diff2[2], 0.0, diff2[0], 0.0));
+
+        float ratio = (distBetween(cp0, vec2(intersection.location[0], intersection.location[2])) / distBetween(cp0, cp2));
         vec4 norm = n0 * (1.0 - ratio) + n2 * (ratio);
-        best.normal = norm;
-        return best;
+        intersection.normal = norm;
+        return intersection;
       }
       return NO_INTERSECTION();
     }
 
+    // base case
     ISect rayIntersectBezier4(vec4 R, vec4 d, vec2 cp0, vec2 cp1, vec2 cp2){
       return calcIntersection(R, d, cp0, cp1, cp2);
     }
@@ -529,7 +533,7 @@
       if (in_range(cp0, cp1, cp2)) {
           return calcIntersection(R, d, cp0, cp1, cp2);
       }
-
+      // calculate mid points and their mid point
       vec2 L0 = cp0;
       vec2 L1 = (cp0 + cp1) / 2.0;
 
@@ -541,7 +545,7 @@
 
       ISect left_intersection = rayIntersectBezier4(R, d, L0, L1, L2);
       ISect right_intersection = rayIntersectBezier4(R, d, R0, R1, R2);
-
+      // recursive call
       ISect best = bestISect(left_intersection, right_intersection);
       return best;
     }
@@ -551,7 +555,7 @@
         if (in_range(cp0, cp1, cp2)) {
           return calcIntersection(R, d, cp0, cp1, cp2);
         }
-
+        // calculate mid points and their mid point
         vec2 L0 = cp0;
         vec2 L1 = (cp0 + cp1) / 2.0;
 
@@ -560,7 +564,7 @@
 
         vec2 L2 = (L1 + R1) / 2.0;
         vec2 R0 = L2;
-
+        // recursive call
         ISect left_intersection = rayIntersectBezier3(R, d, L0, L1, L2);
         ISect right_intersection = rayIntersectBezier3(R, d, R0, R1, R2);
 
@@ -573,7 +577,7 @@
       if (in_range(cp0, cp1, cp2)) {
           return calcIntersection(R, d, cp0, cp1, cp2);
       }
-
+      // calculate mid points and their mid point
       vec2 L0 = cp0;
       vec2 L1 = (cp0 + cp1) / 2.0;
 
@@ -582,7 +586,7 @@
 
       vec2 L2 = (L1 + R1) / 2.0;
       vec2 R0 = L2;
-
+      // recursive call
       ISect left_intersection = rayIntersectBezier2(R, d, L0, L1, L2);
       ISect right_intersection = rayIntersectBezier2(R, d, R0, R1, R2);
 
@@ -615,7 +619,7 @@
         if (true) {
             return calcIntersection(R, d, cp0, cp1, cp2);
         }
-
+        // calculate mid points and their mid point
         vec2 L0 = cp0;
         vec2 L1 = (cp0 + cp1) / 2.0;
 
@@ -624,7 +628,7 @@
 
         vec2 L2 = (L1 + R1) / 2.0;
         vec2 R0 = L2;
-
+        // recursive call
         ISect left_intersection = rayIntersectBezier1(R, d, L0, L1, L2);
         ISect right_intersection = rayIntersectBezier1(R, d, R0, R1, R2);
 
