@@ -22,7 +22,7 @@
 //
 // This is described carefully within the assignment specification,
 // and below I also hint at that coding in sections labelled with
-// "PROGRAM 6 INFO". 
+// "PROGRAM 6 INFO".
 //
 // ========
 //
@@ -62,7 +62,7 @@ class Vertex {
         this.id = id;
         this.position = P;
         this.edge = null;
-        
+
         // Suggested attribute for the `subdivide` method.
         //
         this.clone = null;
@@ -74,7 +74,7 @@ class Vertex {
         //
         this.edge = e;
     }
-    
+
     fixEdge() {
         //
         // For surfaces where a vertex might sit on a surface boundary,
@@ -135,55 +135,55 @@ class Edge {
         this.source = v0;
         v0.setEdge(this); // Sets/updates an outgoing edge for the source.
         this.target = v1;
-        
+
         //
         // It will be tied together with other surface components later.
         this.next = null;
         this.prev = null;
         this.face = null;
         this.twin = null;
-        
+
         // Suggested attribute for the `subdivide` method.
         //
         this.split = null;
     }
-    
+
     setNext(e) {
         //
         // Stitch this together with its successor along a face's border.
         //
         // (This is doubly-linked circular list insertion, essentially.)
         //
-        
+
         this.next = e;
         e.prev = this;
     }
-    
+
     setTwin(e) {
         //
         // Tie this edge with its "twin" that borders the neighboring
         // face.
         //
-        
+
         this.twin = e;
         e.twin = this;
     }
-    
+
     setFace(f) {
         //
         // Associate this edge with the face it borders.
         //
-        
+
         this.face = f;
         f.edge = this;
     }
-    
+
     getVector() {
         //
         // Returns a vector corresponding to the direction from the `source`
         // to the `target` vertex positions, a Vector3d.
         //
-        
+
         return this.target.position.minus(this.source.position);
     }
 
@@ -192,13 +192,13 @@ class Edge {
         // Returns the ordered pair of `source` and `target` positions
         // as an array of size 2.
         //
-        
+
         const p0 = this.source.position;
         const p1 = this.target.position;
         return [p0,p1];
     }
-    
-    
+
+
 }
 
 //
@@ -230,7 +230,7 @@ class Face {
         //
         // Construct a face from three oriented edges.
         //
-        
+
         this.edge = e01;
         e01.setNext(e12);
         e12.setNext(e20);
@@ -241,13 +241,13 @@ class Face {
         this.normal = null; // See `getNormal` below.
         this.id = id;
     }
-    
+
     getNormal() {
         //
         // Compute and return the unit vector normal to this
         // face according to its edges' CCW orientation.
         //
-        
+
         if (this.normal == null) {
             const v1 = this.edge.getVector();
             const v2 = this.edge.prev.getVector().neg();
@@ -256,7 +256,7 @@ class Face {
         }
         return this.normal;
     }
-    
+
     getPoints() {
         //
         // Returns the ordered triple of vertex positions around the
@@ -345,11 +345,11 @@ class Surface {
     getFace(fid) {
         //
         // Returns a face from its identifier.
-        //        
+        //
         console.assert(0 >= fid && fid < this.faces.length);
         return this.faces[fid];
     }
-    
+
     getVertex(vid) {
         //
         // Returns a vertex from its identifier.
@@ -357,7 +357,7 @@ class Surface {
         console.assert(this.vertices.has(vid));
         return this.vertices.get(vid);
     }
-    
+
     getEdge(eid) {
         //
         // Returns an edge from its identifier.
@@ -372,21 +372,21 @@ class Surface {
         //
         return this.vertices.values();
     }
-    
+
     allEdges() {
         //
         // Returns an iterator for all the edges of this surface.
         //
         return this.edges.values();
     }
-    
+
     allFaces() {
         //
         // Returns an iterator for all the faces of this surface.
         //
         return this.faces;
     }
-    
+
     makeVertex(P,id=null) {
         //
         // Adds a new vertex to the surface mesh at position `P : Point3d`.
@@ -394,14 +394,14 @@ class Surface {
         // Typically numbers the vertex according to when it was added.
         //
         if (id == null) {
-            id = this.numVertices; 
+            id = this.numVertices;
         }
         this.numVertices++;
         const v = new Vertex(id,P);
         this.vertices.set(id,v);
         return v;
     }
-    
+
     makeEdge(vi0, vi1) {
         //
         // Adds a new half-edge to the surface from/to the given vertices.
@@ -418,12 +418,12 @@ class Surface {
         const e = new Edge(eid,v0,v1);
         this.edges.set(eid,e);
         if (this.edges.has(tid)) {
-            const t = this.getEdge(tid); 
+            const t = this.getEdge(tid);
             e.setTwin(t);
         }
         return e;
     }
-    
+
     makeFace(vi0,vi1,vi2,id=null) {
         //
         // Adds a new oriented triangular face around the given vertices.
@@ -444,7 +444,7 @@ class Surface {
         this.faces.push(f);
         return f;
     }
-    
+
     subdivide() {
         //
         // Subdivide this surface by Loop subdivision, returning the
@@ -458,16 +458,61 @@ class Surface {
         // ========
         //
 
-        // Step 0.
+        // 0. Create an empty `Surface` object that will be the refined surface `R`
         const S = this;
         const R = new Surface(this.getName(),this.level+1);
 
-        // Steps 1-3.
+        // 1. Create a "clone" vertex within `R` of each vertex of `S`. Use `R.makeVertex`.
         //
-        // THE CODE BELOW IS BOGUS! It copies the tetrahedron.
+        for (let v of S.allVertices()) {
+            v.clone = R.makeVertex(v.position, v.id);
+        }
+
+        // 2. Create a "split" vertex within `R` from each edge of `S`. Use `R.makeVertex`.
         //
-        
-        const tetra = gSurfaces.get("tetra");
+        for (let e of S.allEdges()) {
+            var pos0 = e.source;
+            var pos1 = e.target;
+            var pos = pos0 + pos1 / 2.0;
+            R.makeVertex(pos, e.source.id*10);
+        }
+
+        // 3. Create all the (oriented) faces of `R` from, four faces for each face of `S`
+        //    using the three cloned and splitting vertices built in Steps 1 and 2. These
+        //    vertices should be built using `R.makeFace` with these vertices `id`s.
+        //
+        for (let f of S.allFaces()) {
+            var e = f.edge;
+            var v0 = e.source;
+            var id0 = v0.id;
+            var v1 = e.next.source;
+            var id1 = v1.id;
+            var v2 = e.next.next.source;
+            var id2 = v2.id;
+
+            /*
+                        id1
+                        / \
+                       / 1 \
+                      /     \
+                id1*10-------id0*10
+                    / \     / \
+                   / 2 \ 3 / 0 \
+                  /     \ /     \
+               id2-----id2*10----id0
+            */
+
+            R.makeFace(id2*10, id0, id0*10);    // face 0
+            R.makeFace(id0*10, id1, id1*10);    // face 1
+            R.makeFace(id1*10, id2, id2*10);    // face 2
+            R.makeFace(id0*10, id1*10, id2*10); // face 3
+        }
+
+        // 4. Return R.
+        return R;
+
+
+       /* const tetra = gSurfaces.get("tetra");
         // Copy the tetrahedron vertcies.
         for (let v of tetra.allVertices()) {
             R.makeVertex(v.position);
@@ -482,27 +527,27 @@ class Surface {
 
         //
         R.regirth();
-        return R;
+        return R;*/
     }
 
-    
+
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     //
     // Tweak that allows us to change the coloring of the surface after
     // it has already been compiled with glBeginEnd.
     //
-    
+
     paint(face, color) {
         glModColor(this.getName(), face.id, color);
     }
 
-    
+
 
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
     //
     // SUPPORT for reading OBJ files, and normalizing its geometry
     //
-    
+
     read(objText) {
         //
         // read(objText)
@@ -512,7 +557,7 @@ class Surface {
         //
         //  objText: string that has the text of the .OBJ file
         //
-        
+
 	    //
 	    // The coordinate positions for object's base versus its height.
 	    // e.g. [1,2,3] means the object's central axis is in Z direction
@@ -524,11 +569,11 @@ class Surface {
 	    //
 	    // Process each line of the .OBJ file.
 	    for (let line of lines) {
-	        
+
             const parts = line.split(" ");
-            
+
             if (parts.length > 0) {
-		        
+
 		        // Lines that start with v are a vertex spec.
 		        //
 		        // v x-coord y-coord z-coord
@@ -638,7 +683,7 @@ class Surface {
     //
     // SUPPORT for rendering a surface
     //
-    
+
     glCompile(harlequin = true) {
 	    //
 	    // Issues OPENGL instructions to render the triangular facets
@@ -661,7 +706,7 @@ class Surface {
 	    }
         glEnd();
     }
-    
+
     glCompileMesh() {
 	    //
 	    // Issues OPENGL instructions to render the edges of the
@@ -681,11 +726,11 @@ class Surface {
     glRender() {
         glBeginEnd(this.getName());
     }
-    
+
     glRenderMesh() {
         glBeginEnd(this.getName()+"-mesh");
     }
 }
 
-        
- 
+
+
