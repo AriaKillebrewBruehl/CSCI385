@@ -465,56 +465,60 @@ class Surface {
         // 1. Create a "clone" vertex within `R` of each vertex of `S`. Use `R.makeVertex`.
         //
         for (let v of S.allVertices()) {
-            // var v = R.makeVertex(v.position, v.id);
-            R.makeVertex(v.position, v.id);
-            // console.log(R.vertices.has(v));
-            // v.clone = R.makeVertex(v.position);
+            v.clone = R.makeVertex(v.position);
         }
 
         // 2. Create a "split" vertex within `R` from each edge of `S`. Use `R.makeVertex`.
         //
         for (let e of S.allEdges()) {
-            var pos0 = e.source;
-            var pos1 = e.target;
-            var pos = pos0 + pos1 / 2.0;
-            R.makeVertex(pos, e.source.id*10);
-            R.makeEdge(pos0.id, pos0.id*10);
-            R.makeEdge(pos0.id*10, pos1.id);
+            var pos0 = e.source.clone.position;
+            var pos1 = e.target.clone.position;
+            var pos = new Point3d(pos0[0] + pos1[0] / 2.0, pos0[1] + pos1[1] / 2.0, pos0[2] + pos1[2] / 2.0);
+            if (e.twin.split != null) {
+                e.split = e.twin.split
+            } else {
+                e.split = R.makeVertex(pos);
+            }
+            // e.split = R.makeVertex(pos);
         }
 
-        // 3. Create all the (oriented) faces of `R` from, four faces for each face of `S`
+    1   // 3. Create all the (oriented) faces of `R` from, four faces for each face of `S`
         //    using the three cloned and splitting vertices built in Steps 1 and 2. These
         //    vertices should be built using `R.makeFace` with these vertices `id`s.
         //
         for (let f of S.allFaces()) {
             var e = f.edge;
-            var v0 = e.source;
-            var id0 = R.getVertex(v0.id).id;
-            var v1 = e.next.source;
-            var id1 = R.getVertex(v1.id).id;
-            var v2 = e.next.next.source;
-            var id2 = R.getVertex(v2.id).id;
+
+            var id0  = e.source.clone.id;
+            var id00 = e.split.id;
+
+            var id1  = e.next.source.clone.id;
+            var id10 = e.next.split.id;
+
+            var id2  = e.next.next.source.clone.id;
+            var id20 = e.next.next.split.id;
 
             /*
                         id1
                         / \
                        / 1 \
                       /     \
-                id1*10-------id0*10
+                  id10-------id00
                     / \     / \
                    / 2 \ 3 / 0 \
                   /     \ /     \
-               id2-----id2*10----id0
+               id2------id20-----id0
             */
 
-            R.makeFace(id2*10, id0, id0*10);    // face 0
-            R.makeFace(id0*10, id1, id1*10);    // face 1
-            R.makeFace(id1*10, id2, id2*10);    // face 2
-            R.makeFace(id0*10, id1*10, id2*10); // face 3
+            R.makeFace(id20, id0, id00);  // face 0
+            R.makeFace(id00, id1, id10);  // face 1
+            R.makeFace(id10, id2, id20);  // face 2
+            R.makeFace(id00, id10, id20); // face 3
         }
 
         // 4. Return R.
         console.log("here");
+        R.regirth();
         return R;
 
 
