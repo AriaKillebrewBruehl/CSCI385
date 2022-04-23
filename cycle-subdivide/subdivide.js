@@ -465,7 +465,10 @@ class Surface {
         // 1. Create a "clone" vertex within `R` of each vertex of `S`. Use `R.makeVertex`.
         //
         for (let v of S.allVertices()) {
-            v.clone = R.makeVertex(v.position, v.id);
+            // var v = R.makeVertex(v.position, v.id);
+            R.makeVertex(v.position, v.id);
+            // console.log(R.vertices.has(v));
+            // v.clone = R.makeVertex(v.position);
         }
 
         // 2. Create a "split" vertex within `R` from each edge of `S`. Use `R.makeVertex`.
@@ -475,6 +478,8 @@ class Surface {
             var pos1 = e.target;
             var pos = pos0 + pos1 / 2.0;
             R.makeVertex(pos, e.source.id*10);
+            R.makeEdge(pos0.id, pos0.id*10);
+            R.makeEdge(pos0.id*10, pos1.id);
         }
 
         // 3. Create all the (oriented) faces of `R` from, four faces for each face of `S`
@@ -484,11 +489,11 @@ class Surface {
         for (let f of S.allFaces()) {
             var e = f.edge;
             var v0 = e.source;
-            var id0 = v0.id;
+            var id0 = R.getVertex(v0.id).id;
             var v1 = e.next.source;
-            var id1 = v1.id;
+            var id1 = R.getVertex(v1.id).id;
             var v2 = e.next.next.source;
-            var id2 = v2.id;
+            var id2 = R.getVertex(v2.id).id;
 
             /*
                         id1
@@ -509,6 +514,7 @@ class Surface {
         }
 
         // 4. Return R.
+        console.log("here");
         return R;
 
 
