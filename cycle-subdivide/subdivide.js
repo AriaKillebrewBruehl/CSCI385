@@ -471,32 +471,39 @@ class Surface {
         // 2. Create a "split" vertex within `R` from each edge of `S`. Use `R.makeVertex`.
         //
         for (let e of S.allEdges()) {
-            var pos0 = e.source.clone.position;
-            var pos1 = e.target.clone.position;
-            var pos = new Point3d(pos0[0] + pos1[0] / 2.0, pos0[1] + pos1[1] / 2.0, pos0[2] + pos1[2] / 2.0);
-            if (e.twin.split != null) {
-                e.split = e.twin.split
+            if (e.twin.split) {
+                e.split = e.twin.split;
             } else {
+                let pos0 = e.source.clone.position;
+                let pos1 = e.target.clone.position;
+                let pos = new Point3d(pos0.x + pos1.x / 2.0, pos0.y + pos1.y / 2.0, pos0.z + pos1.z / 2.0);
                 e.split = R.makeVertex(pos);
+                console.log("e.source.clone.position: ", e.source.clone.position);
+                console.log("e.split.postion", e.split.postion);
             }
-            // e.split = R.makeVertex(pos);
         }
 
-    1   // 3. Create all the (oriented) faces of `R` from, four faces for each face of `S`
+       // 3. Create all the (oriented) faces of `R` from, four faces for each face of `S`
         //    using the three cloned and splitting vertices built in Steps 1 and 2. These
         //    vertices should be built using `R.makeFace` with these vertices `id`s.
         //
         for (let f of S.allFaces()) {
-            var e = f.edge;
+            let e = f.edge;
 
-            var id0  = e.source.clone.id;
-            var id00 = e.split.id;
+            let id0  = e.source.clone.id;
+            let id00 = e.split.id;
+            // console.log("v0: ", R.getVertex(id0).position);
+            // console.log("v00: ", R.getVertex(id00).position);
 
-            var id1  = e.next.source.clone.id;
-            var id10 = e.next.split.id;
+            let id1  = e.next.source.clone.id;
+            let id10 = e.next.split.id;
+            // console.log("v1: ", R.getVertex(id1).position);
+            // console.log("v10: ", R.getVertex(id10).position);
 
-            var id2  = e.next.next.source.clone.id;
-            var id20 = e.next.next.split.id;
+            let id20 = e.next.next.split.id;
+            let id2  = e.next.next.source.clone.id;
+            // console.log("v2: ", R.getVertex(id2).position);
+            // console.log("v20: ", R.getVertex(id20).position);
 
             /*
                         id1
@@ -514,7 +521,15 @@ class Surface {
             R.makeFace(id00, id1, id10);  // face 1
             R.makeFace(id10, id2, id20);  // face 2
             R.makeFace(id00, id10, id20); // face 3
+            R.makeFace(id0, id1, id2); // face 3
         }
+
+        // for (let v of R.allVertices()) {
+        //     console.assert(v.edge.source == v);
+        // }
+        // for (let e of R.allEdges()) {
+        //     console.assert(e.twin.twin == e);
+        // }
 
         // 4. Return R.
         console.log("here");
