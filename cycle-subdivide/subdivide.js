@@ -445,6 +445,39 @@ class Surface {
         return f;
     }
 
+    smoothedSplitVertex(e) {
+        /*
+              q0
+              / \
+             /   \
+            /     \
+           /       \
+          /         \
+         /           \
+        p0--e.split--p1
+         \           /
+          \         /
+           \       /
+            \     /
+             \   /
+              \ /
+               q1
+
+        */
+        // var v = e.split;
+        var p0 = e.source.position;
+        var p1 = e.target.position;
+        var q0 = e.prev.twin.target.position;
+        var q1 = e.next.target.position;
+        console.log(q1);
+
+        var s = new Point3d((3/8) * p0.x + (3/8) * p1.x + (1/8) * q0.x + (1/8) * q1.x,
+                            (3/8) * p0.y + (3/8) * p1.y + (1/8) * q0.y + (1/8) * q1.y,
+                            (3/8) * p0.z + (3/8) * p1.z + (1/8) * q0.z + (1/8) * q1.z);
+
+        return s;
+    }
+
     subdivide() {
         //
         // Subdivide this surface by Loop subdivision, returning the
@@ -476,8 +509,9 @@ class Surface {
             } else {
                 let pos0 = e.source.clone.position;
                 let pos1 = e.target.clone.position;
-                let pos = new Point3d((pos0.x + pos1.x) / 2.0, (pos0.y + pos1.y) / 2.0,( pos0.z + pos1.z) / 2.0);
-                e.split = R.makeVertex(pos);
+                // let pos = new Point3d((pos0.x + pos1.x) / 2.0, (pos0.y + pos1.y) / 2.0,( pos0.z + pos1.z) / 2.0);
+                console.log(R.smoothedSplitVertex(e));
+                e.split = R.makeVertex(R.smoothedSplitVertex(e));
             }
         }
 
