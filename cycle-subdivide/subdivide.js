@@ -476,10 +476,8 @@ class Surface {
             } else {
                 let pos0 = e.source.clone.position;
                 let pos1 = e.target.clone.position;
-                let pos = new Point3d(pos0.x + pos1.x / 2.0, pos0.y + pos1.y / 2.0, pos0.z + pos1.z / 2.0);
+                let pos = new Point3d((pos0.x + pos1.x) / 2.0, (pos0.y + pos1.y) / 2.0,( pos0.z + pos1.z) / 2.0);
                 e.split = R.makeVertex(pos);
-                console.log("e.source.clone.position: ", e.source.clone.position);
-                console.log("e.split.postion", e.split.postion);
             }
         }
 
