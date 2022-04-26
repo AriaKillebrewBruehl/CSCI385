@@ -164,7 +164,6 @@ class Edge {
         // Tie this edge with its "twin" that borders the neighboring
         // face.
         //
-
         this.twin = e;
         e.twin = this;
     }
@@ -524,6 +523,7 @@ class Surface {
         for (let e of S.allEdges()) {
             if (e.twin.split) {
                 e.split = e.twin.split;
+                // continue;
             } else {
                 e.split = R.makeVertex(this.smoothedSplitVertex(e));
             }
