@@ -490,18 +490,12 @@ class Surface {
 
             let id0  = e.source.clone.id;
             let id00 = e.split.id;
-            // console.log("v0: ", R.getVertex(id0).position);
-            // console.log("v00: ", R.getVertex(id00).position);
 
             let id1  = e.next.source.clone.id;
             let id10 = e.next.split.id;
-            // console.log("v1: ", R.getVertex(id1).position);
-            // console.log("v10: ", R.getVertex(id10).position);
 
             let id20 = e.next.next.split.id;
             let id2  = e.next.next.source.clone.id;
-            // console.log("v2: ", R.getVertex(id2).position);
-            // console.log("v20: ", R.getVertex(id20).position);
 
             /*
                         id1
@@ -519,38 +513,19 @@ class Surface {
             R.makeFace(id00, id1, id10);  // face 1
             R.makeFace(id10, id2, id20);  // face 2
             R.makeFace(id00, id10, id20); // face 3
-            R.makeFace(id0, id1, id2); // face 3
         }
 
-        // for (let v of R.allVertices()) {
-        //     console.assert(v.edge.source == v);
-        // }
-        // for (let e of R.allEdges()) {
-        //     console.assert(e.twin.twin == e);
-        // }
+        for (let v of R.allVertices()) {
+            console.assert(v.edge.source == v);
+        }
+        for (let e of R.allEdges()) {
+            console.assert(e.twin.twin == e);
+        }
 
         // 4. Return R.
         console.log("here");
         R.regirth();
         return R;
-
-
-       /* const tetra = gSurfaces.get("tetra");
-        // Copy the tetrahedron vertcies.
-        for (let v of tetra.allVertices()) {
-            R.makeVertex(v.position);
-        }
-        // Copy the tetrahedron faces.
-        for (let f of tetra.allFaces()) {
-            const v0 = f.edge.target.id;
-            const v1 = f.edge.next.target.id;
-            const v2 = f.edge.prev.target.id;
-            R.makeFace(v0,v1,v2);
-        }
-
-        //
-        R.regirth();
-        return R;*/
     }
 
 
