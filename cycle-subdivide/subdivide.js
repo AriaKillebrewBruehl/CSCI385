@@ -445,31 +445,57 @@ class Surface {
         return f;
     }
 
+    smoothedCloneVertex(v) {
+        var s;
+        var k = 1;
+        var first = v.edge.target;
+        var current = v.edge.prev.twin;
+
+        while (current.target != first) {
+            k += 1;
+            current = current.prev.twin;
+        }
+        var b = (5/8) - (3/8 + (1/4)*Math.cos(2*Math.PI/k))**2;
+
+        var i = 1;
+        var sumx = 0.0;
+        var sumy = 0.0;
+        var sumz = 0.0;
+        current = v.edge;
+        while (i <= k) {
+            sumx += (b/k) * current.target.position.x;
+            sumy += (b/k) * current.target.position.y;
+            sumz += (b/k) * current.target.position.z;
+            current = current.prev.twin;
+            i+=1;
+        }
+
+        var sx = (1 - b) * v.position.x + sumx;
+        var sy = (1 - b) * v.position.y + sumy;
+        var sz = (1 - b) * v.position.z + sumz;
+
+
+        s = new Point3d(sx, sy, sz);
+        return s
+    }
+
     smoothedSplitVertex(e) {
         /*
-              q0
-              / \
-             /   \
-            /     \
-           /       \
-          /         \
-         /           \
-        p0--e.split--p1
-         \           /
-          \         /
-           \       /
-            \     /
-             \   /
-              \ /
-               q1
+            q0
+           / \
+          /   \
+         /     \
+        p0--s--p1
+         \     /
+          \   /
+           \ /
+            q1
 
         */
-        // var v = e.split;
         var p0 = e.source.position;
         var p1 = e.target.position;
         var q0 = e.prev.twin.target.position;
         var q1 = e.next.target.position;
-        console.log(q1);
 
         var s = new Point3d((3/8) * p0.x + (3/8) * p1.x + (1/8) * q0.x + (1/8) * q1.x,
                             (3/8) * p0.y + (3/8) * p1.y + (1/8) * q0.y + (1/8) * q1.y,
@@ -498,7 +524,7 @@ class Surface {
         // 1. Create a "clone" vertex within `R` of each vertex of `S`. Use `R.makeVertex`.
         //
         for (let v of S.allVertices()) {
-            v.clone = R.makeVertex(v.position);
+            v.clone = R.makeVertex(R.smoothedCloneVertex(v));
         }
 
         // 2. Create a "split" vertex within `R` from each edge of `S`. Use `R.makeVertex`.
@@ -507,10 +533,9 @@ class Surface {
             if (e.twin.split) {
                 e.split = e.twin.split;
             } else {
-                let pos0 = e.source.clone.position;
-                let pos1 = e.target.clone.position;
-                // let pos = new Point3d((pos0.x + pos1.x) / 2.0, (pos0.y + pos1.y) / 2.0,( pos0.z + pos1.z) / 2.0);
-                console.log(R.smoothedSplitVertex(e));
+                var p = e.source.position;
+                var p1 = e.target.position;
+                var s = new Point3d((p.x + p1.x) / 2.0, (p.y + p1.y) / 2.0, (p.z + p1.z) / 2.0)
                 e.split = R.makeVertex(R.smoothedSplitVertex(e));
             }
         }
@@ -524,18 +549,18 @@ class Surface {
 
             let id0  = e.source.clone.id;
             let id00 = e.split.id;
-            // console.log("v0: ", R.getVertex(id0).position);
-            // console.log("v00: ", R.getVertex(id00).position);
+            // console.log(R.getVertex(id0).position);
+            // console.log(R.getVertex(id00).position);
 
-            let id1  = e.next.source.clone.id;
-            let id10 = e.next.split.id;
-            // console.log("v1: ", R.getVertex(id1).position);
-            // console.log("v10: ", R.getVertex(id10).position);
+            let id1  = e.target.clone.id;
+            let id10 = e.prev.prev.split.id;
+           //  console.log(R.getVertex(id1).position);
+            // console.log(R.getVertex(id10).position);
 
-            let id20 = e.next.next.split.id;
-            let id2  = e.next.next.source.clone.id;
-            // console.log("v2: ", R.getVertex(id2).position);
-            // console.log("v20: ", R.getVertex(id20).position);
+            let id2  = e.prev.source.clone.id;
+            let id20 = e.prev.split.id;
+            // console.log(R.getVertex(id2).position);
+            // console.log(R.getVertex(id20).position);
 
             /*
                         id1
@@ -548,43 +573,17 @@ class Surface {
                   /     \ /     \
                id2------id20-----id0
             */
+            // R.makeFace(id0, id1, id2);  // face 0
 
             R.makeFace(id20, id0, id00);  // face 0
-            R.makeFace(id00, id1, id10);  // face 1
-            R.makeFace(id10, id2, id20);  // face 2
-            R.makeFace(id00, id10, id20); // face 3
-            R.makeFace(id0, id1, id2); // face 3
+            R.makeFace(id10, id00, id1);  // face 1
+            R.makeFace(id2, id20, id10);  // face 2
+            R.makeFace(id10, id00, id20); // face 3
+
         }
 
-        // for (let v of R.allVertices()) {
-        //     console.assert(v.edge.source == v);
-        // }
-        // for (let e of R.allEdges()) {
-        //     console.assert(e.twin.twin == e);
-        // }
-
-        // 4. Return R.
-        console.log("here");
         R.regirth();
         return R;
-
-
-       /* const tetra = gSurfaces.get("tetra");
-        // Copy the tetrahedron vertcies.
-        for (let v of tetra.allVertices()) {
-            R.makeVertex(v.position);
-        }
-        // Copy the tetrahedron faces.
-        for (let f of tetra.allFaces()) {
-            const v0 = f.edge.target.id;
-            const v1 = f.edge.next.target.id;
-            const v2 = f.edge.prev.target.id;
-            R.makeFace(v0,v1,v2);
-        }
-
-        //
-        R.regirth();
-        return R;*/
     }
 
 
