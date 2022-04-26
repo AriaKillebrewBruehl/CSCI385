@@ -516,7 +516,6 @@ class Surface {
         // 1. Create a "clone" vertex within `R` of each vertex of `S`. Use `R.makeVertex`.
         //
         for (let v of S.allVertices()) {
-           //  v.clone = R.makeVertex(v.position);
            v.clone = R.makeVertex(R.smoothedCloneVertex(v));
         }
 
@@ -526,10 +525,6 @@ class Surface {
             if (e.twin.split) {
                 e.split = e.twin.split;
             } else {
-                // let pos0 = e.source.clone.position;
-                // let pos1 = e.target.clone.position;
-                // let pos = new Point3d((pos0.x + pos1.x) / 2.0, (pos0.y + pos1.y) / 2.0,( pos0.z + pos1.z) / 2.0);
-                // e.split = R.makeVertex(pos);
                 e.split = R.makeVertex(this.smoothedSplitVertex(e));
             }
         }
