@@ -445,6 +445,35 @@ class Surface {
         return f;
     }
 
+    smoothedCloneVertex(v) {
+        var s;
+        var k = 1;
+        var first = v.edge.target;
+        var current = v.edge.prev.twin;
+        while (current.target != first) {
+            k += 1;
+            current = current.prev.twin;
+        }
+        var b = (5/8) - (3/8 + (1/4)*Math.cos(2*Math.PI/k))**2;
+        var i = 1;
+        var sumx = 0.0;
+        var sumy = 0.0;
+        var sumz = 0.0;
+        current = v.edge;
+        while (i <= k) {
+            sumx += (b/k) * current.target.position.x;
+            sumy += (b/k) * current.target.position.y;
+            sumz += (b/k) * current.target.position.z;
+            current = current.prev.twin;
+            i+=1;
+        }
+        var sx = (1 - b) * v.position.x + sumx;
+        var sy = (1 - b) * v.position.y + sumy;
+        var sz = (1 - b) * v.position.z + sumz;
+        s = new Point3d(sx, sy, sz);
+        return s
+    }
+
     smoothedSplitVertex(e) {
         /*
             q0
@@ -487,7 +516,8 @@ class Surface {
         // 1. Create a "clone" vertex within `R` of each vertex of `S`. Use `R.makeVertex`.
         //
         for (let v of S.allVertices()) {
-            v.clone = R.makeVertex(v.position);
+           //  v.clone = R.makeVertex(v.position);
+           v.clone = R.makeVertex(R.smoothedCloneVertex(v));
         }
 
         // 2. Create a "split" vertex within `R` from each edge of `S`. Use `R.makeVertex`.
