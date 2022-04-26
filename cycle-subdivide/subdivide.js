@@ -164,7 +164,6 @@ class Edge {
         // Tie this edge with its "twin" that borders the neighboring
         // face.
         //
-
         this.twin = e;
         e.twin = this;
     }
@@ -524,7 +523,8 @@ class Surface {
         // 1. Create a "clone" vertex within `R` of each vertex of `S`. Use `R.makeVertex`.
         //
         for (let v of S.allVertices()) {
-            v.clone = R.makeVertex(R.smoothedCloneVertex(v));
+            // v.clone = R.makeVertex(R.smoothedCloneVertex(v));
+            v.clone = R.makeVertex(v.position);
         }
 
         // 2. Create a "split" vertex within `R` from each edge of `S`. Use `R.makeVertex`.
@@ -532,11 +532,15 @@ class Surface {
         for (let e of S.allEdges()) {
             if (e.twin.split) {
                 e.split = e.twin.split;
+                // continue;
             } else {
-                var p = e.source.position;
-                var p1 = e.target.position;
+                var p = e.source.clone.position;
+                var p1 = e.target.clone.position;
                 var s = new Point3d((p.x + p1.x) / 2.0, (p.y + p1.y) / 2.0, (p.z + p1.z) / 2.0)
-                e.split = R.makeVertex(R.smoothedSplitVertex(e));
+                // e.split = R.makeVertex(R.smoothedSplitVertex(e));
+                // e.split = R.makeVertex(R.smoothedSplitVertex(e));
+                e.split = R.makeVertex(s);
+                // e.twin.split = e.split;
             }
         }
 
@@ -552,8 +556,8 @@ class Surface {
             // console.log(R.getVertex(id0).position);
             // console.log(R.getVertex(id00).position);
 
-            let id1  = e.target.clone.id;
-            let id10 = e.prev.prev.split.id;
+            let id1  = e.next.source.clone.id;
+            let id10 = e.next.split.id;
            //  console.log(R.getVertex(id1).position);
             // console.log(R.getVertex(id10).position);
 
@@ -573,13 +577,20 @@ class Surface {
                   /     \ /     \
                id2------id20-----id0
             */
-            // R.makeFace(id0, id1, id2);  // face 0
 
             R.makeFace(id20, id0, id00);  // face 0
             R.makeFace(id10, id00, id1);  // face 1
             R.makeFace(id2, id20, id10);  // face 2
             R.makeFace(id10, id00, id20); // face 3
+        }
 
+        for (let v of R.allVertices()) {
+            console.assert(v.edge.source == v);
+        }
+
+        for (let e of R.allEdges()) {
+            console.log(e.twin);
+            console.assert(e.twin);
         }
 
         R.regirth();
