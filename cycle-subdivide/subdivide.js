@@ -473,6 +473,9 @@ class Surface {
         return s
     }
 
+    //
+    // Helper function to calculate smoothed vertex
+    //
     smoothedSplitVertex(e) {
         /*
             q0
@@ -487,11 +490,14 @@ class Surface {
         */
         var p0 = e.source.position;
         var p1 = e.target.position;
-        var q0 = e.prev.twin.target.position;
-        var q1 = e.next.target.position;
+        var q0 = e.prev.source.position;
+        var q1 = e.twin.prev.source.position;
+
+        // calculate weighted average
         var s = new Point3d((3/8) * p0.x + (3/8) * p1.x + (1/8) * q0.x + (1/8) * q1.x,
                             (3/8) * p0.y + (3/8) * p1.y + (1/8) * q0.y + (1/8) * q1.y,
                             (3/8) * p0.z + (3/8) * p1.z + (1/8) * q0.z + (1/8) * q1.z);
+
         return s;
     }
 
@@ -521,10 +527,14 @@ class Surface {
         // 2. Create a "split" vertex within `R` from each edge of `S`. Use `R.makeVertex`.
         //
         for (let e of S.allEdges()) {
+            // make sure that the split of the twin is the same as the edges split
             if (e.twin.split) {
                 e.split = e.twin.split;
-                // continue;
             } else {
+                // var p0 = e.source.position;
+                // var p1 = e.target.position;
+                // var p = new Point3d((p0.x + p1.x)/2.0, (p0.y + p1.y)/2.0, (p0.z + p1.z)/2.0);
+                // e.split = R.makeVertex(p);
                 e.split = R.makeVertex(this.smoothedSplitVertex(e));
             }
         }
@@ -536,6 +546,7 @@ class Surface {
         for (let f of S.allFaces()) {
             let e = f.edge;
 
+            // find vertex ids
             let id0  = e.source.clone.id;
             let id00 = e.split.id;
 
@@ -563,6 +574,7 @@ class Surface {
             R.makeFace(id00, id10, id20); // face 3
         }
 
+        // ensure that everything was linked correctly
         for (let v of R.allVertices()) {
             console.assert(v.edge.source == v);
         }
@@ -571,7 +583,6 @@ class Surface {
         }
 
         // 4. Return R.
-        console.log("here");
         R.regirth();
         return R;
     }
