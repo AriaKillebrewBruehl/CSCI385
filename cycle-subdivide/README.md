@@ -5,7 +5,7 @@
 To run the simulation and play the game clone the repo. In your terminal navigate to the directory and run the command `open cycle-subdivide.html`. Press `p` to subdivide the surface and use the `i`, `j`, `k`, and `l` keys to control the cycle.
 
 
-![Initial Curve](./images/default.png)
+![Initial Surface](./images/default.png)
 </p>
 <p align = "center">
 Fig.1 - The default subdivision surface
@@ -78,3 +78,15 @@ Beta was calculated as `var b = (5/8) - (3/8 + (1/4)*Math.cos(2*Math.PI/k))**2;`
 ```
 
 The smooth vertices were used as the vertex clones and edge splits to create a proper subdivision.
+
+![Smooth Fox](./images/smooth-fox.png)
+</p>
+<p align = "center">
+Fig.1 - A smooth fox!
+</p>
+
+![Smooth Sandal](./images/smooth-sandal.png)
+</p>
+<p align = "center">
+Fig.1 - A smooth sandal just in time for summer!
+</p>
