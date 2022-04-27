@@ -304,7 +304,18 @@ class PlayerCycle extends Cycle {
         //
         var random = Math.floor(Math.random()*surface.faces.length);
         super(surface, colorIndex, random);
+        // create cycle id to keep track of which cycle has visited a face
         this.id = id;
+    }
+
+    update() {
+        super.update();
+        // the face a cycle has moved to has been visited by another cycle
+        if (this.face.cycle != null && this.face.cycle != this.id) {
+            this.moving = false;
+        } else {
+            this.face.cycle = this.id;
+        }
     }
 
 }
