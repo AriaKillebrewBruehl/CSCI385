@@ -2,7 +2,7 @@
 // cycle.js
 //
 // Author: Jim Fix
-// CSCI 385, Reed College, Spring 2022 
+// CSCI 385, Reed College, Spring 2022
 //
 // This defines a class for representing a Tron cycle that drives on a
 // oriented surface made up of triangular facets. It sets up a collection
@@ -50,8 +50,9 @@ let gPlayer = null;
 let gCycles = [];
 
 function initCycles() {
-    gPlayer = new Cycle(gSurface, 0);
-    gCycles = [gPlayer];
+    gPlayer  = new PlayerCycle(gSurface, 0, 0);
+    gPlayer1 = new PlayerCycle(gSurface, 1, 1);
+    gCycles = [gPlayer, gPlayer1];
 }
 
 //
@@ -77,13 +78,13 @@ function initCycles() {
 // the app.
 //
 class Cycle {
-            
+
     constructor(surface, colorIndex, faceid = 0) {
         //
         // Construct a new cycle of the specified color, on a surface.
         // Relies heavily on `resetOn`.
         //
-        
+
         this.color = gCycleColors[colorIndex];
         this.resetOn(surface, faceid);
     }
@@ -93,7 +94,7 @@ class Cycle {
         // Place the cycle on a new surface at the specified face/edge.
         // Reset its navigation status.
         //
-        
+
         this.surface    = gSurface;
         this.face       = this.surface.getFace(faceid);
         this.edge       = this.face.edge;
@@ -109,7 +110,7 @@ class Cycle {
     //
     // SUPPORT FOR DRIVING
     //
-    
+
     update() {
         //
         // Updates the position of the cycle on a face, possibly advancing
@@ -129,7 +130,7 @@ class Cycle {
         // Register a left/right turn to be made when we hit the next
         // face.
         //
-        
+
         this.steer = steer;
     }
 
@@ -137,7 +138,7 @@ class Cycle {
         //
         // Increase the cycle's speed.
         //
-        
+
         this.speed += SPEED_UPDATE;
         if (this.speed > MAX_SPEED) {
             this.speed = MAX_SPEED;
@@ -148,18 +149,18 @@ class Cycle {
         //
         // Decrease the cycle's speed.
         //
-        
+
         this.speed -= SPEED_UPDATE;
         if (this.speed < MIN_SPEED) {
             this.speed = MIN_SPEED;
         }
     }
-    
+
     pauseResume() {
         //
         // Start/stop the cycle's movement.
         //
-        
+
         this.moving = !this.moving;
     }
 
@@ -173,7 +174,7 @@ class Cycle {
         // neighboring face of the face being exited, using `this.steer`
         // and (maybe) `this.flip`.
         //
-        
+
         this.edge = this.nextEdge;
         this.face = this.edge.face;
         let dir   = this.steer;
@@ -217,14 +218,14 @@ class Cycle {
     //
     // SUPPORT FOR RENDERING
     //
-    
+
     draw() {
         //
         // Use OpenGL/WebGL calls to place the cycle mid-way somewhere on
         // the face where it sits. Relies heavily on the `Surface` data
         // structure, interpreting `this.between`.
         //
-        
+
         glPushMatrix();
 
         //
@@ -244,12 +245,12 @@ class Cycle {
         // Use that info to place/direct/orient the object.
         gluTargetTo(p, p.plus(vFwd), vUp);
 
-        // Set the color.                                                                  
+        // Set the color.
         glColor3f(this.color.r, this.color.g, this.color.b);
 
         // Compute a size of the bike, relative to speed. Here's a hack!
         const scale = 0.1*Math.sqrt((this.speed+0.5)/0.5);
-        
+
         // Place the front wheel at the location, resize (with flip).
         glScalef(scale, scale, -scale);
         glTranslatef(0.0,-0.1,-0.5); // Move back and down a little.
@@ -259,7 +260,7 @@ class Cycle {
 
         glPopMatrix();
     }
-    
+
     setPerspective() {
         //
         // Use OpenGL/WebGL calls to place the camera from this
@@ -285,12 +286,25 @@ class Cycle {
         const pMid  = pFrom.combo(this.between,pTo);
         const vUp   = face.getNormal();
         const e = pMid.plus(vUp.times(0.05));
-        //                                                                             
+        //
         glRotatef(LOOKING_ADJUST, 1.0, 0.0, 0.0);
         gluPerspective(Math.PI/FOCAL_RATIO, 1.0,  100, 0.1);
         gluLookAt(e, e.plus(vFwd), vUp); // Look ahead, down to
                                          // the next position on
                                          // the surface.
+    }
+
+}
+
+class PlayerCycle extends Cycle {
+    constructor(surface, colorIndex, id) {
+        //
+        // Construct a new cycle of the specified color, on a surface.
+        // Relies heavily on `resetOn`.
+        //
+        var random = Math.floor(Math.random()*surface.faces.length);
+        super(surface, colorIndex, random);
+        this.id = id;
     }
 
 }
