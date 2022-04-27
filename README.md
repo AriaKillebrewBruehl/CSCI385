@@ -11,3 +11,16 @@ Simple 3-D object rendering program. [See more here](https://github.com/AriaKill
 ## Program 2 Scene :film_projector:
 
 Program 2 creates a simple drawing and animated object by specifying rotations, scaling, and translations of the coordinate matrix. [See more here](https://github.com/AriaKillebrewBruehl/CSCI385/blob/main/scene/README.md)
+
+## Program 3: Flip Book :closed_book:
+
+Program 3 renders a flip book by using ray casting to compute perspective projections of what the camera sees, depicting objects as their wireframes with hidden lines removed. [See more here](https://github.com/nihilistkitten/walk-thru-it/blob/main/README.md)
+
+## Program 4: Bezier Funhouse :clown_face:
+
+Program 4 uses ray tracing to simulate the reflections of a curved mirror. [See more here](https://github.com/AriaKillebrewBruehl/CSCI385/blob/main/bezier-funhouse/README.md)
+
+## Program 5: Cycle Subdivide :motorcycle:
+
+Program 5 uses Loop subdivision to create smoothly rendered 3d wireframe objects. [See more here](https://github.com/AriaKillebrewBruehl/CSCI385/blob/main/cycle-subdivide/README.md)
+
