@@ -239,6 +239,7 @@ class Face {
         e20.setFace(this);
         this.normal = null; // See `getNormal` below.
         this.id = id;
+        this.cycle = null;
     }
 
     getNormal() {
