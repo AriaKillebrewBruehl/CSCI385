@@ -88,10 +88,16 @@ let gLightPosition = new Point3d(-1.5, 0.875, -1.0);
 //
 let gShowMesh      = true;
 //
+let multiplayer = false;
 
 function resetCycles() {
     removeCycles();
-    initCycles();
+    if (multiplayer) {
+        initMultiCycles();
+    } else {
+        initCycles();
+    }
+
 }
 function pauseResumeGame() {
     for (let cycle of gCycles) {
@@ -379,6 +385,11 @@ function handleKey(key, x, y) {
         chooseSurface(gSurfaceChoice);
         refinement.glCompile();
         refinement.glCompileMesh();
+        resetCycles();
+    }
+
+    if (key == "m") {
+        multiplayer = true;
         resetCycles();
     }
 
