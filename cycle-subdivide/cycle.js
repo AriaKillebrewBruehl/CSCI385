@@ -50,9 +50,17 @@ let gPlayer = null;
 let gCycles = [];
 
 function initCycles() {
-    gPlayer  = new PlayerCycle(gSurface, 0, 0);
-    gPlayer1 = new PlayerCycle(gSurface, 1, 1);
-    gCycles = [gPlayer, gPlayer1];
+    gPlayer = new PlayerCycle(gSurface, 0, 0);
+    gCycles.push(gPlayer);
+    for (let i = 1; i < gCycleColors.length; i+=1) {
+        gPlayer  = new AutoCycle(gSurface, i, i);
+        gCycles.push(gPlayer);
+    }
+
+}
+
+function removeCycles() {
+    gCycles = [];
 }
 
 //
@@ -296,7 +304,7 @@ class Cycle {
 
 }
 
-class PlayerCycle extends Cycle {
+class AutoCycle extends Cycle {
     constructor(surface, colorIndex, id) {
         //
         // Construct a new cycle of the specified color, on a surface.
@@ -318,4 +326,37 @@ class PlayerCycle extends Cycle {
         }
     }
 
+    setSteering(steer) {
+        //
+        // Register a left/right turn to be made when we hit the next
+        // face.
+        //
+
+        var direction =  Math.floor(Math.random()*3);
+        this.steer = direction;
+    }
+}
+
+class PlayerCycle extends Cycle {
+    constructor(surface, colorIndex, id) {
+        //
+        // Construct a new cycle of the specified color, on a surface.
+        // Relies heavily on `resetOn`.
+        //
+        var random = Math.floor(Math.random()*surface.faces.length);
+        super(surface, colorIndex, random);
+        // create cycle id to keep track of which cycle has visited a face
+        this.id = id;
+    }
+
+    update() {
+        super.update();
+        // the face a cycle has moved to has been visited by another cycle
+        if (this.face.cycle != null && this.face.cycle != this.id) {
+            this.moving = false;
+            alert("YOU DIED :( Refresh the page to play again!");
+        } else {
+            this.face.cycle = this.id;
+        }
+    }
 }
