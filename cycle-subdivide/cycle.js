@@ -50,6 +50,12 @@ let gPlayer = null;
 let gCycles = [];
 
 function initCycles() {
+    gPlayer = new Cycle(gSurface, 0);
+    gCycles.push(gPlayer);
+
+}
+
+function initMultiCycles() {
     gPlayer = new PlayerCycle(gSurface, 0, 0);
     gCycles.push(gPlayer);
     for (let i = 1; i < gCycleColors.length; i+=1) {
