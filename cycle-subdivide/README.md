@@ -11,9 +11,11 @@ To run the simulation and play the game clone the repo. In your terminal navigat
 Fig.1 - The default subdivision surface
 </p>
 
+## Live Demo
+[![Watch the video](./images/thumbnail.png)](https://youtu.be/PA2cEEQzDbM)
 ## Design Overview
 
-### Part 1 Loop Subdivision
+### Part 1 Loop Subdivision :heavy_division_sign:
 
 First I wrote the subdivision code such that no smoothing was performed but the topology of the new vertices, edges, and faces was correct. This was fairly straight forward. The new vertices were calculated and `v.clone` was updated for the existing vertices and `e.split` was updated for the midpoints. The new faces were calculated by using these points, see below.
 
@@ -88,5 +90,31 @@ Fig.1 - A smooth fox!
 ![Smooth Sandal](./images/smooth-sandal.png)
 </p>
 <p align = "center">
-Fig.1 - A smooth sandal just in time for summer!
+Fig.2 - A smooth sandal just in time for summer!
+</p>
+
+## Part 2: Multiple Cycles Game Extension :video_game:
+
+For my extension I implemented multiple cycles and included and endgame. To do so I created two subclasses of `Cycle` called `PlayerCycle` and `AutoCycle`. Both subclasses add a `this.id` method to the constructor. Additionally I added a `this.cycle` attribute to the `Face` class in `subdivide.js`. This attribute allows a face to keep track of which cycle has visited it.
+
+ Both classes extend the `update()` method of the `Cycle class` to check if the face the cycle just entered has already been visited by another cycle by comparing a `this.id` to `this.face.cycle`. If so the cycle dies and for the `PlayerCycle` an alert is given to the user that they have died. For `AutoCycle` the `steer()` method is overwritten to randomly pick a steering direction, rather than take input form the user.
+
+ In `cycle-subdivide.js` when the `p` key is hit a call is made to the `resetCycles()` method which makes two calls are made to additional methods in `cycle.js`. First, a  call is made to the `removeCycles()` method which removes all cycles form the `gCycle` list. Then a call to `initCycles()` is made to place new cycles on the surface.
+
+ ![Initial Multiplayer](./images/initialMulti.png)
+</p>
+<p align = "center">
+Fig.3 - Initial configuration in multiplayer game
+</p>
+
+ ![Initial Multiplayer](./images/multi.png)
+</p>
+<p align = "center">
+Fig.4 - Multiplayer game
+</p>
+
+ ![Smooth Sandal](./images/endgame.png)
+</p>
+<p align = "center">
+Fig.5 - Endgame in multiplayer game
 </p>
