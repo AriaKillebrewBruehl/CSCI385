@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>CYCLE SUB-DIVIDE</title>
-    
+
     <script id="glsl/vs-uniform-color.c" type="x-shader/x-vertex">
 //
 // vs-uniform-color.c
@@ -85,7 +85,7 @@ void main(void) {
 // into a Phong fragment shader. It expects the material's color
 // information to be uniform over all the vertices of the object.
 //
-// It sends this (interpolated) information to the fragment shader: 
+// It sends this (interpolated) information to the fragment shader:
 // * The position of a fragment of a facet or line object defined by
 //   several vertex positions.
 // * The normal of that surface.
@@ -105,10 +105,10 @@ uniform vec4 uMaterialColor;      // Color of material.
 
 varying vec4 position;   // Fragment's surface position.
 varying vec4 normal;     // Fragment's surface normal.
-varying vec4 material;   // Fragment surface's material color. 
+varying vec4 material;   // Fragment surface's material color.
 
 void main() {
-  
+
   // Transform and nterpolate vertex information.
   position   = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
   normal     = uProjectionMatrix * uModelViewMatrix * aVertexNormal;
@@ -151,12 +151,12 @@ varying vec4 normal;     // Fragment's surface normal.
 varying vec4 material;   // Fragment surface's material color.
 
 void main() {
-  
+
   // Transform and nterpolate vertex information.
   position   = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
   normal     = uProjectionMatrix * uModelViewMatrix * aVertexNormal;
   material   = aVertexMaterial;
- 
+
   // The output required by GLSL.
   gl_Position = position;
 }
@@ -200,24 +200,24 @@ uniform float uMaterialSpecular;  // Portion of reflection that's specular.
 uniform float uMaterialShininess; // Specular highlight control.
 
 void main() {
-  
+
   vec4 light_color         = uLight0Color;
   vec4 ambient_light_color = uAmbientColor;
-  
+
   float diffuse_amount  = uMaterialDiffuse;
   float specular_amount = uMaterialSpecular;
   float shininess       = uMaterialShininess;
-  
+
   //  vec4 light = uLightPosition;
   vec4 light = uLight0Position;
   vec4 eye   = vec4(0.0,0.0,-1.0,0.0);
-  
+
   vec4  l = normalize(light - position);
   vec4  e = normalize(eye - position);
   vec4  n = normalize(normal);
   vec4  r = -l + 2.0 * dot(l,n) * n;
   float p = pow(max(dot(e,r),0.0),shininess);
-  
+
   vec4 ambient  = ambient_light_color * material;
   vec4 diffuse  = diffuse_amount * light_color * material * max(dot(l,n), 0.0);
   vec4 specular = specular_amount * light_color * p * max(dot(l,n), 0.0);
@@ -233,7 +233,7 @@ void main() {
   }
 }
     </script>
-    
+
     <script id="egg.obj" type="text/html">
 v -7.2543929e-07 17.267971 10.529391
 v 0.15782158 12.157322 8.002037
@@ -371,7 +371,7 @@ f 8// 14// 19//
 f 11// 6// 4//
 f 12// 11// 4//
     </script>
-    
+
     <script id="tron-cycle.obj" type="text/html">
 v 0.0649 0.0789 -0.2461
 v 0.0689 0.0843 0.5123
@@ -19036,7 +19036,7 @@ f 42// 18// 24//
 f 150// 137// 148//
 f 81// 82// 78//
 f 80// 81// 78//
-</script>  
+</script>
   <script id="soccer.obj" type="text/html">
 v 0.80928 0.333333 0.525731
 v 0.5671 0.666667 0.525731
@@ -19215,7 +19215,7 @@ f 51 57 55
 f 51 59 57
 f 51 54 59
   </script>
-  
+
   <script src="gl-matrix-min.js" defer></script>
   <script src="gl.js" defer></script>
   <script src="load-shaders.js" defer></script>
@@ -19227,17 +19227,19 @@ f 51 54 59
 
  <body>
    <canvas id="glcanvas" width="1280" height="640"></canvas><br>
-   
+
    <font face="Verdana">
-    
+
      <div>
        <button id="play-button">PLAY CYCLE SUB-DIVIDE</button>
        Use `ijkl` to drive,
        `p` to subdivide,
        `w` to toggle the wireframe,
+       'm' to enter multiplayer mode,
        `SPACE` to pause/resume.
      </div>
-     
+
+
      <div>
        Choose a surface:
        <input type="radio" name="surface" value="bunny" id="bunny" checked="true">
@@ -19257,15 +19259,15 @@ f 51 54 59
        <input type="radio" name="surface" value="stell" id="stell">
        <label for="stell">small stellated dodecahedron</label>
      </div>
-     
+
    </font>
  </body>
- 
+
  <script>
-   
+
   </script>
-  
+
   <script src="cycle.js" defer></script>
   <script src="cycle-subdivide.js" defer></script>
-  
+
 </html>
