@@ -95,7 +95,7 @@ Fig.2 - A smooth sandal just in time for summer!
 
 ## Part 2: Multiple Cycles Game Extension :video_game:
 
-For my extension I implemented multiple cycles and included and endgame. To do so I created two subclasses of `Cycle` called `PlayerCycle` and `AutoCycle`. Both subclasses add a `this.id` method to the constructor. Additionally I added a `this.cycle` attribute to the `Face` class in `subdivide.js`. This attribute allows a face to keep track of which cycle has visited it.
+For my extension I implemented multiple cycles and included and endgame. To enter multiCycle mode hit the `m` key. For t5his extension I created two subclasses of `Cycle` called `PlayerCycle` and `AutoCycle`. Both subclasses add a `this.id` method to the constructor. Additionally I added a `this.cycle` attribute to the `Face` class in `subdivide.js`. This attribute allows a face to keep track of which cycle has visited it.
 
  Both classes extend the `update()` method of the `Cycle class` to check if the face the cycle just entered has already been visited by another cycle by comparing a `this.id` to `this.face.cycle`. If so the cycle dies and for the `PlayerCycle` an alert is given to the user that they have died. For `AutoCycle` the `steer()` method is overwritten to randomly pick a steering direction, rather than take input form the user.
 
