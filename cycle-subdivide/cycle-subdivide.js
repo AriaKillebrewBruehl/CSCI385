@@ -89,6 +89,10 @@ let gLightPosition = new Point3d(-1.5, 0.875, -1.0);
 let gShowMesh      = true;
 //
 
+function resetCycles() {
+    removeCycles();
+    initCycles();
+}
 function pauseResumeGame() {
     for (let cycle of gCycles) {
         cycle.pauseResume();
@@ -375,8 +379,7 @@ function handleKey(key, x, y) {
         chooseSurface(gSurfaceChoice);
         refinement.glCompile();
         refinement.glCompileMesh();
-        removeCycles();
-        initCycles();
+        resetCycles();
     }
 
     //
