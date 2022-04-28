@@ -354,7 +354,7 @@ class PlayerCycle extends Cycle {
         // the face a cycle has moved to has been visited by another cycle
         if (this.face.cycle != null && this.face.cycle != this.id) {
             this.moving = false;
-            alert("YOU DIED :( Refresh the page to play again!");
+           alert("YOU DIED :( Hit cmd R to play again!");
         } else {
             this.face.cycle = this.id;
         }
