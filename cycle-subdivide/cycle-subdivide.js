@@ -55,7 +55,7 @@
 //
 // ========
 //
-// an additional ENHANCEMENT 
+// an additional ENHANCEMENT
 //
 // Furthermore, the assignment description asks that you showcase the
 // surface data structure by enhancing the app. It gives several
@@ -130,7 +130,7 @@ function loadObjects() {
 function makeObject(objname, objtext) {
     /*
      * Processes the Wavefront .OBJ file information stored in
-     * the string `objtext`. It builds a `Surface` instance for 
+     * the string `objtext`. It builds a `Surface` instance for
      * it. It then creates two `glBeginEnd` renderings:
      *
      *  "object": is the triangular facets of the object,
@@ -138,13 +138,13 @@ function makeObject(objname, objtext) {
      *            the ground color, and the cycle trails'
      *            colors.
      *
-     *  "object-mesh": description of all the edges of the 
+     *  "object-mesh": description of all the edges of the
      *                 faceted object.
      *
      * In the above, "object" stands in for `objname`.
      *
      */
-    
+
     const surface = new Surface(objname);
     surface.read(objtext);
 
@@ -156,13 +156,13 @@ function makeObject(objname, objtext) {
         //
         // Make the wireframe.
         surface.glCompileMesh() // a series of pairs of glVertex3f
-        
+
     } else {
         //
         // Little hack for the player/cycle.
-        surface.glCompile(false) 
+        surface.glCompile(false)
     }
-    
+
 
 
     //
@@ -178,7 +178,7 @@ function drawObject() {
      * single light, GL_LIGHT0.
      *
      */
-    
+
     // Turn on lighting.
     glEnable(GL_LIGHTING);
     if (gLightOn) {
@@ -188,7 +188,7 @@ function drawObject() {
 
     // Render the object in the selected style.
     gSurface.glRender();
-    
+
     glDisable(GL_LIGHT0);
     glDisable(GL_LIGHTING);
 }
@@ -262,7 +262,7 @@ function drawCycles() {
 }
 
 function drawObjectView() {
-    
+
     // Clear the transformation stack.
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -276,7 +276,7 @@ function drawObjectView() {
         //
         glTranslatef(-1.0,0.0,0.0);
         glScalef(0.9,0.9,0.9);
-        
+
 	    // Transform by the current trackball oriention.
         //
 	    gOrientation.glRotatef();
@@ -293,16 +293,16 @@ function drawObjectView() {
     //
     glPopMatrix();
 }
-    
+
 function drawSurfaceView() {
-    
+
     // Clear the transformation stack.
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
     // Center on the right side.
     glTranslatef(1.0,0.0,0.0);
-    
+
     {
         // Show the direction arrows.
         //
@@ -316,11 +316,11 @@ function drawSurfaceView() {
         glColor3f(gPlayer.speed+0.3,gPlayer.speed/3+0.3,0.1);
         glBeginEnd("frame");
     }
-        
+
     // Draw the object's surface from the player's perspective.
     {
         glPushMatrix();
-        
+
         //
         gPlayer.setPerspective();
 
@@ -355,7 +355,7 @@ function drawViews() {
     glScissor(gHeight, 0, gHeight, gHeight);
     drawSurfaceView();
     glDisable(GL_SCISSOR_TEST);
-    
+
     // Render everything.
     glFlush();
 }
@@ -375,14 +375,16 @@ function handleKey(key, x, y) {
         chooseSurface(gSurfaceChoice);
         refinement.glCompile();
         refinement.glCompileMesh();
+        removeCycles();
+        initCycles();
     }
-   
+
     //
     // Turn wireframe on/off.
     if (key == "w") {
 	    gShowMesh = !gShowMesh;
     }
-    
+
     //
     // Steer by registering the next forward face as left/right/alternating.
     if (key == 'j') {
@@ -406,7 +408,7 @@ function handleKey(key, x, y) {
     if (key == ' ') {
         pauseResumeGame();
     }
-    
+
     //
     glutPostRedisplay();
 }
@@ -423,13 +425,13 @@ function worldCoords(mousex, mousey) {
 					                    0.0, 1.0);
     vec4.transformMat4(location,mousecoords,pj_inv);
     return {x:location[0], y:location[1]};
-}    
+}
 
 function handleMouseClick(button, state, x, y) {
     /*
      * Records the location of a mouse click in object world coordinates.
      */
-    
+
     // Start tracking mouse for trackball/light motion.
     mouseStart  = worldCoords(x,y);
     mouseButton = button;
@@ -449,7 +451,7 @@ function handleMouseMotion(x, y) {
      * rotation. This gets stored in the quaternion gOrientation.
      *
      */
-    
+
     // Capture mouse's position.
     mouseNow = worldCoords(x,y)
 
@@ -469,12 +471,12 @@ function handleMouseMotion(x, y) {
 
 function resizeWindow(w, h) {
     /*
-     * Register a window resize by changing the viewport. 
+     * Register a window resize by changing the viewport.
      */
     glViewport(0, 0, w, h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    
+
     // Note: We're using a right-handed coordinate system here.
     if (w > h) {
         glOrtho(-w/h, w/h, -1.0, 1.0, -1.0, 1.0);
@@ -502,9 +504,9 @@ function viewer() {
     //
     resizeWindow(gWidth, gHeight); // It seems to need this.
 
-    // Make any displayed objects 
+    // Make any displayed objects
     makeDriverDisplay();
-    
+
     // Build the renderable objects.
     loadObjects();
     for (const objname of gSurfaceLibrary.keys()) {
@@ -525,7 +527,7 @@ function viewer() {
     pb.addEventListener("click", () => {
         pauseResumeGame();
     });
-    
+
     // Register interaction callbacks.
     glutKeyboardFunc(handleKey);
     glutReshapeFunc(resizeWindow);
@@ -533,7 +535,7 @@ function viewer() {
     glutMouseFunc(handleMouseClick);
     glutMotionFunc(handleMouseMotion);
     glutTimerFunc(33,handleClockTick,0);
-    
+
     // Go!
     glutMainLoop();
 
