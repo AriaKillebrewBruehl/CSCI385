@@ -6,7 +6,7 @@ To run the funhouse and interact with the mirrors, open the repo and run the com
 
 ## Live Demo
 
-[![Watch the video](./images/thumbnail.png)](https://youtu.be/5LCdkaUx5qE)
+[![Watch the video](./images/thumbnail.png)](https://youtu.be/PA2cEEQzDbM)
 
 ## Design Overview
 

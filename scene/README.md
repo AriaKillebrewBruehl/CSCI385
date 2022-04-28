@@ -6,7 +6,7 @@ To run the scene and see the various components in action clone this repo, open 
 
 ## Live Demo
 
-[![Watch the video](./images/thumbnail.png)](https://youtu.be/5LCdkaUx5qE)
+[![Watch the video](./images/thumbnail.png)](https://youtu.be/PA2cEEQzDbM)
 
 
 
