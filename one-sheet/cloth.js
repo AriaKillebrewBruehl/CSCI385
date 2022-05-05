@@ -145,12 +145,10 @@ class Mass {
          * Use `timeStep` for the time step size.
          */
 
-        let newPos = this.position + timeStep*this.velocity;
-        let newVel = this.velocity + timeStep*this.computeAcceleration();
+        let newPos = this.position.plus(this.velocity.times(timeStep));
+        let newVel = this.velocity.plus(acceleration.times(timeStep));
         this.position = newPos;
         this.velocity = newVel;
-
-
     }
 
     makeStep() {
