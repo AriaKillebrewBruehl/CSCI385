@@ -172,6 +172,8 @@ class Spring {
     constructor(mass1, mass2, stiffness) {
         this.mass1 = mass1;
         this.mass2 = mass2;
+        // console.assert(mass2.addSpring(this), mass2);
+        // console.assert(mass1.addSpring(this), mass1);
         mass1.addSpring(this);
         mass2.addSpring(this);
         //
@@ -475,68 +477,70 @@ class Cloth {
          * And also the NSEW ones two positions away.
          *
          */
-
-        for (let r in this.rows) {
-            for (let c in this.columns) {
+        console.log(this.rows);
+        console.log(this.columns);
+        for (let r = 0; r < this.rows; r+=1) {
+            for (let c = 0; c < this.columns; c+=1) {
                 let mass = this.getMass(r, c);
                 // add structural springs
                 if (r > 0) {
                     // north spring
-                    let s = Spring(mass, this.getMass(r - 1, c), gStiffness);
-                    this.springs.addSpring(s);
+                    let s = new Spring(mass, this.getMass(r - 1, c), gStiffness);
+                    this.springs.push(s);
                 }
-                if (r < this.rows) {
+                if (r < this.rows - 1) {
                     // south spring
-                    let s = Spring(mass, this.getMass(r + 1, c), gStiffness);
-                    this.springs.addSpring(s);
+                    let s = new Spring(mass, this.getMass(r + 1, c), gStiffness);
+                    this.springs.push(s);
                 }
                 if ( c > 0) {
                     // west spring
-                    let s = Spring(mass, this.getMass(r, c - 1), gStiffness);
-                    this.springs.addSpring(s);
+                    let s = new Spring(mass, this.getMass(r, c - 1), gStiffness);
+                    this.springs.push(s);
                 }
-                if ( c < this.columns) {
+                if ( c < this.columns - 1) {
                     // east spring
-                    let s = Spring(mass, this.getMass(r, c + 1), gStiffness);
-                    this.springs.addSpring(s);
+                    let s = new Spring(mass, this.getMass(r, c + 1), gStiffness);
+                    this.springs.push(s);
                 }
                 // add shear springs
                 if (r > 0 && c > 0) {
                     // north west spring
-                    let s = Spring(mass, this.getMass(r - 1, c - 1), gStiffness);
-                    this.springs.addSpring(s);
+                    let s = new Spring(mass, this.getMass(r - 1, c - 1), gStiffness);
+                    this.springs.push(s);
                 }
-                if (r > 0 && c < this.columns) {
+                if (r > 0 && c < this.columns - 1) {
                     // north east spring
-                    let s = Spring(mass, this.getMass(r + 1, c + 1), gStiffness);
-                    this.springs.addSpring(s);
+                    let s = new Spring(mass, this.getMass(r - 1, c + 1), gStiffness);
+                    this.springs.push(s);
                 }
-                if (r < this.rows && c > 0) {
+                if (r < this.rows - 1 && c > 0) {
                     // south west spring
-                    let s = Spring(mass, this.getMass(r +1, c - 1), gStiffness);
-                    this.springs.addSpring(s);
+                    let s = new Spring(mass, this.getMass(r +1, c - 1), gStiffness);
+                    this.springs.push(s);
                 }
-                if (r < this.rows && c < this.columns) {
+                if (r < this.rows - 1 && c < this.columns - 1) {
                     // south east spring
-                    let s = Spring(mass, this.getMass(r +1, c +1), gStiffness);
-                    this.springs.addSpring(s);
+                    let s = new Spring(mass, this.getMass(r +1, c +1), gStiffness);
+                    this.springs.push(s);
                 }
                 // add bend springs
                 if (r > 1) {
-                    let s = Spring(mass, this.getMass(r - 2, c), gStiffness);
-                    this.springs.addSpring(s);
+                    let s = new Spring(mass, this.getMass(r - 2, c), gStiffness * gBend);
+                    this.springs.push(s);
                 }
-                if (r < this.rows - 1) {
-                    let s = Spring(mass, this.getMass(r + 2, c), gStiffness);
-                    this.springs.addSpring(s);
+                if (r < this.rows - 2) {
+                    // console.assert(this.getMass(r + 2, c), r+2, c)
+                    let s = new Spring(mass, this.getMass(r + 2, c), gStiffness * gBend);
+                    this.springs.push(s);
                 }
                 if ( c > 1) {
-                    let s = Spring(mass, this.getMass(r, c - 2), gStiffness);
-                    this.springs.addSpring(s);
+                    let s = new Spring(mass, this.getMass(r, c - 2), gStiffness * gBend);
+                    this.springs.push(s);
                 }
-                if ( c < this.columns - 1) {
-                    let s = Spring(mass, this.getMass(r, c + 2), gStiffness);
-                    this.springs.addSpring(s);
+                if ( c < this.columns - 2) {
+                    let s = new Spring(mass, this.getMass(r, c + 2), gStiffness * gBend);
+                    this.springs.push(s);
                 }
 
             }
