@@ -135,18 +135,18 @@ class Mass {
 
         for (let j of this.springs) {
             let F = j.computeForce(this);
-            force.plus(F);
+            force = force.plus(F);
             if (gGravityOn) {
                 let gVector = new Vector3d(0.0, -gGravity, 0.0);
-                force.plus(gVector.times(this.mass));
+                let G = gVector.times(this.mass);
+                force = force.plus(G);
             }
             if (gWindOn) {
                 let windVector = new Vector3d(0.0, 0.0, gWind);
-                force.plus(windVector);
-                force.plus(this.velocity.times(gDrag));
+                force = force.plus(windVector);
+                force = force.plus(this.velocity.times(gDrag));
             }
         }
-
         return force.times(1.0/this.mass);
     }
 
@@ -212,15 +212,15 @@ class Spring {
          */
 
         let other;
-        if (onMass == mass1) {
-            other = mass2;
+        if (onMass == this.mass1) {
+            other = this.mass2;
         } else {
-            other = mas1;
+            other = this.mass1;
         }
-        let distance = onMass.distance(other);
+        let distance = onMass.position.dist(other.position);
         let difference = this.restingLength - distance;
 
-        let u = other.minus(onMass.position).unit;
+        let u = other.position.minus(onMass.position).unit();
 
         let force = u.times(difference).times(this.stiffness);
 
@@ -504,6 +504,7 @@ class Cloth {
          * And also the NSEW ones two positions away.
          *
          */
+
         console.log(this.rows);
         console.log(this.columns);
         for (let r = 0; r < this.rows; r+=1) {
