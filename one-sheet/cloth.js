@@ -82,6 +82,7 @@ class Mass {
         this.position0   = position0;
         this.velocity0   = new Vector3d(0.0,0.0,0.0);
         this.reset();
+        this.saveState();
         //
         this.fixed       = false;  // Does the particle move?
         this.springs     = [];     // What other masses is it connected to?
@@ -114,7 +115,9 @@ class Mass {
          * velocity, before advancing it.
          */
 
-        // WRITE THIS!
+        this.prevPosition = this.position;
+        this.lastVelocity = this.velocity;
+
     }
 
     computeAcceleration() {
