@@ -133,7 +133,19 @@ class Mass {
 
         let force = new Vector3d(0.0,0.0,0.0);
 
-        // WRITE THIS!
+        for (let j of this.springs) {
+            let F = j.computeForce(this);
+            force.plus(F);
+            if (gGravityOn) {
+                let gVector = new Vector3d(0.0, -gGravity, 0.0);
+                force.plus(gVector.times(this.mass));
+            }
+            if (gWindOn) {
+                let windVector = new Vector3d(0.0, 0.0, gWind);
+                force.plus(windVector);
+                force.plus(this.velocity.times(gDrag));
+            }
+        }
 
         return force.times(1.0/this.mass);
     }
@@ -199,9 +211,20 @@ class Spring {
          * and the position of the other mass.
          */
 
-        // WRITE THIS!
+        let other;
+        if (onMass == mass1) {
+            other = mass2;
+        } else {
+            other = mas1;
+        }
+        let distance = onMass.distance(other);
+        let difference = this.restingLength - distance;
 
-        return new Vector3d(0.0,0.0,0.0);
+        let u = other.minus(onMass.position).unit;
+
+        let force = u.times(difference).times(this.stiffness);
+
+        return force;
     }
 
     constrain() {
@@ -487,19 +510,9 @@ class Cloth {
             for (let c = 0; c < this.columns; c+=1) {
                 let mass = this.getMass(r, c);
                 // add structural springs
-                if (r > 0) {
-                    // north spring
-                    let s = new Spring(mass, this.getMass(r - 1, c), gStiffness);
-                    this.springs.push(s);
-                }
                 if (r < this.rows - 1) {
                     // south spring
                     let s = new Spring(mass, this.getMass(r + 1, c), gStiffness);
-                    this.springs.push(s);
-                }
-                if ( c > 0) {
-                    // west spring
-                    let s = new Spring(mass, this.getMass(r, c - 1), gStiffness);
                     this.springs.push(s);
                 }
                 if ( c < this.columns - 1) {
@@ -508,19 +521,9 @@ class Cloth {
                     this.springs.push(s);
                 }
                 // add shear springs
-                if (r > 0 && c > 0) {
-                    // north west spring
-                    let s = new Spring(mass, this.getMass(r - 1, c - 1), gStiffness);
-                    this.springs.push(s);
-                }
                 if (r > 0 && c < this.columns - 1) {
                     // north east spring
                     let s = new Spring(mass, this.getMass(r - 1, c + 1), gStiffness);
-                    this.springs.push(s);
-                }
-                if (r < this.rows - 1 && c > 0) {
-                    // south west spring
-                    let s = new Spring(mass, this.getMass(r +1, c - 1), gStiffness);
                     this.springs.push(s);
                 }
                 if (r < this.rows - 1 && c < this.columns - 1) {
@@ -529,17 +532,8 @@ class Cloth {
                     this.springs.push(s);
                 }
                 // add bend springs
-                if (r > 1) {
-                    let s = new Spring(mass, this.getMass(r - 2, c), gStiffness * gBend);
-                    this.springs.push(s);
-                }
                 if (r < this.rows - 2) {
-                    // console.assert(this.getMass(r + 2, c), r+2, c)
                     let s = new Spring(mass, this.getMass(r + 2, c), gStiffness * gBend);
-                    this.springs.push(s);
-                }
-                if ( c > 1) {
-                    let s = new Spring(mass, this.getMass(r, c - 2), gStiffness * gBend);
                     this.springs.push(s);
                 }
                 if ( c < this.columns - 2) {
