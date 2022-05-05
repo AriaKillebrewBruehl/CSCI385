@@ -134,14 +134,17 @@ class Mass {
         let force = new Vector3d(0.0,0.0,0.0);
 
         for (let j of this.springs) {
+            // the force of the spring between the masses
             let F = j.computeForce(this);
             force = force.plus(F);
             if (gGravityOn) {
+                // the force of gravity
                 let gVector = new Vector3d(0.0, -gGravity, 0.0);
                 let G = gVector.times(this.mass);
                 force = force.plus(G);
             }
             if (gWindOn) {
+                // the force of the wind and its drag
                 let windVector = new Vector3d(0.0, 0.0, gWind);
                 force = force.plus(windVector);
                 force = force.plus(this.velocity.times(gDrag));
@@ -188,8 +191,6 @@ class Spring {
     constructor(mass1, mass2, stiffness) {
         this.mass1 = mass1;
         this.mass2 = mass2;
-        // console.assert(mass2.addSpring(this), mass2);
-        // console.assert(mass1.addSpring(this), mass1);
         mass1.addSpring(this);
         mass2.addSpring(this);
         //
@@ -211,13 +212,16 @@ class Spring {
          * and the position of the other mass.
          */
 
+        // find the other mass
         let other;
         if (onMass == this.mass1) {
             other = this.mass2;
         } else {
             other = this.mass1;
         }
+        // find the current distance between the two masses
         let distance = onMass.position.dist(other.position);
+        // compare the current distance to the resting length
         let difference = this.restingLength - distance;
 
         let u = other.position.minus(onMass.position).unit();
@@ -541,7 +545,6 @@ class Cloth {
                     let s = new Spring(mass, this.getMass(r, c + 2), gStiffness * gBend);
                     this.springs.push(s);
                 }
-
             }
         }
     }
