@@ -2,7 +2,7 @@
 // cloth.js
 //
 // Author: Jim Fix
-// CSCI 385, Reed College, Spring 2022 
+// CSCI 385, Reed College, Spring 2022
 //
 // This defines a class `Cloth` that is made up of a grid of particle
 // objects (each of type `Mass`) connected up pairwise by `Spring`
@@ -55,7 +55,7 @@ let gGravityOn    = true;
 let gWindOn       = false;
 let gConstraintOn = true;
 
-// Cloth rendering. 
+// Cloth rendering.
 //
 let gClothTop    = 1.0;
 let gClothHeight = 1.0;
@@ -71,7 +71,7 @@ let gClothWidth  = 1.5;
 // A mass can be `fixed`, meaning its position does not change.
 //
 class Mass {
-    
+
     constructor(mass0, position0) {
         /*
          * Construct a particle with the given mass and starting position,
@@ -86,7 +86,7 @@ class Mass {
         this.fixed       = false;  // Does the particle move?
         this.springs     = [];     // What other masses is it connected to?
     }
-        
+
     addSpring(spring) {
         /*
          * Connect this mass to another with a spring.
@@ -107,13 +107,13 @@ class Mass {
 
         // WRITE THIS!
     }
-    
+
     saveState() {
         /*
-         * Take a snapshot of the particle's state, its position and 
+         * Take a snapshot of the particle's state, its position and
          * velocity, before advancing it.
          */
-        
+
         // WRITE THIS!
     }
 
@@ -129,14 +129,14 @@ class Mass {
          *
          *    accel = (sum of the forces) / mass
          */
-        
+
         let force = new Vector3d(0.0,0.0,0.0);
 
         // WRITE THIS!
 
         return force.times(1.0/this.mass);
     }
-        
+
     computeStep(timeStep, acceleration) {
         /*
          * Compute the next position based on the current position,
@@ -168,7 +168,7 @@ class Mass {
 // to its two ends according to Hooke's law.
 //
 class Spring {
-    
+
     constructor(mass1, mass2, stiffness) {
         this.mass1 = mass1;
         this.mass2 = mass2;
@@ -178,7 +178,7 @@ class Spring {
         this.stiffness = stiffness;
         this.setRestingLength();
     }
-        
+
 
     setRestingLength() {
         /*
@@ -186,7 +186,7 @@ class Spring {
          */
         this.restingLength = this.mass2.position0.minus(this.mass1.position0).norm();
     }
-    
+
     computeForce(onMass) {
         /*
          * Compute the spring's force `onMass` based on its position,
@@ -203,7 +203,7 @@ class Spring {
          * Move the positions of the two masses at the spring's ends so that
          * their distance apart is no more than `restingLength * gDeformation`.
          */
-        
+
         // WRITE THIS!
     }
 }
@@ -213,10 +213,10 @@ class Spring {
 //
 // Models a cloth as a grid of particles connected by springs.
 //
-// 
+//
 //
 class Cloth {
-    
+
     constructor(rows,columns) {
         this.rows    = rows;
         this.columns = columns;
@@ -224,7 +224,7 @@ class Cloth {
         this.springs = [];
         //
         this.doFlap  = false;
-        
+
         // Position all the particles.
         //
         const x0 = -gClothWidth / 2.0;
@@ -232,7 +232,7 @@ class Cloth {
         const dx = gClothWidth / (columns - 1);
         const dy = -gClothHeight / (rows - 1);
         this.makeMassGrid(x0,y0,dx,dy);
-        
+
         // Connect them up.
         //
         this.connectMasses();
@@ -251,7 +251,7 @@ class Cloth {
             mass.reset();
         }
     }
-    
+
     getMass(r, c) {
         /*
          * Get the particle at row `r`, column `c`.
@@ -267,7 +267,7 @@ class Cloth {
          */
         this.doFlap = true;
     }
-    
+
     flap() {
         /*
          * Flap the cloth by stretching it, i.e. changing the
@@ -276,13 +276,13 @@ class Cloth {
 
         // WRITE THIS!!
     }
-    
+
     update() {
         /*
          * Update the positions of the cloth's particles, computing
          * one time step forward.
          */
-        
+
         // Save the current particle states, prepare for their update.
         //
         for (let mass of this.masses) {
@@ -315,7 +315,7 @@ class Cloth {
     //
     // Methods for WebGL rendering.
     //
-    
+
     compileMesh() {
         /*
          * Record the WebGL description of the cloth's mesh.
@@ -329,7 +329,7 @@ class Cloth {
         }
         glEnd();
     }
-    
+
     recompileMesh() {
         /*
          * Update the WebGL description of the cloth's mesh.
@@ -343,7 +343,7 @@ class Cloth {
         }
         glUpdateEnd();
     }
-    
+
     renderMesh() {
         /*
          * Draw the cloth mesh in WebGL.
@@ -360,7 +360,7 @@ class Cloth {
         this.issueFacets();
         glEnd();
     }
-    
+
     recompile() {
         /*
          * Update the WebGL description of the cloth.
@@ -395,7 +395,7 @@ class Cloth {
                     // p00--p01
                     //  |  / |
                     //  | /  |
-                    // p10--p11                    
+                    // p10--p11
                     //
                     const u01 = p01.minus(p00).unit();
                     const v10 = p10.minus(p00).unit();
@@ -419,7 +419,7 @@ class Cloth {
                     // p00--p01
                     //  | \  |
                     //  |  \ |
-                    // p10--p11                    
+                    // p10--p11
                     //
                     const u01 = p00.minus(p10).unit();
                     const v10 = p11.minus(p10).unit();
@@ -450,7 +450,7 @@ class Cloth {
 
     makeMassGrid(x0,y0,dx,dy) {
         /*
-         * Create a (rows x columns) grid of masses, with rows 
+         * Create a (rows x columns) grid of masses, with rows
          * offset by `dy`, and columns offset by `dx`. The (0,0)
          * mass sits at `(x0,y0)`.
          */
@@ -476,9 +476,73 @@ class Cloth {
          *
          */
 
-        // WRITE THIS!
+        for (let r in this.rows) {
+            for (let c in this.columns) {
+                let mass = this.getMass(r, c);
+                // add structural springs
+                if (r > 0) {
+                    // north spring
+                    let s = Spring(mass, this.getMass(r - 1, c), gStiffness);
+                    this.springs.addSpring(s);
+                }
+                if (r < this.rows) {
+                    // south spring
+                    let s = Spring(mass, this.getMass(r + 1, c), gStiffness);
+                    this.springs.addSpring(s);
+                }
+                if ( c > 0) {
+                    // west spring
+                    let s = Spring(mass, this.getMass(r, c - 1), gStiffness);
+                    this.springs.addSpring(s);
+                }
+                if ( c < this.columns) {
+                    // east spring
+                    let s = Spring(mass, this.getMass(r, c + 1), gStiffness);
+                    this.springs.addSpring(s);
+                }
+                // add shear springs
+                if (r > 0 && c > 0) {
+                    // north west spring
+                    let s = Spring(mass, this.getMass(r - 1, c - 1), gStiffness);
+                    this.springs.addSpring(s);
+                }
+                if (r > 0 && c < this.columns) {
+                    // north east spring
+                    let s = Spring(mass, this.getMass(r + 1, c + 1), gStiffness);
+                    this.springs.addSpring(s);
+                }
+                if (r < this.rows && c > 0) {
+                    // south west spring
+                    let s = Spring(mass, this.getMass(r +1, c - 1), gStiffness);
+                    this.springs.addSpring(s);
+                }
+                if (r < this.rows && c < this.columns) {
+                    // south east spring
+                    let s = Spring(mass, this.getMass(r +1, c +1), gStiffness);
+                    this.springs.addSpring(s);
+                }
+                // add bend springs
+                if (r > 1) {
+                    let s = Spring(mass, this.getMass(r - 2, c), gStiffness);
+                    this.springs.addSpring(s);
+                }
+                if (r < this.rows - 1) {
+                    let s = Spring(mass, this.getMass(r + 2, c), gStiffness);
+                    this.springs.addSpring(s);
+                }
+                if ( c > 1) {
+                    let s = Spring(mass, this.getMass(r, c - 2), gStiffness);
+                    this.springs.addSpring(s);
+                }
+                if ( c < this.columns - 1) {
+                    let s = Spring(mass, this.getMass(r, c + 2), gStiffness);
+                    this.springs.addSpring(s);
+                }
+
+            }
+        }
     }
 }
 
-                
+
 
