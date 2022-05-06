@@ -39,7 +39,7 @@
 
 // Simulation parameters.
 //
-let gTimeStep    = 1.0 / 200.0;
+let gTimeStep    = 1.0 / 400.0;
 //
 let gDeformation = 1.2;
 let gGravity     = 9.8;
@@ -47,7 +47,7 @@ let gFriction    = 0.90;
 let gDrag        = 0.90;
 let gStiffness   = 5000.0;
 let gBend        = 0.333;
-let gWind        = 100.0;
+let gWind        = 20.0;
 
 // Simulation state.
 //
@@ -114,8 +114,6 @@ class Mass {
          */
 
         this.prevPosition = this.position;
-        this.lastVelocity = this.velocity;
-
     }
 
     computeAcceleration() {
@@ -161,8 +159,8 @@ class Mass {
          * Use `timeStep` for the time step size.
          */
 
-        let newPos = this.position.plus(this.velocity.times(timeStep));
-        let newVel = this.velocity.plus(acceleration.times(timeStep));
+        let newPos = this.position.plus(this.velocity.times(timeStep)).plus(acceleration.times(timeStep**2));
+        let newVel = this.position.minus(this.prevPosition);
         this.position = newPos;
         this.velocity = newVel;
     }
@@ -222,7 +220,7 @@ class Spring {
         // find the current distance between the two masses
         let distance = onMass.position.dist(other.position);
         // compare the current distance to the resting length
-        let difference = this.restingLength - distance;
+        let difference = distance - this.restingLength;
 
         let u = other.position.minus(onMass.position).unit();
 
@@ -237,7 +235,24 @@ class Spring {
          * their distance apart is no more than `restingLength * gDeformation`.
          */
 
-        // WRITE THIS!
+        let length = this.mass1.position.dist(this.mass2.position);
+        if (length > this.restingLength*gDeformation) {
+            let difference = (length - this.restingLength*gDeformation);
+            let vect1 = this.mass1.position.minus(this.mass2.position).unit();
+            let vect2 = this.mass2.position.minus(this.mass1.position).unit();
+            if (this.mass2.fixed) {
+                this.mass1.position = this.mass1.position.plus(vect2.times(difference));
+                // let vect = this.mass2.position.minus(this.mass1.position).unit()
+                // this.mass1.position = this.mass2.position.plus(vect.times(this.restingLength * gDeformation));
+            } else if (this.mass1.fixed) {
+                this.mass2.position = this.mass2.position.plus(vect1.times(difference));
+                // let vect = this.mass2.position.minus(this.mass1.position).unit();
+                // this.mass2.position = this.mass1.position.plus(vect.times(this.restingLength * gDeformation));
+            } else {
+                this.mass1.position = this.mass1.position.plus(vect2.times(difference/2.0));
+                this.mass2.position = this.mass2.position.plus(vect1.times(difference/2.0));
+            }
+        }
     }
 }
 
@@ -509,8 +524,6 @@ class Cloth {
          *
          */
 
-        console.log(this.rows);
-        console.log(this.columns);
         for (let r = 0; r < this.rows; r+=1) {
             for (let c = 0; c < this.columns; c+=1) {
                 let mass = this.getMass(r, c);
@@ -533,7 +546,7 @@ class Cloth {
                 }
                 if (r < this.rows - 1 && c < this.columns - 1) {
                     // south east spring
-                    let s = new Spring(mass, this.getMass(r +1, c +1), gStiffness);
+                    let s = new Spring(mass, this.getMass(r + 1, c +1), gStiffness);
                     this.springs.push(s);
                 }
                 // add bend springs
