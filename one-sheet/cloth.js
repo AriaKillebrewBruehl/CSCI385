@@ -39,7 +39,7 @@
 
 // Simulation parameters.
 //
-let gTimeStep    = 1.0 / 400.0;
+let gTimeStep    = 1.0 / 200.0;
 //
 let gDeformation = 1.2;
 let gGravity     = 9.8;
@@ -135,18 +135,17 @@ class Mass {
             // the force of the spring between the masses
             let F = j.computeForce(this);
             force = force.plus(F);
-            if (gGravityOn) {
-                // the force of gravity
-                let gVector = new Vector3d(0.0, -gGravity, 0.0);
-                let G = gVector.times(this.mass);
-                force = force.plus(G);
-            }
-            if (gWindOn) {
-                // the force of the wind and its drag
-                let windVector = new Vector3d(0.0, 0.0, gWind);
-                force = force.plus(windVector);
-                force = force.plus(this.velocity.times(gDrag));
-            }
+        }
+        if (gGravityOn) {
+            // the force of gravity
+            let gVector = new Vector3d(0.0, -gGravity, 0.0);
+            let G = gVector.times(this.mass);
+            force = force.plus(G);
+        }
+        if (gWindOn) {
+            // the force of the wind and its drag
+            let windVector = new Vector3d(0.0, 0.0, gWind);
+            force = force.plus(windVector).minus(this.velocity.times(gDrag));
         }
         return force.times(1.0/this.mass);
     }
@@ -159,8 +158,11 @@ class Mass {
          * Use `timeStep` for the time step size.
          */
 
-        let newPos = this.position.plus(this.velocity.times(timeStep)).plus(acceleration.times(timeStep**2));
+
+        let v = this.position.minus(this.prevPosition);
+        let newPos = this.position.plus(v.times(timeStep)).plus(acceleration.times(timeStep**2));
         let newVel = this.position.minus(this.prevPosition);
+        // let newVel = this.velocity.plus(acceleration.times(timeStep));
         this.position = newPos;
         this.velocity = newVel;
     }
@@ -236,22 +238,24 @@ class Spring {
          */
 
         let length = this.mass1.position.dist(this.mass2.position);
+
         if (length > this.restingLength*gDeformation) {
             let difference = (length - this.restingLength*gDeformation);
-            let vect1 = this.mass1.position.minus(this.mass2.position).unit();
-            let vect2 = this.mass2.position.minus(this.mass1.position).unit();
+            let vect1 = this.mass2.position.minus(this.mass1.position).unit(); // vector going from mass1 to mass2
+            let vect2 = this.mass1.position.minus(this.mass2.position).unit(); // vector going from mass2 to mass1
+            let p1 = this.mass1.position;
+            let p2 = this.mass2.position;
+
             if (this.mass2.fixed) {
-                this.mass1.position = this.mass1.position.plus(vect2.times(difference));
-                // let vect = this.mass2.position.minus(this.mass1.position).unit()
-                // this.mass1.position = this.mass2.position.plus(vect.times(this.restingLength * gDeformation));
+                p1 = this.mass1.position.plus(vect1.times(difference));
             } else if (this.mass1.fixed) {
-                this.mass2.position = this.mass2.position.plus(vect1.times(difference));
-                // let vect = this.mass2.position.minus(this.mass1.position).unit();
-                // this.mass2.position = this.mass1.position.plus(vect.times(this.restingLength * gDeformation));
+                p2 = this.mass2.position.plus(vect2.times(difference));
             } else {
-                this.mass1.position = this.mass1.position.plus(vect2.times(difference/2.0));
-                this.mass2.position = this.mass2.position.plus(vect1.times(difference/2.0));
+                p1 = this.mass1.position.plus(vect1.times(difference/2.0));
+                p2 = this.mass2.position.plus(vect2.times(difference/2.0));
             }
+            this.mass1.position = p1;
+            this.mass2.position = p2;
         }
     }
 }
