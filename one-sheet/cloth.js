@@ -47,7 +47,7 @@ let gFriction    = 0.90;
 let gDrag        = 0.90;
 let gStiffness   = 5000.0;
 let gBend        = 0.333;
-let gWind        = 20.0;
+let gWind        = 100.0;
 
 // Simulation state.
 //
@@ -103,7 +103,7 @@ class Mass {
          */
         this.position    = this.position0;
         this.velocity    = this.velocity0;
-        //
+        // save the state
         this.saveState();
     }
 
@@ -112,7 +112,7 @@ class Mass {
          * Take a snapshot of the particle's state, its position and
          * velocity, before advancing it.
          */
-
+        this.prevPrevPosition = this.prevPosition;
         this.prevPosition = this.position;
     }
 
@@ -136,17 +136,20 @@ class Mass {
             let F = j.computeForce(this);
             force = force.plus(F);
         }
+        if (gWindOn) {
+            // the force of the wind
+            let windVector = new Vector3d(0.0, 0.0, gWind);
+            force = force.plus(windVector);
+        }
+        // force of drag
+        force = force.minus(this.prevPosition.minus(this.prevPrevPosition).times(gDrag));
         if (gGravityOn) {
             // the force of gravity
             let gVector = new Vector3d(0.0, -gGravity, 0.0);
             let G = gVector.times(this.mass);
             force = force.plus(G);
         }
-        if (gWindOn) {
-            // the force of the wind and its drag
-            let windVector = new Vector3d(0.0, 0.0, gWind);
-            force = force.plus(windVector).minus(this.velocity.times(gDrag));
-        }
+        force.dy = force.dy - 10.0;
         return force.times(1.0/this.mass);
     }
 
@@ -158,13 +161,9 @@ class Mass {
          * Use `timeStep` for the time step size.
          */
 
-
-        let v = this.position.minus(this.prevPosition);
-        let newPos = this.position.plus(v.times(timeStep)).plus(acceleration.times(timeStep**2));
-        let newVel = this.position.minus(this.prevPosition);
-        // let newVel = this.velocity.plus(acceleration.times(timeStep));
+        let v = this.prevPosition.minus(this.prevPrevPosition);
+        let newPos = this.prevPosition.plus(v.times(timeStep)).plus(acceleration.times(timeStep**2));
         this.position = newPos;
-        this.velocity = newVel;
     }
 
     makeStep() {
@@ -213,21 +212,20 @@ class Spring {
          */
 
         // find the other mass
-        let other;
+        let other = this.mass1;
         if (onMass == this.mass1) {
             other = this.mass2;
-        } else {
-            other = this.mass1;
         }
         // find the current distance between the two masses
-        let distance = onMass.position.dist(other.position);
+        let distance = onMass.prevPosition.dist(other.prevPosition);
         // compare the current distance to the resting length
         let difference = distance - this.restingLength;
+        // console.log(difference);
 
-        let u = other.position.minus(onMass.position).unit();
+        let u = other.prevPosition.minus(onMass.prevPosition).unit();
 
-        let force = u.times(difference).times(this.stiffness);
-
+        let force = u.times(this.stiffness).times(difference);
+        // console.log(force);
         return force;
     }
 
