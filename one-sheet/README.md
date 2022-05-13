@@ -2,9 +2,13 @@
 
 ## Running the Simulation
 
-## Live Demo
+To run the simulation clone the repo, navigate to your local copy and run `open one-sheet.html`. The sheet will appear and you can experiment with wind and constraints!
 
-Coming Soon!
+![Initial Surface](./images/init-config.png)
+</p>
+<p align = "center">
+Fig.1 - The default sheet
+</p>
 
 ## Design Overview
 
@@ -23,6 +27,12 @@ m1---me
 ms
 ```
 
+![Initial Surface](./images/init-config-wmesh.png)
+</p>
+<p align = "center">
+Fig.2 - The default sheet with the mesh
+</p>
+
 Part 2: A Step in the Simulation :footprints:
 
 A step in the simulation requires computing the masses position and velocity at time `t+h` given its position and velocity at time `t`. This is done following the standard algorithm
@@ -34,9 +44,51 @@ However when this step is done we must have saved the previous positions and vel
 
 Part 3: Acceleration :racing_car:
 
-The `computeAcceleration` function find the acceleration of a mass. The force is computed by looping through all the springs attached to that mass and summing the force from the spring, the force of gravity, the force of wind and the drag (if the wind is blowing). Once the force is computed we divide force by the mass to get acceleration.
+The `computeAcceleration` function finds the acceleration of a mass. The force is computed by looping through all the springs attached to that mass and summing the force from the spring, then we add the force of gravity, the force of wind (if it is blowing), and the drag . Once the force is computed we divide force by the mass to get acceleration.
 
 Part 4: Force of the Springs :fishing_pole_and_fish:
+
+The `computeForce` function uses Hooke's law to find the force of the spring between two masses. We first find the `distance` between the two masses and then compute the `difference` between that distance and the resting length to see if the spring is too short or too long. Then we get the unit vector between the two masses and compute the final `force` as the product of the unit vector and the `stiffness` of the spring and the `difference`.
+
+![Initial Surface](./images/breeze-front.png)
+</p>
+<p align = "center">
+Fig.3 - A gentle breeze
+</p>
+
+Part 5: Correcting Integration :bar_chart:
+
+The original `computeStep` leads to instability in the cloth and it will quickly become out of control. To correct this we update `saveState()` so that it tracks `this.prevPrevPosition` in addition to `this.prevPosition`. `velocity` this calculated as `this.prevPosition - this.prevPrevPosition` and `position` is calculated as `this.prevPosition + velocity * timeStep + acceleration * timeStep^2`. Note that we no longer track the `velocity` of a mass, `velocity` is only used for computing the next position.
+
+![Initial Surface](./images/breeze-side.png)
+</p>
+<p align = "center">
+Fig.4 - A gentle breeze, side view
+</p>
+
+Part 6: Constraining the Movement :chains:
+
+Once the integration is fixed the sheet is stable but it will slowly drip off the screen like taffy. To fix this we must modify the masses position if the spring connecting two masses stretches beyond the `restingLength * gDeformation`. This is done as follows:
+
+1) compute the `length` of the spring connecting the masses
+2) if `length` > `restingLength * gDeformation` find the `difference`between the two, the vector going from `mass1` to `mass2` (`vect1`), and the vector going from `mass2` to `mass1` (`vect2`)
+3) if one of the masses is `fixed` move the other mass by adding `vect1 * difference` (or `vect2`) to its position
+4) otherwise move each mass by adding `vect1 * (difference / 2.0)` (or `vect2`) to its position
+
+![Initial Surface](./images/no-constrain.png)
+</p>
+<p align = "center">
+Fig.5 - An unconstrained front view
+</p>
+
+![Initial Surface](./images/no-contrain-side.png)
+</p>
+<p align = "center">
+Fig.6 - An unconstrained wind
+</p>
+
+
+
 
 
 
