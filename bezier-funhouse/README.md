@@ -26,6 +26,7 @@ Fig.1 - The initial editor curve
 <p align = "center">
 Fig.2 - The scene with balls reflected
 </p>
+
 ### Part 2: Ray Tracing the Mirror :mirror:
 
 Similar to the editor curve, the points on the mirror are chosen via a recursive algorithm. However recursion is not allowed in GLSL so it must be implemented manually by having `rayIntersectBezier` call `rayIntersectBezier1` twice, once with with control points `(L0, L1, L2)` and once with control points `(R0, R1, R2)` each of these calls returns an `ISect` and the better of the two (determined by calling `bestISect`) is returned. `rayIntersectBezier1` implements the same algorithm but instead calls `rayIntersectBezier2` which calls `rayIntersectBezier3` which calls `rayIntersectBezier4`. In `rayIntersectBezier4` the helper function `calcIntersection` is called. This function calls `rayIntersectPanel` twice, once passing `(p0, p2)` and then passing `(p2, p0)`. This allows the mirror to be reflective on both sides.
